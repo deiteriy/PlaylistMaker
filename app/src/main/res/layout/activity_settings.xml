@@ -10,7 +10,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
 
         <ImageView
@@ -20,8 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrowback"
-        android:foreground="?attr/selectableItemBackground"
-            />
+        android:foreground="?attr/selectableItemBackground"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,8 +37,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        >
+        android:layout_height="@dimen/string_height">
 
     <Switch
         android:id="@+id/simpleSwitch"
@@ -59,91 +56,51 @@
         android:text="@string/dark_theme"
         android:textColor="@color/black"
         android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginStart="@dimen/margin_16"
         />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:id="@+id/share"
-        android:foreground="?attr/selectableItemBackground"
-
-
-        >
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
+        android:layout_gravity="center_vertical"
         android:padding="@dimen/medium_padding"
         android:text="@string/share_app"
         android:textColor="@color/black"
         android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="21dp"
+        app:drawableEndCompat="@drawable/share"
+        android:foreground="?attr/selectableItemBackground"
         />
 
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="18dp"
-            android:src="@drawable/share"
-            android:layout_marginEnd="16dp"
-            android:layout_gravity="end|center_vertical"
-            />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:foreground="?attr/selectableItemBackground"
-        >
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:padding="@dimen/medium_padding"
-        android:text="@string/chat_with_help"
-        android:textColor="@color/black"
-        android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_start"
-        />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="18dp"
-            android:src="@drawable/support"
-            android:layout_marginEnd="14dp"
-            android:layout_gravity="end|center_vertical"
-
-            />
-    </FrameLayout>
-
-    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height"
-        android:foreground="?attr/selectableItemBackground"
-        >
-
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:padding="@dimen/medium_padding"
         android:text="@string/user_agreement"
         android:textColor="@color/black"
         android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="22dp"
+        app:drawableEndCompat="@drawable/arrowforward"
+        android:foreground="?attr/selectableItemBackground"
         />
 
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="14dp"
-            android:src="@drawable/arrowforward"
-            android:layout_marginEnd="20dp"
-            android:layout_gravity="end|center_vertical"
-
-            />
-    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:padding="@dimen/medium_padding"
+        android:text="@string/chat_with_help"
+        android:textColor="@color/black"
+        android:textSize="@dimen/another_text_size"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="18dp"
+        app:drawableEndCompat="@drawable/support"
+        android:foreground="?attr/selectableItemBackground"
+        />
 
 
 

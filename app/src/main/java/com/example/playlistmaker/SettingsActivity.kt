@@ -15,8 +15,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
         returnArrow.setOnClickListener {
-            val returnArrowIntent = Intent(this, MainActivity::class.java)
-            startActivity(returnArrowIntent)
+            finish()
         }
 
     }
