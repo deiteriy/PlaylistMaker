@@ -28,6 +28,5 @@
         <!-- Customize your theme here. -->
         <item name="android:background">@color/black</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:backgroundTint">@color/white</item>
     </style>
 </resources>
