@@ -33,11 +33,11 @@ class SettingsActivity : AppCompatActivity() {
             val mailToSupportIntent = Intent(Intent.ACTION_SENDTO)
             val userEmail = getString(R.string.user_email)
             mailToSupportIntent.data = Uri.parse("mailto:")
-         //   mailToSupportIntent.addCategory(Intent.CATEGORY_APP_EMAIL)
             mailToSupportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(userEmail))
             mailToSupportIntent.putExtra(Intent.EXTRA_TEXT, message)
             mailToSupportIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
             startActivity(mailToSupportIntent)
+
         }
 
         val showUserAgreement = findViewById<TextView>(R.id.user_agreement)
