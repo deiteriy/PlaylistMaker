@@ -38,12 +38,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="horizontal"
-        android:background="@color/gray_background"
+        android:background="@drawable/edt_background"
         android:paddingLeft="@dimen/margin_8"
         tools:context=".MainActivity">
 
         <EditText
             android:id="@+id/inputSearch"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

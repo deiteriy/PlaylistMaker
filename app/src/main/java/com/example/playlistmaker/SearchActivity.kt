@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 
 class SearchActivity : AppCompatActivity() {
+
+    var textInSearch: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -18,6 +21,7 @@ class SearchActivity : AppCompatActivity() {
     val linearLayout = findViewById<LinearLayout>(R.id.container)
     val inputSearchText = findViewById<EditText>(R.id.inputSearch)
     val clearButton = findViewById<ImageView>(R.id.clearIcon)
+       
 
     clearButton.setOnClickListener {
         inputSearchText.setText("")
@@ -29,8 +33,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             clearButton.visibility = clearButtonVisibility(s)
+            textInSearch = s.toString()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -39,8 +43,22 @@ class SearchActivity : AppCompatActivity() {
     }
         inputSearchText.addTextChangedListener(searchTextWatcher)
 }
+    companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_VALUE,textInSearch)
+        Log.i("survivor", "сохраняем текст $textInSearch")
+    }
 
-private fun clearButtonVisibility(s: CharSequence?): Int {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        textInSearch = savedInstanceState.getString(SEARCH_VALUE,"")
+        Log.i("survivor", "извлекаем текст $textInSearch")
+    }
+
+    private fun clearButtonVisibility(s: CharSequence?): Int {
     return if (s.isNullOrEmpty()) {
         View.GONE
     } else {
@@ -50,3 +68,5 @@ private fun clearButtonVisibility(s: CharSequence?): Int {
 
 
 }
+
+
