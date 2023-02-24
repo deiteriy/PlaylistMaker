@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout style="@style/Theme.PlaylistMaker"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
-        <ImageView
+        <ImageView style="@style/MenuDayNightColor"
         android:id="@+id/arrow_back"
         android:layout_gravity="center_vertical"
         android:padding="16dp"
@@ -21,16 +22,16 @@
         android:src="@drawable/arrowback"
         android:foreground="?attr/selectableItemBackground"/>
 
-        <TextView
+        <TextView style="@style/MenuDayNightColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:padding="@dimen/medium_padding"
             android:text="@string/settings"
             android:textStyle="bold"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/primary_text_size" />
+            android:textSize="@dimen/primary_text_size"
+            />
 
     </FrameLayout>
 
@@ -39,67 +40,46 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/string_height">
 
-    <Switch
-        android:id="@+id/simpleSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
-        android:padding="12dp"
+        <Switch
+            android:id="@+id/simpleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:padding="12dp"
+            />
 
-        />
-
-    <TextView
+    <TextView style="@style/MenuDayNightColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:padding="@dimen/medium_padding"
         android:text="@string/dark_theme"
-        android:textColor="@color/black"
         android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginStart="32dp"
         />
     </FrameLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:padding="@dimen/medium_padding"
-        android:text="@string/share_app"
-        android:textColor="@color/black"
-        android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_16"
+        android:id="@+id/share_app"
+        style="@style/MenuListStyle"
         android:layout_marginEnd="21dp"
+        android:text="@string/share_app"
         app:drawableEndCompat="@drawable/share"
-        android:foreground="?attr/selectableItemBackground"
         />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:padding="@dimen/medium_padding"
+        android:id="@+id/user_agreement"
+        style="@style/MenuListStyle"
         android:text="@string/user_agreement"
-        android:textColor="@color/black"
-        android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="22dp"
         app:drawableEndCompat="@drawable/arrowforward"
-        android:foreground="?attr/selectableItemBackground"
         />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:padding="@dimen/medium_padding"
+        android:id="@+id/support"
+        style="@style/MenuListStyle"
         android:text="@string/chat_with_help"
-        android:textColor="@color/black"
-        android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="18dp"
         app:drawableEndCompat="@drawable/support"
-        android:foreground="?attr/selectableItemBackground"
         />
 
 
