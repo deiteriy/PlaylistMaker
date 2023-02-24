@@ -42,23 +42,20 @@
         android:paddingLeft="@dimen/margin_8"
         tools:context=".MainActivity">
 
-        <EditText
+        <EditText style="@style/SearchDayNightColor"
             android:id="@+id/inputSearch"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/input_hint"
-            android:textColorHighlight="@color/gray"
             android:drawableStart="@drawable/search"
-            android:drawableTint="@color/gray"
             android:drawablePadding="@dimen/margin_8"
             android:backgroundTint="@android:color/transparent"
             android:maxLength="32"
             android:maxLines="1"
             android:inputType="text"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray" />
+            />
 
         <ImageView
             android:id="@+id/clearIcon"

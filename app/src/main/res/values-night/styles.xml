@@ -23,5 +23,10 @@
     <style name="MenuBackgroundStyle">
         <item name="android:background">@color/black</item>
     </style>
+
+    <style name="SearchDayNightColor">
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:drawableTint">@color/black</item>
+    </style>
 </resources>
 
