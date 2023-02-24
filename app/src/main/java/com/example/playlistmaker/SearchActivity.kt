@@ -52,9 +52,6 @@ class SearchActivity : AppCompatActivity() {
     }
         inputSearchText.addTextChangedListener(searchTextWatcher)
 }
-    companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_VALUE,textInSearch)
@@ -75,7 +72,9 @@ class SearchActivity : AppCompatActivity() {
     }
 }
 
-
+    companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
+    }
 }
 
 
