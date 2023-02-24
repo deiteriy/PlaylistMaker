@@ -22,7 +22,7 @@
         <item name="cornerRadius">8dp</item>
         <!--item name="iconTint">@color/yp_black</item!-->
     </style>
-    <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button">
+    <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/ys_display</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textStyle">bold</item>
