@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/trackCover"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/cover_side_size"
+        android:layout_height="@dimen/cover_side_size"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_gravity="center_vertical|start"
         android:src="@drawable/albumcover_placeholder"
@@ -32,6 +32,7 @@
             android:textSize="16sp"
             android:layout_marginStart="@dimen/margin_8"
             android:ellipsize="end"
+            android:fontFamily="@font/ys_display"
             android:maxLines="1"/>
 
         <LinearLayout

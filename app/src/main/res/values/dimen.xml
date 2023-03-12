@@ -12,6 +12,8 @@
     <dimen name="icon_padding">10dp</dimen>
     <dimen name="string_height">48dp</dimen>
     <dimen name="button_text_size">22sp</dimen>
+    <dimen name="cover_side_size">45dp</dimen>
+    <dimen name="round_corners">2dp</dimen>
 
 
 </resources>
