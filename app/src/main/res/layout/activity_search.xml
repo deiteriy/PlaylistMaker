@@ -14,7 +14,7 @@
         <ImageView style="@style/MenuDayNightColor"
             android:id="@+id/arrow_back"
             android:layout_gravity="center_vertical"
-            android:padding="16dp"
+            android:padding="@dimen/medium_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrowback"
@@ -36,7 +36,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_16"
         android:orientation="horizontal"
         android:background="@drawable/edt_background"
         android:paddingLeft="@dimen/margin_8"
@@ -66,7 +66,10 @@
             android:visibility="gone" />
     </LinearLayout>
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTrackList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>
