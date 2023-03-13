@@ -22,7 +22,7 @@ class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         trackTime.text = item.trackTime
         Glide.with(trackCover)
             .load(item.artworkUrl100)
-            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius)))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
             .placeholder(R.drawable.albumcover_placeholder)
             .into(trackCover)
     }
