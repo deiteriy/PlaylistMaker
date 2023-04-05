@@ -87,8 +87,8 @@ class SearchActivity : AppCompatActivity() {
                              when (response.code()) {
                                  200 -> {
                                      trackList.clear()
-                                     if (response.body()?.tracks?.isNotEmpty() == true) {
-                                         trackList.addAll(response.body()?.tracks!!)
+                                     if (response.body()?.results?.isNotEmpty() == true) {
+                                         trackList.addAll(response.body()?.results!!)
                                          trackListAdapter.notifyDataSetChanged()
                                      } else {
                                          //  showMessage(getString(R.string.nothing_found), "")
