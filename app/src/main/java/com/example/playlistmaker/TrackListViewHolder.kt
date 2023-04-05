@@ -19,7 +19,7 @@ class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
-        trackTime.text = item.trackTime
+        trackTime.text = item.trackTimeMillis.toString()
         Glide.with(trackCover)
             .load(item.artworkUrl100)
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))

@@ -16,4 +16,6 @@
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="input_hint">Поиск</string>
     <string name="track_name">Название трека</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
 </resources>
