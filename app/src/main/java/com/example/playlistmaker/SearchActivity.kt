@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,9 +10,11 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.*
@@ -71,9 +74,25 @@ class SearchActivity : AppCompatActivity() {
 
         val trackListAdapter = TrackListAdapter()
         val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
+        val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
+        val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
+        val placeholderImage = findViewById<ImageView>(R.id.search_placeholder_image)
+        val placeholderButton = findViewById<Button>(R.id.search_button)
+        placeholder.visibility = View.GONE
         rvTrackList.adapter = trackListAdapter
         rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         trackListAdapter.data = trackList
+
+
+
+        fun showHolder(text: Int, image: Int, button: Boolean) {
+            trackList.clear()
+            trackListAdapter.notifyDataSetChanged()
+            placeholderText.setText(text)
+            placeholderImage.setImageResource(image)
+            if(button) placeholderButton.visibility = View.VISIBLE else placeholderButton.visibility = View.GONE
+            placeholder.visibility = View.VISIBLE
+        }
 
          fun search() {
 
@@ -88,27 +107,31 @@ class SearchActivity : AppCompatActivity() {
                                  200 -> {
                                      trackList.clear()
                                      if (response.body()?.results?.isNotEmpty() == true) {
+                                         placeholder.visibility = View.GONE
                                          trackList.addAll(response.body()?.results!!)
                                          trackListAdapter.notifyDataSetChanged()
-                                     } else {
-                                         //  showMessage(getString(R.string.nothing_found), "")
+
+                                     } else if(trackList.size == 0){
+                                         showHolder(R.string.nothing_found,R.drawable.nothing_found, false)
                                      }
 
                                  }
-                                 //  else -> showMessage(getString(R.string.something_went_wrong), response.code().toString())
+                                 else -> showHolder(R.string.something_went_wrong, R.drawable.no_internet, true)
                              }
 
                          }
 
                          override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                             // showMessage(getString(R.string.something_went_wrong), t.message.toString())
+                             showHolder(R.string.something_went_wrong, R.drawable.no_internet, true)
                          }
 
                      })
              }
         }
 
-
+        placeholderButton.setOnClickListener {
+            search()
+        }
 
         inputSearchText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
