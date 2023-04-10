@@ -22,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
-    private var trackList: ArrayList<Track> = arrayListOf()
     var textInSearch: String = ""
     val baseUrl = "https://itunes.apple.com"
 
@@ -44,12 +43,16 @@ class SearchActivity : AppCompatActivity() {
         val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        val trackListAdapter = TrackListAdapter()
+
 
 
         clearButton.setOnClickListener {
             inputSearchText.setText("")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            trackListAdapter.setTracks(null)
+
         }
 
         val searchTextWatcher = object : TextWatcher {
@@ -72,7 +75,6 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        val trackListAdapter = TrackListAdapter()
         val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
         val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
         val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
@@ -81,13 +83,12 @@ class SearchActivity : AppCompatActivity() {
         placeholder.visibility = View.GONE
         rvTrackList.adapter = trackListAdapter
         rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        trackListAdapter.data = trackList
+
 
 
 
         fun showHolder(text: Int, image: Int, button: Boolean) {
-            trackList.clear()
-            trackListAdapter.notifyDataSetChanged()
+            trackListAdapter.setTracks(null)
             placeholderText.setText(text)
             placeholderImage.setImageResource(image)
             if(button) placeholderButton.visibility = View.VISIBLE else placeholderButton.visibility = View.GONE
@@ -105,13 +106,12 @@ class SearchActivity : AppCompatActivity() {
                          ) {
                              when (response.code()) {
                                  200 -> {
-                                     trackList.clear()
+                                     trackListAdapter.data.clear()
                                      if (response.body()?.results?.isNotEmpty() == true) {
                                          placeholder.visibility = View.GONE
-                                         trackList.addAll(response.body()?.results!!)
-                                         trackListAdapter.notifyDataSetChanged()
+                                         trackListAdapter.setTracks(response.body()?.results!!)
 
-                                     } else if(trackList.size == 0){
+                                     } else if(trackListAdapter.data.isEmpty()){
                                          showHolder(R.string.nothing_found,R.drawable.nothing_found, false)
                                      }
 
