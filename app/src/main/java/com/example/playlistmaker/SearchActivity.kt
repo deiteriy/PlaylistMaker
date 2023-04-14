@@ -106,12 +106,12 @@ class SearchActivity : AppCompatActivity() {
                          ) {
                              when (response.code()) {
                                  200 -> {
-                                     trackListAdapter.data.clear()
+                                     // trackListAdapter.data.clear()
                                      if (response.body()?.results?.isNotEmpty() == true) {
                                          placeholder.visibility = View.GONE
                                          trackListAdapter.setTracks(response.body()?.results!!)
 
-                                     } else if(trackListAdapter.data.isEmpty()){
+                                     } else {
                                          showHolder(R.string.nothing_found,R.drawable.nothing_found, false)
                                      }
 
