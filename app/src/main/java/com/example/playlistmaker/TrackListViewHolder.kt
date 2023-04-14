@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.icu.text.SimpleDateFormat
 import android.view.RoundedCorner
 import android.view.View
 import android.widget.ImageView
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.util.*
 
 class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val rootLayout: LinearLayout = itemView.findViewById(R.id.trackRootLayout)
@@ -19,7 +21,7 @@ class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(item: Track) {
         trackName.text = item.trackName
         artistName.text = item.artistName
-        trackTime.text = item.trackTime
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
         Glide.with(trackCover)
             .load(item.artworkUrl100)
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
