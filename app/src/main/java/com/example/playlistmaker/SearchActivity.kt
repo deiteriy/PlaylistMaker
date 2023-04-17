@@ -10,17 +10,21 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
+
+    private val sharedPrefs by lazy { getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE) }
+    private val searchHistory by lazy { SearchHistory(sharedPrefs) }
+
+    override fun onTrackClick(item: Track) {
+        Toast.makeText(this, "Выбран трек: ${item.trackName}", Toast.LENGTH_SHORT).show()
+     //   searchHistory.write(sharedPrefs, item)
+        }
 
     var textInSearch: String = ""
     val baseUrl = "https://itunes.apple.com"
@@ -43,17 +47,7 @@ class SearchActivity : AppCompatActivity() {
         val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
-        val trackListAdapter = TrackListAdapter()
-
-
-
-        clearButton.setOnClickListener {
-            inputSearchText.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-            trackListAdapter.setTracks(null)
-
-        }
+        val trackListAdapter = TrackListAdapter(this)
 
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -141,6 +135,29 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+     //   val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
+      //  val searchHistory = SearchHistory(sharedPrefs)
+        val clearHistory = findViewById<Button>(R.id.clear_history)
+        clearHistory.setOnClickListener {
+            searchHistory.clearHistory(sharedPrefs)
+        }
+
+        fun showHistory() {
+            if(inputSearchText.text.isEmpty()) {
+                trackListAdapter.setTracks(searchHistory.read(sharedPrefs))
+                clearHistory.visibility = View.VISIBLE
+            }
+
+        }
+
+        clearButton.setOnClickListener {
+            inputSearchText.setText("")
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            trackListAdapter.setTracks(null)
+            showHistory()
+        }
+
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -165,6 +182,10 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
     }
+
+    /*override fun onTrackClick(item: Track) {
+        Toast.makeText(this, "Нажали на ${item.trackName}", Toast.LENGTH_LONG).show()
+    }*/
 }
 
 

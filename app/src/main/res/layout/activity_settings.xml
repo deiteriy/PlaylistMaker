@@ -35,28 +35,13 @@
 
     </FrameLayout>
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/string_height">
-
-        <Switch
-            android:id="@+id/simpleSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:padding="12dp"
-            />
-
-    <TextView style="@style/MenuDayNightColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/MenuListStyle"
+        android:id="@+id/themeSwitcher"
         android:text="@string/dark_theme"
-        android:textSize="@dimen/another_text_size"
-        android:layout_marginStart="32dp"
-        />
-    </FrameLayout>
+        android:layout_gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/share_app"
