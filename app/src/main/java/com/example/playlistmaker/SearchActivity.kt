@@ -23,7 +23,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
     override fun onTrackClick(item: Track) {
         Toast.makeText(this, "Выбран трек: ${item.trackName}", Toast.LENGTH_SHORT).show()
-     //   searchHistory.write(sharedPrefs, item)
+        searchHistory.write(sharedPrefs, item)
         }
 
     var textInSearch: String = ""
@@ -48,6 +48,8 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val trackListAdapter = TrackListAdapter(this)
+        val historyAdapter = TrackListAdapter(this)
+
 
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -100,7 +102,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
                          ) {
                              when (response.code()) {
                                  200 -> {
-                                     // trackListAdapter.data.clear()
+                                     rvTrackList.adapter = trackListAdapter
                                      if (response.body()?.results?.isNotEmpty() == true) {
                                          placeholder.visibility = View.GONE
                                          trackListAdapter.setTracks(response.body()?.results!!)
@@ -135,20 +137,34 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             false
         }
 
-     //   val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
-      //  val searchHistory = SearchHistory(sharedPrefs)
+        val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
+        val searchHistory = SearchHistory(sharedPrefs)
         val clearHistory = findViewById<Button>(R.id.clear_history)
-        clearHistory.setOnClickListener {
+        val searchHistoryText = findViewById<TextView>(R.id.search_history_text)
+
+
+        fun skipHistory() {
+            clearHistory.visibility = View.GONE
+            searchHistoryText.visibility = View.GONE
             searchHistory.clearHistory(sharedPrefs)
+            rvTrackList.adapter = trackListAdapter
+        }
+
+        clearHistory.setOnClickListener {
+            skipHistory()
         }
 
         fun showHistory() {
-            if(inputSearchText.text.isEmpty()) {
-                trackListAdapter.setTracks(searchHistory.read(sharedPrefs))
+           if(searchHistory.read(sharedPrefs).isNotEmpty()) {
+                historyAdapter.setTracks(searchHistory.read(sharedPrefs))
                 clearHistory.visibility = View.VISIBLE
-            }
-
+                searchHistoryText.visibility = View.VISIBLE
+                rvTrackList.adapter = historyAdapter
+           }
+           // skipHistory()
         }
+
+
 
         clearButton.setOnClickListener {
             inputSearchText.setText("")
@@ -182,10 +198,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
     }
-
-    /*override fun onTrackClick(item: Track) {
-        Toast.makeText(this, "Нажали на ${item.trackName}", Toast.LENGTH_LONG).show()
-    }*/
 }
 
 
