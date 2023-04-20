@@ -183,7 +183,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
             trackListAdapter.setTracks(null)
-            showHistory()
         }
 
     }
