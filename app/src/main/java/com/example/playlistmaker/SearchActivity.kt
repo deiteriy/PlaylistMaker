@@ -22,7 +22,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
     private val searchHistory by lazy { SearchHistory(sharedPrefs) }
 
     override fun onTrackClick(item: Track) {
-        Toast.makeText(this, "Выбран трек: ${item.trackName}", Toast.LENGTH_SHORT).show()
         searchHistory.write(sharedPrefs, item)
         }
 
