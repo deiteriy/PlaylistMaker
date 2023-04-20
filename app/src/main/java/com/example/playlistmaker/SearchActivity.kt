@@ -43,22 +43,59 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             finish()
         }
 
-
         val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val trackListAdapter = TrackListAdapter(this)
         val historyAdapter = TrackListAdapter(this)
+        val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
+        val searchHistory = SearchHistory(sharedPrefs)
+        val clearHistory = findViewById<Button>(R.id.clear_history)
+        val searchHistoryText = findViewById<TextView>(R.id.search_history_text)
+        val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
+        val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
+        val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
+        val placeholderImage = findViewById<ImageView>(R.id.search_placeholder_image)
+        val placeholderButton = findViewById<Button>(R.id.search_button)
+        placeholder.visibility = View.GONE
+        rvTrackList.adapter = trackListAdapter
+        rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val viewOfTrack = findViewById<LinearLayout>(R.id.track_list)
 
+
+        fun skipHistory() {
+            clearHistory.visibility = View.GONE
+            searchHistoryText.visibility = View.GONE
+            searchHistory.clearHistory(sharedPrefs)
+            rvTrackList.adapter = trackListAdapter
+        }
+
+        fun showHistory() {
+            if(searchHistory.read(sharedPrefs).isNotEmpty()) {
+                placeholder.visibility = View.GONE
+                viewOfTrack.visibility = View.VISIBLE
+                historyAdapter.setTracks(searchHistory.read(sharedPrefs))
+                clearHistory.visibility = View.VISIBLE
+                searchHistoryText.visibility = View.VISIBLE
+                rvTrackList.adapter = historyAdapter
+            }
+        }
 
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
 
+
+
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             clearButton.visibility = clearButtonVisibility(s)
             textInSearch = s.toString()
+            if (inputSearchText.hasFocus() && s?.isEmpty() == true && searchHistory.read(sharedPrefs).isNotEmpty()) {
+                showHistory()
+            } else {
+                skipHistory()
+            }
 
         }
 
@@ -71,14 +108,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
 
 
-        val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
-        val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
-        val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
-        val placeholderImage = findViewById<ImageView>(R.id.search_placeholder_image)
-        val placeholderButton = findViewById<Button>(R.id.search_button)
-        placeholder.visibility = View.GONE
-        rvTrackList.adapter = trackListAdapter
-        rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
 
@@ -88,6 +117,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             placeholderText.setText(text)
             placeholderImage.setImageResource(image)
             if(button) placeholderButton.visibility = View.VISIBLE else placeholderButton.visibility = View.GONE
+            viewOfTrack.visibility = View.GONE
             placeholder.visibility = View.VISIBLE
         }
 
@@ -105,6 +135,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
                                      rvTrackList.adapter = trackListAdapter
                                      if (response.body()?.results?.isNotEmpty() == true) {
                                          placeholder.visibility = View.GONE
+                                         viewOfTrack.visibility = View.VISIBLE
                                          trackListAdapter.setTracks(response.body()?.results!!)
 
                                      } else {
@@ -137,34 +168,16 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             false
         }
 
-        val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
-        val searchHistory = SearchHistory(sharedPrefs)
-        val clearHistory = findViewById<Button>(R.id.clear_history)
-        val searchHistoryText = findViewById<TextView>(R.id.search_history_text)
 
 
-        fun skipHistory() {
-            clearHistory.visibility = View.GONE
-            searchHistoryText.visibility = View.GONE
-            searchHistory.clearHistory(sharedPrefs)
-            rvTrackList.adapter = trackListAdapter
-        }
+
+
 
         clearHistory.setOnClickListener {
             skipHistory()
         }
 
-        fun showHistory() {
-           if(searchHistory.read(sharedPrefs).isNotEmpty()) {
-                historyAdapter.setTracks(searchHistory.read(sharedPrefs))
-                clearHistory.visibility = View.VISIBLE
-                searchHistoryText.visibility = View.VISIBLE
-                rvTrackList.adapter = historyAdapter
-           }
-           // skipHistory()
-        }
-
-
+        inputSearchText.setOnFocusChangeListener { view, hasFocus -> if (hasFocus && inputSearchText.text.isEmpty()) showHistory() }
 
         clearButton.setOnClickListener {
             inputSearchText.setText("")
