@@ -10,17 +10,20 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
+
+    private val sharedPrefs by lazy { getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE) }
+    private val searchHistory by lazy { SearchHistory(sharedPrefs) }
+
+    override fun onTrackClick(item: Track) {
+        searchHistory.write(sharedPrefs, item)
+        }
 
     var textInSearch: String = ""
     val baseUrl = "https://itunes.apple.com"
@@ -39,20 +42,42 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-
         val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
-        val trackListAdapter = TrackListAdapter()
+        val trackListAdapter = TrackListAdapter(this)
+        val historyAdapter = TrackListAdapter(this)
+        val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
+        val searchHistory = SearchHistory(sharedPrefs)
+        val clearHistory = findViewById<Button>(R.id.clear_history)
+        val searchHistoryText = findViewById<TextView>(R.id.search_history_text)
+        val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
+        val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
+        val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
+        val placeholderImage = findViewById<ImageView>(R.id.search_placeholder_image)
+        val placeholderButton = findViewById<Button>(R.id.search_button)
+        placeholder.visibility = View.GONE
+        rvTrackList.adapter = trackListAdapter
+        rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val viewOfTrack = findViewById<LinearLayout>(R.id.track_list)
 
 
+        fun skipHistory() {
+            clearHistory.visibility = View.GONE
+            searchHistoryText.visibility = View.GONE
+            searchHistory.clearHistory(sharedPrefs)
+            rvTrackList.adapter = trackListAdapter
+        }
 
-        clearButton.setOnClickListener {
-            inputSearchText.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-            trackListAdapter.setTracks(null)
-
+        fun showHistory() {
+            historyAdapter.setTracks(searchHistory.read(sharedPrefs))
+            if(historyAdapter.data.isNotEmpty()) {
+                placeholder.visibility = View.GONE
+                viewOfTrack.visibility = View.VISIBLE
+                clearHistory.visibility = View.VISIBLE
+                searchHistoryText.visibility = View.VISIBLE
+                rvTrackList.adapter = historyAdapter
+            }
         }
 
         val searchTextWatcher = object : TextWatcher {
@@ -60,9 +85,16 @@ class SearchActivity : AppCompatActivity() {
                 // empty
             }
 
+
+
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             clearButton.visibility = clearButtonVisibility(s)
             textInSearch = s.toString()
+            if (inputSearchText.hasFocus() && s?.isEmpty() == true && searchHistory.read(sharedPrefs).isNotEmpty()) {
+                showHistory()
+            } else {
+                skipHistory()
+            }
 
         }
 
@@ -75,14 +107,6 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
-        val placeholder = findViewById<LinearLayout>(R.id.search_placeholder)
-        val placeholderText = findViewById<TextView>(R.id.search_placeholder_text)
-        val placeholderImage = findViewById<ImageView>(R.id.search_placeholder_image)
-        val placeholderButton = findViewById<Button>(R.id.search_button)
-        placeholder.visibility = View.GONE
-        rvTrackList.adapter = trackListAdapter
-        rvTrackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
 
@@ -92,6 +116,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderText.setText(text)
             placeholderImage.setImageResource(image)
             if(button) placeholderButton.visibility = View.VISIBLE else placeholderButton.visibility = View.GONE
+            viewOfTrack.visibility = View.GONE
             placeholder.visibility = View.VISIBLE
         }
 
@@ -106,9 +131,10 @@ class SearchActivity : AppCompatActivity() {
                          ) {
                              when (response.code()) {
                                  200 -> {
-                                     // trackListAdapter.data.clear()
+                                     rvTrackList.adapter = trackListAdapter
                                      if (response.body()?.results?.isNotEmpty() == true) {
                                          placeholder.visibility = View.GONE
+                                         viewOfTrack.visibility = View.VISIBLE
                                          trackListAdapter.setTracks(response.body()?.results!!)
 
                                      } else {
@@ -139,6 +165,24 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             false
+        }
+
+
+
+
+
+
+        clearHistory.setOnClickListener {
+            skipHistory()
+        }
+
+        inputSearchText.setOnFocusChangeListener { view, hasFocus -> if (hasFocus && inputSearchText.text.isEmpty()) showHistory() }
+
+        clearButton.setOnClickListener {
+            inputSearchText.setText("")
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            trackListAdapter.setTracks(null)
         }
 
     }
