@@ -70,10 +70,10 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         }
 
         fun showHistory() {
-            if(searchHistory.read(sharedPrefs).isNotEmpty()) {
+            historyAdapter.setTracks(searchHistory.read(sharedPrefs))
+            if(historyAdapter.data.isNotEmpty()) {
                 placeholder.visibility = View.GONE
                 viewOfTrack.visibility = View.VISIBLE
-                historyAdapter.setTracks(searchHistory.read(sharedPrefs))
                 clearHistory.visibility = View.VISIBLE
                 searchHistoryText.visibility = View.VISIBLE
                 rvTrackList.adapter = historyAdapter

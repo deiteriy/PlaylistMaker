@@ -8,9 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.switchmaterial.SwitchMaterial
 
+const val DARK_THEME = "dark_theme"
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+      //  val sharedPreferences = getSharedPreferences(DARK_THEME, MODE_PRIVATE)
+     //   var isDarkTheme: Boolean? = sharedPreferences.getBoolean(DARK_THEME, null) ?: return Boolean
         setContentView(R.layout.activity_settings)
 
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
