@@ -23,6 +23,8 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
     override fun onTrackClick(item: Track) {
         searchHistory.write(sharedPrefs, item)
+        val playerIntent = Intent(this, PlayerActivity(item)::class.java)
+        startActivity(playerIntent)
         }
 
     var textInSearch: String = ""

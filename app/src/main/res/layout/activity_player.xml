@@ -20,35 +20,35 @@
 
     <ImageView style="@style/MenuDayNightColor"
         android:id="@+id/arrow_back"
-        android:layout_marginTop="@dimen/margin_24"
-        android:layout_marginStart="@dimen/margin_4"
+        android:padding="@dimen/padding_20"
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrowback"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:foreground="?attr/selectableItemBackground"/>
 
     <ImageView
-        android:id="@+id/albumCover"
-        android:layout_width="wrap_content"
+        android:id="@+id/trackCover"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_82"
+        android:layout_marginHorizontal="@dimen/margin_4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         android:src="@drawable/album_beatles_placeholder"
         />
     <TextView
-        android:id="@+id/songName"
+        android:id="@+id/trackName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_24"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@id/albumCover"
+        app:layout_constraintTop_toBottomOf="@id/trackCover"
         android:text="Yesterday (Remastered 2009)"
         app:layout_constraintHorizontal_bias="0"
         android:fontFamily="@font/ys_display"
@@ -64,7 +64,7 @@
         android:layout_marginTop="@dimen/margin_12"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@id/songName"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
         android:text="The Beatles"
         app:layout_constraintHorizontal_bias="0"
         android:fontFamily="@font/ys_display"
@@ -118,12 +118,13 @@
     <TextView
         android:id="@+id/countryTextView"
         style="@style/GrayTextInPlayer"
+        android:layout_marginTop="@dimen/margin_16"
         android:layout_marginBottom="@dimen/margin_24"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/genreTextView"
         android:text="@string/country"
-        app:layout_constraintVertical_chainStyle="spread_inside"/>
+        />
 
     <TextView
         android:id="@+id/genreTextView"
@@ -156,6 +157,7 @@
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintBottom_toTopOf="@id/albumTextView"
         app:layout_constraintTop_toBottomOf="@id/trackProgress"
+        app:layout_constraintVertical_chainStyle="spread"
         android:text="@string/duration"/>
 
     <TextView
