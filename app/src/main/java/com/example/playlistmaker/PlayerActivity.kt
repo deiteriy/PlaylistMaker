@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -9,12 +10,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import java.util.*
 
-class PlayerActivity(track: Track): AppCompatActivity() {
+class PlayerActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    var track = track
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val track: Track = intent.getSerializableExtra("item") as Track
+
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,13 +33,14 @@ class PlayerActivity(track: Track): AppCompatActivity() {
         } else {
             binding.albumView.text = track.collectionName
         }
+        var albumCover = track.getCoverArtwork()
 
         Glide.with(binding.trackCover)
-            .load(track.artworkUrl100)
+            .load(albumCover)
          //   .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
             .placeholder(R.drawable.albumcover_placeholder)
             .into(binding.trackCover)
-
+        Log.i("album_cover", "Ссылка: $albumCover")
         binding.arrowBack.setOnClickListener {
             finish()
         }

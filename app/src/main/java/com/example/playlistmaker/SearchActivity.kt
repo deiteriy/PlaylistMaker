@@ -23,7 +23,10 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
     override fun onTrackClick(item: Track) {
         searchHistory.write(sharedPrefs, item)
-        val playerIntent = Intent(this, PlayerActivity(item)::class.java)
+        Log.i("WTF", "Пытаюсь передать $item в Активити")
+        val playerIntent = Intent(this, PlayerActivity::class.java).apply {
+            putExtra("item", item)
+        }
         startActivity(playerIntent)
         }
 

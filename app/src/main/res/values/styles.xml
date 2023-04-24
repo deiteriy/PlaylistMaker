@@ -85,13 +85,13 @@
         <item name="android:textSize">@dimen/player_menu_text_size</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:tint">@color/gray_text</item>
-        <item name="android:fontFamily">@font/ys_display</item>
+        <!--<item name="android:fontFamily">@font/ys_display</item>-->
     </style>
     <style name="BlackTextInPlayer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/ys_display"</item>
+        <!--<item name="android:fontFamily">@font/ys_display"</item>-->
     </style>
 
 
