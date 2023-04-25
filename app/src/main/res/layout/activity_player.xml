@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    layout_width="match_parent"
+    layout_height="match_parent"
+    tools:context=".PlayerActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayerActivity">
+    >
 
             <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
@@ -35,10 +41,12 @@
             android:id="@+id/trackCover"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_82"
             android:layout_marginHorizontal="@dimen/margin_4"
-            app:layout_constraintTop_toBottomOf="@id/arrow_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
-            app:layout_constraintBottom_toTopOf="@id/trackName"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             android:src="@drawable/album_beatles_placeholder"
             />
@@ -124,7 +132,6 @@
         <TextView
             android:id="@+id/countryTextView"
             style="@style/GrayTextInPlayer"
-            android:layout_marginTop="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_24"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -135,7 +142,7 @@
         <TextView
             android:id="@+id/genreTextView"
             style="@style/GrayTextInPlayer"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintBottom_toTopOf="@id/countryTextView"
             app:layout_constraintTop_toBottomOf="@id/yearTextView"
@@ -143,7 +150,7 @@
         <TextView
             android:id="@+id/yearTextView"
             style="@style/GrayTextInPlayer"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintBottom_toTopOf="@id/genreTextView"
             app:layout_constraintTop_toBottomOf="@id/albumTextView"
@@ -151,7 +158,7 @@
         <TextView
             android:id="@+id/albumTextView"
             style="@style/GrayTextInPlayer"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintBottom_toTopOf="@id/yearTextView"
             app:layout_constraintTop_toBottomOf="@id/durationTextView"
@@ -159,11 +166,12 @@
         <TextView
             android:id="@+id/durationTextView"
             style="@style/GrayTextInPlayer"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintBottom_toTopOf="@id/albumTextView"
             app:layout_constraintTop_toBottomOf="@id/trackProgress"
-            app:layout_constraintVertical_chainStyle="spread"
+            app:layout_constraintVertical_chainStyle="spread_inside"
             android:text="@string/duration"/>
 
         <TextView
@@ -208,3 +216,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
