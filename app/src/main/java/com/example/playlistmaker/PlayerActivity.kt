@@ -1,17 +1,15 @@
 package com.example.playlistmaker
 
 import android.icu.text.SimpleDateFormat
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import java.util.*
 
-class PlayerActivity: AppCompatActivity() {
-
+class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +22,10 @@ class PlayerActivity: AppCompatActivity() {
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
         binding.durationView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        binding.yearView.text = track.releaseDate
+        binding.yearView.text = track.releaseDate.substringBefore('-')
         binding.genreView.text = track.primaryGenreName
         binding.countryView.text = track.country
+        binding.trackProgress.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
         if (track.collectionName.isNullOrEmpty()) {
             binding.albumView.visibility = View.GONE
@@ -37,7 +36,7 @@ class PlayerActivity: AppCompatActivity() {
 
         Glide.with(binding.trackCover)
             .load(albumCover)
-         //   .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
+            //   .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
             .placeholder(R.drawable.albumcover_placeholder)
             .into(binding.trackCover)
         Log.i("album_cover", "Ссылка: $albumCover")
