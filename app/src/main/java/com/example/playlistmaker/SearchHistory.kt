@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -16,6 +17,7 @@ class SearchHistory(sharedPreferences: SharedPreferences) {
     }
 
     fun write(sharedPreferences: SharedPreferences, track: Track) {
+        Log.i("history_bug", "Запущен метод write, трек $track")
         searchHistory = read(sharedPreferences)
         var isHere = false
         var sameTrack: Track? = null
@@ -39,6 +41,7 @@ class SearchHistory(sharedPreferences: SharedPreferences) {
     }
 
     fun clearHistory(sharedPreferences: SharedPreferences) {
+        Log.e("history_bug", "Запущен метод clearHistory")
         searchHistory.clear()
         val json = Gson().toJson(searchHistory)
         sharedPreferences.edit()
