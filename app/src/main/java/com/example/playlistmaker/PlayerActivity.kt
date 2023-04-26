@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import java.util.*
 
@@ -36,8 +37,8 @@ class PlayerActivity : AppCompatActivity() {
 
         Glide.with(binding.trackCover)
             .load(albumCover)
-            //   .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
-            .placeholder(R.drawable.albumcover_placeholder)
+            .transform(RoundedCorners(binding.trackCover.resources.getDimensionPixelSize(R.dimen.player_cover_corner_radius)))
+            .placeholder(R.drawable.big_cover_placeholder)
             .into(binding.trackCover)
         Log.i("album_cover", "Ссылка: $albumCover")
         binding.arrowBack.setOnClickListener {

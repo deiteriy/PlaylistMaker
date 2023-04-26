@@ -90,8 +90,11 @@
     <style name="BlackTextInPlayer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:fontFamily">@font/ys_display</item>
+    </style>
+    <style name="FloatingActionButtonBackgroundStyle">
+        <item name="backgroundTint">@color/gray</item>
     </style>
 
 

@@ -10,4 +10,6 @@
     <dimen name="margin_54">54dp</dimen>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="fab_normal_size">51dp</dimen>
+    <dimen name="fab_icon_size">52dp</dimen>
 </resources>

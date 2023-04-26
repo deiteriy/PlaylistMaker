@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    layout_width="match_parent"
-    layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".PlayerActivity">
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -65,7 +66,7 @@
             android:maxLines="1"
             android:ellipsize="marquee"
             android:textSize="@dimen/track_name_size"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             />
 
         <TextView
@@ -83,7 +84,7 @@
             app:layout_constraintHorizontal_bias="0"
             android:fontFamily="@font/ys_display"
             android:textSize="@dimen/artist_name_size"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             />
 
         <ImageView
@@ -92,27 +93,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginTop="@dimen/margin_54"
+            android:src="@drawable/save_button"
+            app:strokeWidth="0dp"
             app:layout_constraintTop_toBottomOf="@id/artistName"
-            android:src="@drawable/playlist_save_button"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintEnd_toStartOf="@id/playButton"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             />
+
         <ImageView
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/play_button"
+            app:tint="?android:attr/textColorPrimary"
             app:layout_constraintStart_toEndOf="@id/saveButton"
             app:layout_constraintEnd_toStartOf="@id/likeButton"
             app:layout_constraintTop_toTopOf="@id/saveButton"
             app:layout_constraintBottom_toBottomOf="@id/saveButton"/>
         <ImageView
             android:id="@+id/likeButton"
+            android:src="@drawable/like_button"
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/like_button"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_54"
             app:layout_constraintStart_toEndOf="@id/playButton"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             app:layout_constraintBottom_toBottomOf="@id/saveButton"/>
@@ -127,7 +133,7 @@
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             android:text="00:30"
             android:fontFamily="@font/ys_display"
-            android:textColor="@color/black"/>
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/countryTextView"
