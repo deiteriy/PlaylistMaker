@@ -185,7 +185,6 @@
             android:id="@+id/countryView"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             app:layout_constraintBottom_toBottomOf="@id/countryTextView"
-            android:text="USA"
             />
 
         <TextView
@@ -193,14 +192,12 @@
             android:id="@+id/genreView"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             app:layout_constraintBottom_toBottomOf="@id/genreTextView"
-            android:text="USA"
             />
         <TextView
             style="@style/BlackTextInPlayer"
             android:id="@+id/yearView"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             app:layout_constraintBottom_toBottomOf="@id/yearTextView"
-            android:text="USA"
             />
         <TextView
             style="@style/BlackTextInPlayer"
@@ -209,14 +206,12 @@
             app:layout_constraintBottom_toBottomOf="@id/albumTextView"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="USA"
             />
         <TextView
             style="@style/BlackTextInPlayer"
             android:id="@+id/durationView"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
             app:layout_constraintBottom_toBottomOf="@id/durationTextView"
-            android:text="USA"
             />
 
 
