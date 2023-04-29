@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,8 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-const val DARK_THEME = "dark_theme"
+
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
       //  val sharedPreferences = getSharedPreferences(DARK_THEME, MODE_PRIVATE)

@@ -23,6 +23,10 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
     override fun onTrackClick(item: Track) {
         searchHistory.write(sharedPrefs, item)
+        val playerIntent = Intent(this, PlayerActivity::class.java).apply {
+            putExtra("item", item)
+        }
+        startActivity(playerIntent)
         }
 
     var textInSearch: String = ""
@@ -65,7 +69,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         fun skipHistory() {
             clearHistory.visibility = View.GONE
             searchHistoryText.visibility = View.GONE
-            searchHistory.clearHistory(sharedPrefs)
             rvTrackList.adapter = trackListAdapter
         }
 

@@ -48,5 +48,9 @@
         <item name="cornerRadius">@dimen/button_corner_radius</item>
     </style>
 
+    <style name="FloatingActionButtonBackgroundStyle">
+        <item name="backgroundTint">@color/fab_background_color</item>
+    </style>
+
 </resources>
 
