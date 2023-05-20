@@ -123,7 +123,7 @@ class PlayerActivity : AppCompatActivity() {
                 val elapsedTime = System.currentTimeMillis() - startTime
                 var seconds = elapsedTime / DELAY
                 when (playerState) {
-                    STATE_DEFAULT -> binding.trackProgress.text = "00:00"
+                   // STATE_DEFAULT -> binding.trackProgress.text = "00:00"
                     STATE_PLAYING -> {
                         binding.trackProgress.text = String.format("%d:%02d", seconds / 60, seconds % 60)
                         handler.postDelayed(this, DELAY)
