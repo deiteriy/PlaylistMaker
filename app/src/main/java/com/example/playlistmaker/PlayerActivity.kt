@@ -4,6 +4,8 @@ import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -17,7 +19,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var url: String
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
-
+    private val handler = Handler(Looper.getMainLooper())
 
     private fun preparePlayer() {
         mediaPlayer.setDataSource(url)
@@ -72,8 +74,8 @@ class PlayerActivity : AppCompatActivity() {
 
         preparePlayer()
         binding.playButton.setOnClickListener {
-            Log.i("playit", "Получен клик по кнопке плей")
             playbackControl()
+            startTimer()
         }
 
         if (track.collectionName.isNullOrEmpty()) {
@@ -102,10 +104,41 @@ class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
         mediaPlayer.release()
     }
+
+    private fun startTimer() {
+        // Запоминаем время начала таймера
+        val startTime = System.currentTimeMillis()
+
+        // И отправляем задачу в Handler
+
+        handler.post(
+            createUpdateTimerTask(startTime)
+        )
+    }
+
+    private fun createUpdateTimerTask(startTime: Long): Runnable {
+        return object : Runnable {
+            override fun run() {
+                // Сколько прошло времени с момента запуска таймера
+                val elapsedTime = System.currentTimeMillis() - startTime
+                var seconds = elapsedTime / DELAY
+                when (playerState) {
+                    STATE_DEFAULT -> binding.trackProgress.text = "00:00"
+                    STATE_PLAYING -> {
+                        binding.trackProgress.text = String.format("%d:%02d", seconds / 60, seconds % 60)
+                        handler.postDelayed(this, DELAY)
+                    }
+
+
+                }
+            }
+        }
+    }
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val DELAY = 1000L
     }
 }
