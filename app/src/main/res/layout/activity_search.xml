@@ -55,8 +55,6 @@
             android:maxLines="1"
             android:inputType="text"
             android:textColor="@color/black"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             />
 
         <ImageView
@@ -90,6 +88,13 @@
             android:textSize="@dimen/text_19"
             android:visibility="gone"
             />
+
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_width="@dimen/progressbar_size"
+            android:layout_height="@dimen/progressbar_size"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTrackList"
