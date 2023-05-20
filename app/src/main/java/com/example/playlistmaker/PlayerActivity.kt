@@ -31,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
             binding.trackProgress.text = "00:00"
+            binding.playButton.setImageResource(R.drawable.play_button)
         }
     }
 
