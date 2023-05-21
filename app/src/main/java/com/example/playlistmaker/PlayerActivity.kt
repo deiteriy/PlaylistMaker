@@ -36,16 +36,19 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
-        binding.playButton.setImageResource(R.drawable.pause_button)
-        playerState = STATE_PLAYING
-        startTimer()
+        if(playerState != STATE_PLAYING){
+            mediaPlayer.start()
+            binding.playButton.setImageResource(R.drawable.pause_button)
+            playerState = STATE_PLAYING
+            startTimer()
+        }
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         binding.playButton.setImageResource(R.drawable.play_button)
         playerState = STATE_PAUSED
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun playbackControl() {
