@@ -39,6 +39,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         binding.playButton.setImageResource(R.drawable.pause_button)
         playerState = STATE_PLAYING
+        startTimer()
     }
 
     private fun pausePlayer() {
@@ -77,7 +78,6 @@ class PlayerActivity : AppCompatActivity() {
         preparePlayer()
         binding.playButton.setOnClickListener {
             playbackControl()
-            startTimer()
         }
 
         if (track.collectionName.isNullOrEmpty()) {
@@ -108,29 +108,21 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        // Запоминаем время начала таймера
-        val startTime = System.currentTimeMillis()
-
-        // И отправляем задачу в Handler
-
         handler.post(
-            createUpdateTimerTask(startTime)
+            createUpdateTimerTask()
         )
     }
 
-    private fun createUpdateTimerTask(startTime: Long): Runnable {
+    private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
             override fun run() {
                 // Сколько прошло времени с момента запуска таймера
-                val elapsedTime = System.currentTimeMillis() - startTime
-                var seconds = elapsedTime / DELAY
+                val currentPosition = mediaPlayer.currentPosition
                 when (playerState) {
                     STATE_PLAYING -> {
-                        binding.trackProgress.text = String.format("%d:%02d", seconds / 60, seconds % 60)
+                        binding.trackProgress.text = String.format("%d:%02d", currentPosition / 1000 / 60, currentPosition / 1000 % 60)
                         handler.postDelayed(this, DELAY)
                     }
-
-
                 }
             }
         }
