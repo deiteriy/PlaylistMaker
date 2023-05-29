@@ -10,11 +10,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.data.network.AppleMusicTrack
+import com.example.playlistmaker.data.network.RetrofitClient
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.presentation.ui.PlayerActivity
+import com.example.playlistmaker.presentation.ui.TrackListAdapter
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -45,13 +49,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
     }
 
     var textInSearch: String = ""
-    val baseUrl = "https://itunes.apple.com"
 
-    val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
-    val appleMusicService = retrofit.create(AppleMusicTrack::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -111,7 +109,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
             if(inputSearchText.text.isNotEmpty()) {
                 progressBar.visibility = View.VISIBLE
-                appleMusicService.search(inputSearchText.text.toString())
+                RetrofitClient.api.search(inputSearchText.text.toString())
                     .enqueue(object : Callback<TrackResponse> {
                         override fun onResponse(
                             call: Call<TrackResponse>,
