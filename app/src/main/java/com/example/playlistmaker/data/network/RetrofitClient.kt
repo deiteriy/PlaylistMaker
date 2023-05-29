@@ -10,7 +10,7 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build();
     }
-    val api: AppleMusicTrack by lazy {
-        client.create(AppleMusicTrack::class.java)
+    val api: RetrofitApi by lazy {
+        client.create(RetrofitApi::class.java)
     }
 }

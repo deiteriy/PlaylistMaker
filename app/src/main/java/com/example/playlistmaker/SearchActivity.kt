@@ -14,13 +14,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.data.network.AppleMusicTrack
 import com.example.playlistmaker.data.network.RetrofitClient
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.presentation.ui.PlayerActivity
 import com.example.playlistmaker.presentation.ui.TrackListAdapter
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
 
