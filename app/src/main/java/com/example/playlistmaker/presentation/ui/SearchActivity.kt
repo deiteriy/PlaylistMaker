@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.content.Intent
@@ -14,10 +14,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.SearchHistory
+import com.example.playlistmaker.TRACK_HISTORY
+import com.example.playlistmaker.TrackResponse
 import com.example.playlistmaker.data.network.RetrofitClient
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.presentation.ui.PlayerActivity
-import com.example.playlistmaker.presentation.ui.TrackListAdapter
 import retrofit2.*
 
 class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
@@ -123,11 +125,15 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
                                         trackListAdapter.setTracks(response.body()?.results!!)
 
                                     } else {
-                                        showHolder(R.string.nothing_found,R.drawable.nothing_found, false)
+                                        showHolder(
+                                            R.string.nothing_found,
+                                            R.drawable.nothing_found, false)
                                     }
 
                                 }
-                                else -> showHolder(R.string.something_went_wrong, R.drawable.no_internet, true)
+                                else -> showHolder(
+                                    R.string.something_went_wrong,
+                                    R.drawable.no_internet, true)
                             }
 
                         }

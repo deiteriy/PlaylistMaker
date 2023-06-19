@@ -120,7 +120,6 @@ class PlayerActivity : AppCompatActivity() {
     private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
             override fun run() {
-                // Сколько прошло времени с момента запуска таймера
                 val currentPosition = mediaPlayer.currentPosition
                 when (playerState) {
                     STATE_PLAYING -> {
