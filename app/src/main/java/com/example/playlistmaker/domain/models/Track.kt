@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.entity
+package com.example.playlistmaker.domain.models
 import java.io.Serializable
 
 data class Track (

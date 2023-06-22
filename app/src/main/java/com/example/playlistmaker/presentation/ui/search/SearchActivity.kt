@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -15,11 +15,12 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.SearchHistory
-import com.example.playlistmaker.TRACK_HISTORY
-import com.example.playlistmaker.TrackResponse
+import com.example.playlistmaker.data.local.SearchHistory
+import com.example.playlistmaker.data.local.TRACK_HISTORY
+import com.example.playlistmaker.data.dto.TrackResponse
 import com.example.playlistmaker.data.network.RetrofitClient
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.ui.player.PlayerActivity
 import retrofit2.*
 
 class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
