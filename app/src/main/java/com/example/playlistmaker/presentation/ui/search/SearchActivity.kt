@@ -60,7 +60,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             finish()
         }
 
-        val linearLayout = findViewById<LinearLayout>(R.id.container)
         val inputSearchText = findViewById<EditText>(R.id.inputSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val trackListAdapter = TrackListAdapter(this)
@@ -86,6 +85,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             searchHistoryText.visibility = View.GONE
             rvTrackList.adapter = trackListAdapter
         }
+
 
         fun showHistory() {
             historyAdapter.setTracks(searchHistory.read(sharedPrefs))
@@ -182,6 +182,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         inputSearchText.addTextChangedListener(searchTextWatcher)
 
         clearHistory.setOnClickListener {
+            searchHistory.clearHistory(sharedPrefs)
             skipHistory()
         }
 
