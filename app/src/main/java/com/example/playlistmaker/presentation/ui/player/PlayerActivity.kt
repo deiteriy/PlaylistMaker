@@ -8,62 +8,39 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.domain.models.PlayerState
 import com.example.playlistmaker.domain.models.Track
 import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
-    private var mediaPlayer = MediaPlayer()
+    private lateinit var viewModel: PlayerViewModel
+
     private var playerState = STATE_DEFAULT
-    private val handler = Handler(Looper.getMainLooper())
-
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.playButton.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            binding.trackProgress.text = "00:00"
-            binding.playButton.setImageResource(R.drawable.play_button)
-        }
-    }
-
-    private fun startPlayer() {
-        if(playerState != STATE_PLAYING){
-            mediaPlayer.start()
-            binding.playButton.setImageResource(R.drawable.pause_button)
-            playerState = STATE_PLAYING
-            startTimer()
-        }
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        binding.playButton.setImageResource(R.drawable.play_button)
-        playerState = STATE_PAUSED
-        handler.removeCallbacksAndMessages(null)
-    }
 
     private fun playbackControl() {
         when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
+            STATE_PREPARED, STATE_DEFAULT, STATE_PAUSED -> {
+                viewModel.play()
+                binding.playButton.setImageResource(R.drawable.pause_button)
             }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
+
+            STATE_PLAYING -> {
+                viewModel.pause()
+                binding.playButton.setImageResource(R.drawable.play_button)
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        viewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
 
         val track: Track = intent.getSerializableExtra("item") as Track
         url = track.previewUrl
@@ -78,10 +55,20 @@ class PlayerActivity : AppCompatActivity() {
         binding.countryView.text = track.country
         binding.trackProgress.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
-
-        preparePlayer()
+        viewModel.prepare(url)
         binding.playButton.setOnClickListener {
             playbackControl()
+        }
+
+        track.previewUrl?.let { viewModel.prepare(it) }
+
+        viewModel.observeState().observe(this) { state ->
+            binding.playButton.setOnClickListener {
+                playbackControl()
+            }
+            if (state == PlayerState.STATE_COMPLETE) {
+                binding.playButton.setImageResource(R.drawable.pause_button)
+            }
         }
 
         if (track.collectionName.isNullOrEmpty()) {
@@ -96,40 +83,21 @@ class PlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(binding.trackCover.resources.getDimensionPixelSize(R.dimen.player_cover_corner_radius)))
             .placeholder(R.drawable.big_cover_placeholder)
             .into(binding.trackCover)
-        Log.i("album_cover", "Ссылка: $albumCover")
-        binding.arrowBack.setOnClickListener {
+
+            binding.arrowBack.setOnClickListener {
             finish()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.pause()
     }
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        viewModel.release()
     }
 
-    private fun startTimer() {
-        handler.post(
-            createUpdateTimerTask()
-        )
-    }
-
-    private fun createUpdateTimerTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                val currentPosition = mediaPlayer.currentPosition
-                when (playerState) {
-                    STATE_PLAYING -> {
-                        binding.trackProgress.text = String.format("%d:%02d", currentPosition / 1000 / 60, currentPosition / 1000 % 60)
-                        handler.postDelayed(this, DELAY)
-                    }
-                }
-            }
-        }
-    }
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1

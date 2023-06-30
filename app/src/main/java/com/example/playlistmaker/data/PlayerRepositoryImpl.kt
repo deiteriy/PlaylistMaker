@@ -3,48 +3,40 @@ package com.example.playlistmaker.data
 import android.media.MediaPlayer
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.api.PlayerRepository
+import com.example.playlistmaker.domain.models.PlayerState
 import com.example.playlistmaker.presentation.ui.player.PlayerActivity
 
 class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerRepository {
 
+    private var stateCallback: ((PlayerState) -> Unit)? = null
     override fun preparePlayer(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            binding.playButton.isEnabled = true
-            playerState = PlayerActivity.STATE_PREPARED
+            stateCallback?.invoke(PlayerState.STATE_PREPARED)
         }
         mediaPlayer.setOnCompletionListener {
-            playerState = PlayerActivity.STATE_PREPARED
-            binding.trackProgress.text = "00:00"
-            binding.playButton.setImageResource(R.drawable.play_button)
+            stateCallback?.invoke(PlayerState.STATE_COMPLETE)
         }
     }
 
     override fun startPlayer() {
-        if(playerState != PlayerActivity.STATE_PLAYING){
-            mediaPlayer.start()
-            binding.playButton.setImageResource(R.drawable.pause_button)
-            playerState = PlayerActivity.STATE_PLAYING
-            startTimer()
-        }
+        mediaPlayer.start()
+        stateCallback?.invoke(PlayerState.STATE_PLAYING)
     }
 
     override fun pausePlayer() {
         mediaPlayer.pause()
-        binding.playButton.setImageResource(R.drawable.play_button)
-        playerState = PlayerActivity.STATE_PAUSED
-        handler.removeCallbacksAndMessages(null)
+        stateCallback?.invoke(PlayerState.STATE_PAUSED)
     }
 
-    override fun playbackControl() {
-        when (playerState) {
-            PlayerActivity.STATE_PLAYING -> {
-                pausePlayer()
-            }
-            PlayerActivity.STATE_PREPARED, PlayerActivity.STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
+    override fun getPosition() = mediaPlayer.currentPosition.toLong()
+
+    override fun setOnStateChangeListener(callback: (PlayerState) -> Unit) {
+        stateCallback = callback
+    }
+
+    override fun reset() {
+        mediaPlayer.reset()
     }
 }
