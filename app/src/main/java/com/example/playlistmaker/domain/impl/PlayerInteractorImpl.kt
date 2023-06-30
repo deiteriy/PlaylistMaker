@@ -21,8 +21,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
         repository.setOnStateChangeListener(callback)
     }
 
-    override fun getPosition() {
-        repository.getPosition()
+    override fun getPosition(): Long {
+        return repository.getPosition()
     }
 
     override fun reset() {
