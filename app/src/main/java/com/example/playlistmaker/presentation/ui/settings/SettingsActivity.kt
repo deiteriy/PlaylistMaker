@@ -1,11 +1,13 @@
 package com.example.playlistmaker.presentation.ui.settings
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -42,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val mailToSupport = findViewById<TextView>(R.id.support)
-        mailToSupport.setOnClickListener {
+        mailToSupport.setOnClickListener {try {
             val message = getString(R.string.support_message)
             val subject = getString(R.string.support_subject)
             val mailToSupportIntent = Intent(Intent.ACTION_SENDTO)
@@ -52,6 +54,10 @@ class SettingsActivity : AppCompatActivity() {
             mailToSupportIntent.putExtra(Intent.EXTRA_TEXT, message)
             mailToSupportIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
             startActivity(mailToSupportIntent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, R.string.mail_client_not_found, Toast.LENGTH_SHORT).show()
+        }
+
 
         }
 
