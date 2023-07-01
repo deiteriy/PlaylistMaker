@@ -1,14 +1,9 @@
 package com.example.playlistmaker.presentation.ui.player
 
 import android.icu.text.SimpleDateFormat
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -50,11 +45,13 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
-        binding.durationView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        binding.yearView.text = track.releaseDate.substringBefore('-')
+        binding.durationView.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        binding.yearView.text = track.releaseDate?.substringBefore('-')
         binding.genreView.text = track.primaryGenreName
         binding.countryView.text = track.country
-        binding.trackProgress.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        binding.trackProgress.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
 
 
@@ -84,7 +81,7 @@ class PlayerActivity : AppCompatActivity() {
             .placeholder(R.drawable.big_cover_placeholder)
             .into(binding.trackCover)
 
-            binding.arrowBack.setOnClickListener {
+        binding.arrowBack.setOnClickListener {
             finish()
         }
     }
@@ -93,6 +90,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onPause()
         viewModel.pause()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.release()

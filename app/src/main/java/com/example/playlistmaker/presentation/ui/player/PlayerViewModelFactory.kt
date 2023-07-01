@@ -9,7 +9,6 @@ class PlayerViewModelFactory(private val track: Track): ViewModelProvider.Factor
     val interactor = Creator.providePlayerInteractor()
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        // возвращаем объект нашей ViewModel, передавая в неё track из конструктора и interactor, полученный выше
         return PlayerViewModel(track, interactor) as T
     }
 }
