@@ -26,4 +26,6 @@
     <string name="year">Год</string>
     <string name="album">Альбом</string>
     <string name="duration">Длительность</string>
+    <string name="preview_not_found">Превью трека не найдено.\nВыберите другой трек</string>
+    <string name="mail_client_not_found">Почтовый клиент не найден</string>
 </resources>
