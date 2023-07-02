@@ -47,7 +47,7 @@
             android:background="@drawable/edt_background"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/margin_8"
-            tools:context=".presentation.ui.main.MainActivity">
+            tools:context=".main.ui.MainActivity">
 
             <EditText
                 android:id="@+id/inputSearch"
