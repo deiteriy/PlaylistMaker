@@ -21,13 +21,12 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //  val sharedPreferences = getSharedPreferences(DARK_THEME, MODE_PRIVATE)
-        //   var isDarkTheme: Boolean? = sharedPreferences.getBoolean(DARK_THEME, null) ?: return Boolean
+
         setContentView(R.layout.activity_settings)
 
         viewModel = ViewModelProvider(
             this,
-            SettingsViewModelFactory(this)
+            SettingsViewModelFactory(this, applicationContext as App)
         ).get(SettingsViewModel::class.java)
 
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
@@ -37,8 +36,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
+        viewModel.themeSettingsState.observe(this) { themeSettings ->
+            themeSwitcher.isChecked = themeSettings.darkTheme!!
+        }
+
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            viewModel.changeAppTheme(checked)
         }
 
         val shareApp = findViewById<TextView>(R.id.share_app)

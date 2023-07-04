@@ -1,32 +1,43 @@
 package com.example.playlistmaker.settings.ui
 
-import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.settings.domain.usecase.ChangeAppTheme
-import com.example.playlistmaker.settings.domain.usecase.SendMailToSupport
-import com.example.playlistmaker.settings.domain.usecase.ShareAppUseCase
-import com.example.playlistmaker.settings.domain.usecase.ShowUserAgreement
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.playlistmaker.App
+import com.example.playlistmaker.settings.domain.api.SettingsInteractor
+import com.example.playlistmaker.settings.domain.model.ThemeSettings
+import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 
 class SettingsViewModel(
-    private val changeAppTheme: ChangeAppTheme,
-    private val sendMailToSupport: SendMailToSupport,
-    private val shareAppUseCase: ShareAppUseCase,
-    private val showUserAgreement: ShowUserAgreement
-) : ViewModel() {
+    private val sharingInteractor: SharingInteractor,
+    private val settingsInteractor: SettingsInteractor,
+    private val application: App,
+) : AndroidViewModel(application) {
+
+    private val _themeSettingsState = MutableLiveData<ThemeSettings>()
+    val themeSettingsState: LiveData<ThemeSettings> = _themeSettingsState
+
+    init {
+        _themeSettingsState.postValue(settingsInteractor.getThemeSettings())
+    }
 
     fun showUserAgreement() {
-        showUserAgreement.execute()
+        sharingInteractor.showUserAgreement()
     }
 
     fun shareApp() {
-        shareAppUseCase.execute()
+        sharingInteractor.shareApp()
     }
 
     fun sendMailToSupport() {
-        sendMailToSupport.execute()
+        sharingInteractor.sendMailToSupport()
     }
 
-    fun changeAppTheme() {
-        changeAppTheme.execute()
+    fun changeAppTheme(isDarkTheme: Boolean) {
+        val settings = ThemeSettings(isDarkTheme)
+        _themeSettingsState.postValue(settings)
+        settingsInteractor.updateThemeSetting(settings)
+        application.switchTheme(isDarkTheme)
     }
 
 }
