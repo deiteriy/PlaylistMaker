@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.data.dto
+package com.example.playlistmaker.search.data.dto
 
 data class TrackDto (
     val trackName: String,      // Название композиции

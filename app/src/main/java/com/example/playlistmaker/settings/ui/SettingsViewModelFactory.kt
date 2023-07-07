@@ -1,13 +1,11 @@
 package com.example.playlistmaker.settings.ui
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
-import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+
 
 class SettingsViewModelFactory(private val context: Context,  application: App) : ViewModelProvider.Factory {
 
@@ -18,10 +16,10 @@ class SettingsViewModelFactory(private val context: Context,  application: App) 
     private val application: App = application
 
     private val sharingInteractor by lazy {
-        SharingInteractorImpl(ExternalNavigatorImpl(context))
+        Creator.provideSharingInteractor(context)
     }
     private val settingsInteractor by lazy {
-        Creator.provideSettingsInteractor()
+        Creator.provideSettingsInteractor(context)
     }
 
 

@@ -1,12 +1,20 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.media.MediaPlayer
-import com.example.playlistmaker.App
-import com.example.playlistmaker.player.data.network.PlayerRepositoryImpl
+import com.example.playlistmaker.player.data.PlayerRepositoryImpl
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.api.PlayerRepository
 import com.example.playlistmaker.player.domain.impl.PlayerInteractorImpl
+import com.example.playlistmaker.search.data.SearchRepositoryImpl
+import com.example.playlistmaker.search.data.local.SearchHistory
+import com.example.playlistmaker.search.data.local.SearchHistoryImpl
+import com.example.playlistmaker.search.data.network.NetworkClient
+import com.example.playlistmaker.search.data.network.RetrofitClient
+import com.example.playlistmaker.search.domain.api.SearchInteractor
+import com.example.playlistmaker.search.domain.api.SearchRepository
+import com.example.playlistmaker.search.domain.impl.SearchInteractorImpl
 import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
 import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.data.SettingsThemeStorageImpl
@@ -32,20 +40,36 @@ object Creator {
         return PlayerInteractorImpl(getPlayerRepository())
     }
 
-    fun getExternalNavigator(): ExternalNavigator {
-        return ExternalNavigatorImpl(appContext!!)
+    fun getExternalNavigator(context: Context): ExternalNavigator {
+        return ExternalNavigatorImpl(context)
     }
 
-    fun provideSharingInteractor(): SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator())
+    fun provideSharingInteractor(context: Context): SharingInteractor {
+        return SharingInteractorImpl(getExternalNavigator(context))
     }
 
-    fun getSettingsRepository(): SettingsRepository {
-        return SettingsRepositoryImpl(SettingsThemeStorageImpl(appContext?.getSharedPreferences("local_storage", Context.MODE_PRIVATE)))
+    fun getSettingsRepository(context: Context): SettingsRepository {
+        return SettingsRepositoryImpl(SettingsThemeStorageImpl(context.getSharedPreferences("local_storage", Context.MODE_PRIVATE)))
     }
 
-    fun provideSettingsInteractor(): SettingsInteractor {
-        return SettingsInteractorImpl(getSettingsRepository())
+    fun provideSettingsInteractor(context: Context): SettingsInteractor {
+        return SettingsInteractorImpl(getSettingsRepository(context))
+    }
+
+    fun getNetworkClient(): NetworkClient {
+        return RetrofitClient
+    }
+
+    fun getSearchHistory(sharedPreferences: SharedPreferences): SearchHistory {
+        return SearchHistoryImpl(sharedPreferences)
+    }
+
+    fun getSearchRepository(sharedPreferences: SharedPreferences): SearchRepository {
+        return SearchRepositoryImpl(getNetworkClient(), getSearchHistory(sharedPreferences))
+    }
+
+    fun provideSearchInteractor(sharedPreferences: SharedPreferences): SearchInteractor {
+        return SearchInteractorImpl(getSearchRepository(sharedPreferences))
     }
 
 }
