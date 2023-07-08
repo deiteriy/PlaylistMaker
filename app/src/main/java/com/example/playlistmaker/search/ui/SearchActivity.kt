@@ -24,7 +24,6 @@ import java.lang.NullPointerException
 
 class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
 
-    private val sharedPrefs by lazy { getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE) }
     private lateinit var viewModel: SearchViewModel
 
     override fun onTrackClick(item: Track) {
@@ -48,7 +47,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val viewModel =
+        viewModel =
             ViewModelProvider(this, SearchViewModelFactory(this)).get(SearchViewModel::class.java)
 
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
@@ -87,6 +86,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             if (historyAdapter.data.isNotEmpty()) {
                 placeholder.visibility = View.GONE
                 viewOfTrack.visibility = View.VISIBLE
+                rvTrackList.visibility = View.VISIBLE
                 clearHistory.visibility = View.VISIBLE
                 searchHistoryText.visibility = View.VISIBLE
                 rvTrackList.adapter = historyAdapter
@@ -121,7 +121,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
                         .isNotEmpty()
                 ) {
                     showHistory(viewModel.showHistory())
-                } else {
+                } else if (s?.isEmpty() == false) {
                     skipHistory()
                     s?.let { viewModel.searchDebounce(it.toString()) }
                 }
@@ -135,11 +135,15 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         inputSearchText.addTextChangedListener(searchTextWatcher)
 
         clearHistory.setOnClickListener {
-            searchHistory.clear()
+            viewModel.clearHistory()
             skipHistory()
         }
 
-        inputSearchText.setOnFocusChangeListener { view, hasFocus -> if (hasFocus && inputSearchText.text.isEmpty()) showHistory(viewModel.showHistory()) }
+        inputSearchText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && inputSearchText.text.isEmpty()) showHistory(
+                viewModel.showHistory()
+            )
+        }
 
         clearButton.setOnClickListener {
             inputSearchText.setText("")
@@ -160,20 +164,18 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             searchHistoryText.visibility = View.GONE
             rvTrackList.visibility = View.GONE
             placeholder.visibility = View.GONE
-            placeholderText.visibility = View.GONE
-            placeholderImage.visibility = View.GONE
-            placeholderButton.visibility = View.GONE
         }
 
         fun showErrorMessage(error: NetworkError) {
             clearAll()
-            when(error) {
+            when (error) {
                 NetworkError.NOTHING_FOUND -> {
                     showHolder(
                         R.string.nothing_found,
                         R.drawable.nothing_found, false
                     )
                 }
+
                 NetworkError.NO_INTERNET -> {
                     showHolder(
                         R.string.something_went_wrong,
@@ -186,10 +188,10 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         fun showSearchResult(tracks: List<Track>) {
             clearAll()
             trackListAdapter.setTracks(tracks)
+            rvTrackList.adapter = trackListAdapter
             rvTrackList.visibility = View.VISIBLE
+            viewOfTrack.visibility = View.VISIBLE
         }
-
-
 
 
         fun render(state: SearchState) {

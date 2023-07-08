@@ -11,21 +11,19 @@ import com.example.playlistmaker.search.ui.model.SearchState
 
 class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
 
-    private val clickLiveData = MutableLiveData<Boolean>()
     private val stateLiveData = MutableLiveData<SearchState>()
     private val historyList = ArrayList<Track>()
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
+    private var searchRequest = SEARCH_VALUE
 
     init {
         historyList.addAll(interactor.showHistory())
         stateLiveData.postValue(SearchState.SearchHistory(historyList))
     }
 
-    fun observeClick(): LiveData<Boolean> = clickLiveData
     fun observeState(): LiveData<SearchState> = stateLiveData
     fun findTrack(request: String) {
-
         stateLiveData.postValue(SearchState.Loading)
 
         interactor.findTrack(request,
@@ -62,6 +60,10 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
         return current
     }
     fun searchDebounce(request: String) {
+        if (request == searchRequest || request == "") {
+            return
+        }
+        searchRequest = request
         val searchRunnable = Runnable { findTrack(request) }
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
