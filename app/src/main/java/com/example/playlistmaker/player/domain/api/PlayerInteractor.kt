@@ -7,7 +7,6 @@ interface PlayerInteractor {
     fun startPlayer()
     fun pausePlayer()
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
-
     fun getPosition(): Long
     fun reset()
 

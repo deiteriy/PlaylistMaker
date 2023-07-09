@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.search.data.local.TRACK_HISTORY
-import com.example.playlistmaker.settings.ui.SettingsViewModel
 
 class SearchViewModelFactory(context: Context): ViewModelProvider.Factory {
 

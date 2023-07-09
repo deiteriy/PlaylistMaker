@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.domain.api
+package com.example.playlistmaker.player.data.api
 
 import com.example.playlistmaker.player.domain.models.PlayerState
 
@@ -7,7 +7,6 @@ interface PlayerRepository {
     fun startPlayer()
     fun pausePlayer()
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
-
     fun getPosition(): Long
 
     fun reset()

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.player.domain.impl
 
+import com.example.playlistmaker.player.data.api.PlayerRepository
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
-import com.example.playlistmaker.player.domain.api.PlayerRepository
 import com.example.playlistmaker.player.domain.models.PlayerState
 
 class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInteractor {

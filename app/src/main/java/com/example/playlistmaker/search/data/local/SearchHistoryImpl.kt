@@ -2,9 +2,10 @@ package com.example.playlistmaker.search.data.local
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.TrackMapper
+import com.example.playlistmaker.search.data.api.SearchHistory
+import com.example.playlistmaker.search.data.dto.TrackDto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

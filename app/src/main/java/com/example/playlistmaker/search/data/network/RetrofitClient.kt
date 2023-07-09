@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data.network
 
-import android.util.Log
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.data.api.NetworkClient
 import com.example.playlistmaker.search.domain.NetworkError
 import retrofit2.Call
 import retrofit2.Callback

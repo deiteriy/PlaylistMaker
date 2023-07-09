@@ -7,7 +7,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.sharing.domain.api.ExternalNavigator
+import com.example.playlistmaker.sharing.data.api.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.model.EmailData
 
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {

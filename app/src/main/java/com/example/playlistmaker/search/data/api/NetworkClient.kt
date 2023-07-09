@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.data.network
+package com.example.playlistmaker.search.data.api
 
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.NetworkError

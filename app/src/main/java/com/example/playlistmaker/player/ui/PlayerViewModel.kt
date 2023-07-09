@@ -1,12 +1,11 @@
 package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
-import androidx.lifecycle.ViewModel
-
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
@@ -58,6 +57,6 @@ class PlayerViewModel(
     }
 
     companion object {
-        private const val TRACK_TIME_DELAY = 300L
+        private const val TRACK_TIME_DELAY = 1000L
     }
 }

@@ -1,9 +1,11 @@
-package com.example.playlistmaker.settings.data
+package com.example.playlistmaker.settings.data.impl
 
 import android.content.SharedPreferences
+import com.example.playlistmaker.settings.data.api.SettingsThemeStorage
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 
-class SettingsThemeStorageImpl(private val sharedPreferences: SharedPreferences) : SettingsThemeStorage {
+class SettingsThemeStorageImpl(private val sharedPreferences: SharedPreferences) :
+    SettingsThemeStorage {
 
     override fun saveThemeSettings(settings: ThemeSettings) {
         sharedPreferences.edit()

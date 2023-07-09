@@ -1,9 +1,9 @@
 package com.example.playlistmaker.search.domain.impl
 
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.data.api.SearchRepository
 import com.example.playlistmaker.search.domain.NetworkError
 import com.example.playlistmaker.search.domain.api.SearchInteractor
-import com.example.playlistmaker.search.domain.api.SearchRepository
 
 class SearchInteractorImpl(private val repository: SearchRepository): SearchInteractor {
     override fun findTrack(

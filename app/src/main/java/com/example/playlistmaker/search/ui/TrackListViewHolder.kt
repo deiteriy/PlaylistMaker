@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.models.Track
-import java.util.*
+import java.util.Locale
 
 class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val rootLayout: LinearLayout = itemView.findViewById(R.id.trackRootLayout)
