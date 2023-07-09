@@ -78,7 +78,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         fun skipHistory() {
             clearHistory.visibility = View.GONE
             searchHistoryText.visibility = View.GONE
-            rvTrackList.adapter = trackListAdapter
+            rvTrackList.visibility = View.GONE
         }
 
         fun showHistory(history: List<Track>) {
@@ -123,8 +123,8 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
                     showHistory(viewModel.showHistory())
                 } else if (s?.isEmpty() == false) {
                     skipHistory()
-                    s?.let { viewModel.searchDebounce(it.toString()) }
                 }
+                s?.let { viewModel.searchDebounce(it.toString()) }
 
             }
 
@@ -155,6 +155,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
         fun showLoading() {
             progressBar.visibility = View.VISIBLE
+            rvTrackList.visibility = View.GONE
         }
 
         fun clearAll() {
@@ -206,6 +207,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
 
                 is SearchState.SearchedTracks -> {
                     skipHistory()
+                    rvTrackList.adapter = trackListAdapter
                     showSearchResult(state.tracks)
                 }
 

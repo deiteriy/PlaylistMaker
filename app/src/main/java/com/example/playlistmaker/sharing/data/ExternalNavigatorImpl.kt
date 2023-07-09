@@ -30,7 +30,8 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
         val message = context.getString(R.string.support_message)
         val subject = context.getString(R.string.support_subject)
 
-        try {
+
+       try {
             val mailToSupportIntent = Intent(Intent.ACTION_SENDTO)
             mailToSupportIntent.data = Uri.parse(emailData.mailTo)
             mailToSupportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailData.mail))

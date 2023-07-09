@@ -2,6 +2,7 @@ package com.example.playlistmaker.search.ui
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     fun observeState(): LiveData<SearchState> = stateLiveData
     fun findTrack(request: String) {
         stateLiveData.postValue(SearchState.Loading)
+        searchRequest = request
 
         interactor.findTrack(request,
             onSuccess = { trackList ->
@@ -59,14 +61,15 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
         }
         return current
     }
+
+    val searchRunnable = Runnable { findTrack(searchRequest) }
     fun searchDebounce(request: String) {
-        if (request == searchRequest || request == "") {
-            return
-        }
         searchRequest = request
-        val searchRunnable = Runnable { findTrack(request) }
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+
+        if(request.isNotEmpty()) {
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     companion object {

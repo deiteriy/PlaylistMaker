@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.data.network
 
+import android.util.Log
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.NetworkError
 import retrofit2.Call
@@ -24,7 +25,6 @@ object RetrofitClient : NetworkClient {
         onSuccess: (List<Track>) -> Unit,
         onError: (NetworkError) -> Unit
     ) {
-
         api.search(request)
             .enqueue(object : Callback<TrackResponse> {
                 override fun onResponse(
