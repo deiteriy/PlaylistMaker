@@ -15,27 +15,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewModel = ViewModelProvider(this, MainViewModelFactory(this)).get(MainViewModel::class.java)
-
         val search = findViewById<Button>(R.id.search)
         search.setOnClickListener {
-            /*val searchIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchIntent)*/
-            viewModel.openSearchActivity()
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
 
         val library = findViewById<Button>(R.id.library)
         library.setOnClickListener {
-            /*val libraryIntent = Intent(this, LibraryActivity::class.java)
-            startActivity(libraryIntent)*/
-            viewModel.openLibraryActivity()
+            val libraryIntent = Intent(this, LibraryActivity::class.java)
+            startActivity(libraryIntent)
         }
 
         val settings = findViewById<Button>(R.id.settings)
         settings.setOnClickListener {
-            /*val settingsIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsIntent)*/
-            viewModel.openSettingsActivity()
+            val settingsIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsIntent)
         }
 
     }
