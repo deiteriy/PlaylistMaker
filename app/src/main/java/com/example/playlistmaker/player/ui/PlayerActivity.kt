@@ -60,7 +60,7 @@ class PlayerActivity : AppCompatActivity() {
                 playbackControl(state)
             }
             if (state == PlayerState.STATE_COMPLETE) {
-                binding.trackProgress.text = binding.durationView.text
+                binding.trackProgress.text = getString(R.string.timer_reset)
                 binding.playButton.setImageResource(R.drawable.play_button)
             }
         }
