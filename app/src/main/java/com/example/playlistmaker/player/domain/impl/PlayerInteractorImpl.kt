@@ -3,6 +3,7 @@ package com.example.playlistmaker.player.domain.impl
 import com.example.playlistmaker.player.data.api.PlayerRepository
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
+import com.example.playlistmaker.player.domain.models.Track
 
 class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInteractor {
     override fun preparePlayer(url: String) {
@@ -28,4 +29,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
     override fun reset() {
         repository.reset()
     }
+
+ /*   override fun getTrack(): Track {
+        return repository.getTrack()
+    }*/
 }

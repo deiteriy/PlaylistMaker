@@ -3,6 +3,8 @@ package com.example.playlistmaker.player.data.impl
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.data.api.PlayerRepository
 import com.example.playlistmaker.player.domain.models.PlayerState
+import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.data.local.SearchHistoryImpl
 
 class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerRepository {
 
@@ -37,4 +39,8 @@ class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerReposito
     override fun reset() {
         mediaPlayer.reset()
     }
+
+/*    override fun getTrack(): Track {
+        return searchHistoryImpl.read()[0]
+    }*/
 }

@@ -14,10 +14,10 @@ import java.util.Locale
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
     private val track: Track
-) : ViewModel() {
-   // lateinit var track: Track
+    ) : ViewModel() {
 
     init {
+
         playerInteractor.preparePlayer(track.previewUrl)
 
         playerInteractor.setOnStateChangeListener { state ->

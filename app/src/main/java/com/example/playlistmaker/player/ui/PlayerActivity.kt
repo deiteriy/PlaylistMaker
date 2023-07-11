@@ -17,30 +17,13 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
-    private val track: Track = intent.getSerializableExtra("item") as Track
-    private val viewModel by viewModel<PlayerViewModel>() { parametersOf(track) }
-
-
-    private fun playbackControl(playerState: PlayerState) {
-        when (playerState) {
-            PlayerState.STATE_PREPARED, PlayerState.STATE_COMPLETE, PlayerState.STATE_PAUSED -> {
-                viewModel.play()
-                binding.playButton.setImageResource(R.drawable.pause_button)
-            }
-
-            PlayerState.STATE_PLAYING,  -> {
-                viewModel.pause()
-                binding.playButton.setImageResource(R.drawable.play_button)
-            }
-        }
-    }
+    private val viewModel by viewModel<PlayerViewModel>() { parametersOf(intent.getSerializableExtra("item") as Track) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val track: Track = intent.getSerializableExtra("item") as Track
+
 
         url = track.previewUrl
-
-     //   viewModel = PlayerViewModelFactory(track).create(PlayerViewModel::class.java)
-
 
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -55,7 +38,19 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackProgress.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
+        fun playbackControl(playerState: PlayerState) {
+            when (playerState) {
+                PlayerState.STATE_PREPARED, PlayerState.STATE_COMPLETE, PlayerState.STATE_PAUSED -> {
+                    viewModel.play()
+                    binding.playButton.setImageResource(R.drawable.pause_button)
+                }
 
+                PlayerState.STATE_PLAYING  -> {
+                    viewModel.pause()
+                    binding.playButton.setImageResource(R.drawable.play_button)
+                }
+            }
+        }
 
         viewModel.observeState().observe(this) { state ->
             binding.playButton.setOnClickListener {
@@ -76,7 +71,7 @@ class PlayerActivity : AppCompatActivity() {
         } else {
             binding.albumView.text = track.collectionName
         }
-        var albumCover = track.getCoverArtwork()
+        val albumCover = track.getCoverArtwork()
 
         Glide.with(binding.trackCover)
             .load(albumCover)
