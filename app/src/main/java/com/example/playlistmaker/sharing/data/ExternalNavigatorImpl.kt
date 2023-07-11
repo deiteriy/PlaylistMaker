@@ -20,12 +20,12 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     }
 
     override fun shareApp(link: String) {
-        val shareTitle = context.getString(R.string.share_title)
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.putExtra(Intent.EXTRA_TEXT, link)
-        shareIntent.type = "text/plain"
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(context, Intent.createChooser(shareIntent, shareTitle), null)
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, link)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        }
+        startActivity(context, shareIntent, null)
     }
 
     override fun sendMailToSupport(emailData: EmailData) {
