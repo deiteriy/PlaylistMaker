@@ -12,9 +12,10 @@ import com.example.playlistmaker.player.domain.models.Track
 import java.util.Locale
 
 class PlayerViewModel(
-    private val track: Track,
     private val playerInteractor: PlayerInteractor,
+    private val track: Track
 ) : ViewModel() {
+   // lateinit var track: Track
 
     init {
         playerInteractor.preparePlayer(track.previewUrl)

@@ -1,15 +1,13 @@
 package com.example.playlistmaker.settings.ui
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
-import com.example.playlistmaker.creator.Creator
 
 
 class SettingsViewModelFactory(private val context: Context,  application: App) : ViewModelProvider.Factory {
 
-    init {
+   /* init {
         Creator.init(context)
     }
 
@@ -29,5 +27,5 @@ class SettingsViewModelFactory(private val context: Context,  application: App) 
             settingsInteractor = settingsInteractor,
             application = application
         ) as T
-    }
+    }*/
 }

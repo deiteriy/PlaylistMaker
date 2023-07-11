@@ -10,12 +10,15 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
-    private lateinit var viewModel: PlayerViewModel
+    private val track: Track = intent.getSerializableExtra("item") as Track
+    private val viewModel by viewModel<PlayerViewModel>() { parametersOf(track) }
 
 
     private fun playbackControl(playerState: PlayerState) {
@@ -34,10 +37,9 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val track: Track = intent.getSerializableExtra("item") as Track
         url = track.previewUrl
 
-        viewModel = PlayerViewModelFactory(track).create(PlayerViewModel::class.java)
+     //   viewModel = PlayerViewModelFactory(track).create(PlayerViewModel::class.java)
 
 
         super.onCreate(savedInstanceState)

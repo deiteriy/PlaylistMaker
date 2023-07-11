@@ -2,14 +2,23 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.di.searchDataModule
+import com.example.playlistmaker.di.searchInteractorModule
+import com.example.playlistmaker.di.searchRepositoryModule
+import com.example.playlistmaker.di.searchViewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-const val DARK_THEME = "dark_theme"
 class App : Application() {
 
     private var isDarkTheme = false
 
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@App)
+            modules(searchDataModule, searchInteractorModule, searchRepositoryModule, searchViewModelModule)
+        }
 
     }
         fun switchTheme(darkThemeEnabled: Boolean) {
