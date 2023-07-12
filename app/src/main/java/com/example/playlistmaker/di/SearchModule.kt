@@ -7,6 +7,7 @@ import com.example.playlistmaker.search.data.api.NetworkClient
 import com.example.playlistmaker.search.data.api.SearchHistory
 import com.example.playlistmaker.search.data.api.SearchRepository
 import com.example.playlistmaker.search.data.local.SearchHistoryImpl
+import com.example.playlistmaker.search.data.local.TRACK_HISTORY
 import com.example.playlistmaker.search.data.network.RetrofitApi
 import com.example.playlistmaker.search.data.network.RetrofitClient
 import com.example.playlistmaker.search.domain.api.SearchInteractor
@@ -18,6 +19,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+const val BASE_URL = "https://itunes.apple.com"
+
 
 val searchModule = module {
     factory { Gson() }
@@ -28,7 +31,7 @@ val searchModule = module {
 
     single<RetrofitApi> {
         Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RetrofitApi::class.java)
@@ -36,7 +39,7 @@ val searchModule = module {
 
     single {
         androidContext()
-            .getSharedPreferences("track_history", Context.MODE_PRIVATE)
+            .getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
     }
 
     single<SearchHistory> {
