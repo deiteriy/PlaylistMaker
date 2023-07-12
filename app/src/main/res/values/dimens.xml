@@ -13,4 +13,9 @@
     <dimen name="fab_normal_size">51dp</dimen>
     <dimen name="fab_icon_size">52dp</dimen>
     <dimen name="progressbar_size">44dp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="size_36">36dp</dimen>
+    <dimen name="size_1">1dp</dimen>
+    <dimen name="size_120">120dp</dimen>
+    <dimen name="size_200">200dp</dimen>
 </resources>

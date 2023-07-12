@@ -87,6 +87,8 @@ class PlayerActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         viewModel.pause()
+        binding.playButton.setImageResource(R.drawable.play_button)
+
     }
 
     override fun onDestroy() {

@@ -37,8 +37,4 @@ class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerReposito
     override fun reset() {
         mediaPlayer.reset()
     }
-
-/*    override fun getTrack(): Track {
-        return searchHistoryImpl.read()[0]
-    }*/
 }
