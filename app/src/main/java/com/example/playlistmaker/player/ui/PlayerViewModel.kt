@@ -12,11 +12,12 @@ import com.example.playlistmaker.player.domain.models.Track
 import java.util.Locale
 
 class PlayerViewModel(
-    private val track: Track,
     private val playerInteractor: PlayerInteractor,
-) : ViewModel() {
+    private val track: Track
+    ) : ViewModel() {
 
     init {
+
         playerInteractor.preparePlayer(track.previewUrl)
 
         playerInteractor.setOnStateChangeListener { state ->

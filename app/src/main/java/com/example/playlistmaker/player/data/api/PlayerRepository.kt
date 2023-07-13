@@ -8,6 +8,5 @@ interface PlayerRepository {
     fun pausePlayer()
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
     fun getPosition(): Long
-
     fun reset()
 }

@@ -6,20 +6,8 @@ import com.example.playlistmaker.search.domain.NetworkError
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClient : NetworkClient {
-    private val client: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    }
-    val api: RetrofitApi by lazy {
-        client.create(RetrofitApi::class.java)
-    }
-
+class RetrofitClient(private val api: RetrofitApi) : NetworkClient {
     override fun doRequest(
         request: String,
         onSuccess: (List<Track>) -> Unit,

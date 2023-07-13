@@ -11,9 +11,9 @@ import com.google.gson.reflect.TypeToken
 
 const val TRACK_HISTORY = "track_history"
 
-class SearchHistoryImpl(private val sharedPreferences: SharedPreferences): SearchHistory {
+class SearchHistoryImpl(private val sharedPreferences: SharedPreferences, private val trackMapper: TrackMapper): SearchHistory {
 
-    private val trackMapper = TrackMapper()
+
     var searchHistory: MutableList<TrackDto> = read().map {trackMapper.mapToDto(it)}.toMutableList()
 
     override fun read(): MutableList<Track> {

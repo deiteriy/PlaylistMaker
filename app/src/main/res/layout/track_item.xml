@@ -32,7 +32,7 @@
             android:textSize="16sp"
             android:layout_marginStart="@dimen/margin_8"
             android:ellipsize="end"
-            android:fontFamily="@font/ys_display"
+            android:fontFamily="@font/ys_display_regular"
             android:maxLines="1"/>
 
         <LinearLayout

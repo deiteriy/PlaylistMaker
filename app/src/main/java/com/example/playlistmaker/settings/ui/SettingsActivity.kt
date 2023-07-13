@@ -4,25 +4,24 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_settings)
 
-        viewModel = ViewModelProvider(
+     /*   viewModel = ViewModelProvider(
             this,
             SettingsViewModelFactory(this, applicationContext as App)
-        ).get(SettingsViewModel::class.java)
+        ).get(SettingsViewModel::class.java)*/
 
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
         returnArrow.setOnClickListener {

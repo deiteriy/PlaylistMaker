@@ -15,20 +15,18 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.data.local.SearchHistoryImpl
-import com.example.playlistmaker.search.data.local.TRACK_HISTORY
 import com.example.playlistmaker.search.domain.NetworkError
 import com.example.playlistmaker.search.ui.model.SearchState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListener {
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onTrackClick(item: Track) {
         if (viewModel.clickDebounce()) {
@@ -51,9 +49,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel =
-            ViewModelProvider(this, SearchViewModelFactory(this)).get(SearchViewModel::class.java)
-
         val returnArrow = findViewById<ImageView>(R.id.arrow_back)
         returnArrow.setOnClickListener {
             finish()
@@ -63,8 +58,6 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val trackListAdapter = TrackListAdapter(this)
         val historyAdapter = TrackListAdapter(this)
-        val sharedPrefs = getSharedPreferences(TRACK_HISTORY, MODE_PRIVATE)
-        val searchHistory = SearchHistoryImpl(sharedPrefs)
         val clearHistory = findViewById<Button>(R.id.clear_history)
         val searchHistoryText = findViewById<TextView>(R.id.search_history_text)
         val rvTrackList = findViewById<RecyclerView>(R.id.rvTrackList)
@@ -121,7 +114,7 @@ class SearchActivity : AppCompatActivity(), TrackListAdapter.OnTrackClickListene
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 textInSearch = s.toString()
-                if (inputSearchText.hasFocus() && s?.isEmpty() == true && searchHistory.read()
+                if (inputSearchText.hasFocus() && s?.isEmpty() == true && viewModel.showHistory()
                         .isNotEmpty()
                 ) {
                     showHistory(viewModel.showHistory())

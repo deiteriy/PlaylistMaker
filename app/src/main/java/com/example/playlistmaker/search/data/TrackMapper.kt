@@ -3,7 +3,7 @@ package com.example.playlistmaker.search.data
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.dto.TrackDto
 
-class TrackMapper {
+class TrackMapper() {
 
     fun mapToDomain(trackDto: TrackDto): Track {
         return Track(
