@@ -35,8 +35,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.yearView.text = track.releaseDate?.substringBefore('-')
         binding.genreView.text = track.primaryGenreName
         binding.countryView.text = track.country
-        binding.trackProgress.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        binding.trackProgress.text = getString(R.string.timer_reset)
 
         fun playbackControl(playerState: PlayerState) {
             when (playerState) {
