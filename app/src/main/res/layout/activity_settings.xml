@@ -46,26 +46,28 @@
     <TextView
         android:id="@+id/share_app"
         style="@style/MenuListStyle"
-        android:layout_marginEnd="21dp"
+        android:layout_marginEnd="@dimen/margin_5"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/share"
-        />
-
-    <TextView
-        android:id="@+id/user_agreement"
-        style="@style/MenuListStyle"
-        android:text="@string/user_agreement"
-        android:layout_marginEnd="22dp"
-        app:drawableEndCompat="@drawable/arrowforward"
         />
 
     <TextView
         android:id="@+id/support"
         style="@style/MenuListStyle"
         android:text="@string/chat_with_help"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="@dimen/margin_5"
         app:drawableEndCompat="@drawable/support"
         />
+
+    <TextView
+        android:id="@+id/user_agreement"
+        style="@style/MenuListStyle"
+        android:text="@string/user_agreement"
+        android:layout_marginEnd="@dimen/margin_7"
+        app:drawableEndCompat="@drawable/arrowforward"
+        />
+
+
 
 
 
