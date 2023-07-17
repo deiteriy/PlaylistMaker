@@ -20,5 +20,5 @@
     <dimen name="size_200">200dp</dimen>
     <dimen name="size_14">14sp</dimen>
     <dimen name="margin_46">46dp</dimen>
-    <dimen name="margin_7">7</dimen>
+    <dimen name="margin_7">7dp</dimen>
 </resources>
