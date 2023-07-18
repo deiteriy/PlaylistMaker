@@ -22,4 +22,5 @@
     <dimen name="margin_46">46dp</dimen>
     <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_14">14dp</dimen>
+    <dimen name="line_height">1dp</dimen>
 </resources>

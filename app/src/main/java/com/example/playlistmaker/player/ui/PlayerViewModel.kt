@@ -3,6 +3,7 @@ package com.example.playlistmaker.player.ui
 import android.icu.text.SimpleDateFormat
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,18 +14,8 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val track: Track
-    ) : ViewModel() {
-
-    init {
-
-        playerInteractor.preparePlayer(track.previewUrl)
-
-        playerInteractor.setOnStateChangeListener { state ->
-            stateLiveData.postValue(state)
-            if (state == PlayerState.STATE_COMPLETE) handler.removeCallbacks(time)
-        }
-    }
+) : ViewModel() {
+    private var track: Track? = null
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -37,9 +28,22 @@ class PlayerViewModel(
     }
 
     private val stateLiveData = MutableLiveData<PlayerState>()
-    fun observeState(): LiveData<PlayerState> = stateLiveData
 
     private val timeLiveData = MutableLiveData<String>()
+
+
+    fun initWithTrack(item: Track) {
+
+        track = item
+        playerInteractor.preparePlayer(track!!.previewUrl)
+        playerInteractor.setOnStateChangeListener { state ->
+            stateLiveData.postValue(state)
+            if (state == PlayerState.STATE_COMPLETE) handler.removeCallbacks(time)
+        }
+    }
+
+    fun observeState(): LiveData<PlayerState> = stateLiveData
+
     fun observeTime(): LiveData<String> = timeLiveData
 
     fun play() {

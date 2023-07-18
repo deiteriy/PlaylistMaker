@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
@@ -107,10 +108,7 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         if (viewModel.clickDebounce()) {
             try {
                 viewModel.saveTrack(item)
-                val playerIntent = Intent(requireContext(), PlayerActivity::class.java).apply {
-                    putExtra("item", item)
-                }
-                startActivity(playerIntent)
+                navToTrack(item)
             } catch (e: NullPointerException) {
                 Toast.makeText(requireContext(), R.string.preview_not_found, Toast.LENGTH_SHORT)
                     .show()
@@ -163,7 +161,6 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         binding.rvTrackList.visibility = View.VISIBLE
         binding.trackList.visibility = View.VISIBLE
     }
-
 
     private fun render(state: SearchState) {
         when (state) {
@@ -218,6 +215,11 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
                 )
             }
         }
+    }
+
+    private fun navToTrack(item: Track) {
+        val action = SearchFragmentDirections.actionSearchFragmentToPlayerActivity(item)
+        findNavController().navigate(action)
     }
 
 }
