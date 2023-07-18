@@ -24,8 +24,9 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
     private lateinit var binding: FragmentSearchBinding
     private val viewModel by viewModel<SearchViewModel>()
-    private val trackListAdapter = TrackListAdapter(this)
-    private val historyAdapter = TrackListAdapter(this)
+    lateinit var trackListAdapter: TrackListAdapter
+    lateinit var historyAdapter: TrackListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +39,8 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        trackListAdapter = TrackListAdapter(this)
+        historyAdapter = TrackListAdapter(this)
 
         var textInSearch: String = ""
 
@@ -152,32 +155,13 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         binding.searchPlaceholder.visibility = View.GONE
     }
 
-    private fun showErrorMessage(error: NetworkError) {
-        clearAll()
-        when (error) {
-            NetworkError.NOTHING_FOUND -> {
-                showHolder(
-                    R.string.nothing_found,
-                    R.drawable.nothing_found, false
-                )
-            }
-
-            NetworkError.NO_INTERNET -> {
-                showHolder(
-                    R.string.something_went_wrong,
-                    R.drawable.no_internet, true
-                )
-            }
-        }
-    }
-
     private fun showSearchResult(tracks: List<Track>) {
         clearAll()
         trackListAdapter.setTracks(tracks)
         binding.rvTrackList.adapter = trackListAdapter
         binding.rvTrackList.visibility = View.VISIBLE
         binding.trackList.visibility = View.VISIBLE
-        Log.i("SEARCHLOG", "Вызвана функция showSearchResult")
+        Log.i("SEARCHLOG", "Вызвана функция showSearchResult}")
     }
 
 
@@ -199,6 +183,25 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
             is SearchState.SearchError -> {
                 showErrorMessage(state.error)
+            }
+        }
+    }
+
+    private fun showErrorMessage(error: NetworkError) {
+        clearAll()
+        when (error) {
+            NetworkError.NOTHING_FOUND -> {
+                showHolder(
+                    R.string.nothing_found,
+                    R.drawable.nothing_found, false
+                )
+            }
+
+            NetworkError.NO_INTERNET -> {
+                showHolder(
+                    R.string.something_went_wrong,
+                    R.drawable.no_internet, true
+                )
             }
         }
     }
