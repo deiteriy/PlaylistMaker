@@ -20,5 +20,11 @@
     <dimen name="size_200">200dp</dimen>
     <dimen name="size_14">14sp</dimen>
     <dimen name="margin_46">46dp</dimen>
-    <dimen name="margin_7">7</dimen>
+    <dimen name="margin_7">7dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="line_height">1dp</dimen>
+    <dimen name="size_160">160dp</dimen>
+    <dimen name="size_300">300dp</dimen>
+    <dimen name="margin_200">200dp</dimen>
+    <dimen name="margin_300">300dp</dimen>
 </resources>

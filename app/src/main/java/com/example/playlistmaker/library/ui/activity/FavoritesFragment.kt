@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentLibraryBinding
+import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment: Fragment() {
-        private lateinit var binding: FragmentLibraryBinding
+        private lateinit var binding: FragmentFavoritesBinding
         private val viewModel by viewModel<FavoritesViewModel>()
 
     override fun onCreateView(
@@ -19,7 +19,7 @@ class FavoritesFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

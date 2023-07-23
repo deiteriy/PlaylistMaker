@@ -23,7 +23,7 @@ val playerModule = module {
         PlayerInteractorImpl(repository = get())
     }
 
-    viewModel {(track: Track) ->
-        PlayerViewModel(playerInteractor = get(), track = track)
+    viewModel {
+        PlayerViewModel(playerInteractor = get())
     }
 }

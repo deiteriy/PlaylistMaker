@@ -4,6 +4,7 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -17,10 +18,13 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
-    private val viewModel by viewModel<PlayerViewModel>() { parametersOf(intent.getSerializableExtra("item") as Track) }
+    private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val track: Track = intent.getSerializableExtra("item") as Track
+
+        val args: PlayerActivityArgs by navArgs()
+        val track = args.item
+        viewModel.initWithTrack(track)
 
 
         url = track.previewUrl
