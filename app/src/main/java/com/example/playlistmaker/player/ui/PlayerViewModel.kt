@@ -72,6 +72,6 @@ class PlayerViewModel(
     }
 
     companion object {
-        private const val TRACK_TIME_DELAY = 1000L
+        private const val TRACK_TIME_DELAY = 300L
     }
 }
