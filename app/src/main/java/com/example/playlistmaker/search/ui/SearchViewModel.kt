@@ -40,9 +40,9 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
 
     private fun postResult(trackList: ArrayList<Track>?, error: String?) {
         when {
-            !trackList.isNullOrEmpty() -> stateLiveData.postValue(SearchState.SearchedTracks(trackList))
-            trackList != null && trackList.isEmpty() -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NOTHING_FOUND))
-            else -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NO_INTERNET))
+            error != null -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NO_INTERNET))
+            trackList?.isEmpty()!! -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NOTHING_FOUND))
+            else -> stateLiveData.postValue(SearchState.SearchedTracks(trackList))
         }
     }
 
