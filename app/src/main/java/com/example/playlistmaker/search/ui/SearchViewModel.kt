@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.domain.NetworkError
 import com.example.playlistmaker.search.domain.api.SearchInteractor
 import com.example.playlistmaker.search.ui.model.SearchState
 import kotlinx.coroutines.Job
@@ -28,16 +29,21 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     fun findTrack(request: String) {
         stateLiveData.postValue(SearchState.Loading)
         searchRequest = request
+        viewModelScope.launch {
+            interactor
+                .findTrack(request)
+                .collect { pair ->
+                    postResult(pair.first, pair.second)
+                }
+        }
+    }
 
-        interactor.findTrack(request,
-            onSuccess = { trackList ->
-                stateLiveData.postValue(SearchState.SearchedTracks(trackList))
-            },
-            onError = { error ->
-                stateLiveData.postValue(SearchState.SearchError(error))
-            }
-        )
-
+    private fun postResult(trackList: ArrayList<Track>?, error: String?) {
+        when {
+            !trackList.isNullOrEmpty() -> stateLiveData.postValue(SearchState.SearchedTracks(trackList))
+            trackList != null && trackList.isEmpty() -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NOTHING_FOUND))
+            else -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NO_INTERNET))
+        }
     }
 
     fun clearHistory()  {
