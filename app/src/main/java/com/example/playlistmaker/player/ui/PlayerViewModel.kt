@@ -1,15 +1,16 @@
 package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class PlayerViewModel(
@@ -17,14 +18,23 @@ class PlayerViewModel(
 ) : ViewModel() {
     private var track: Track? = null
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val time = object : Runnable {
-        override fun run() {
+    private var timeJob: Job? = null
+    private suspend fun updateTime() {
+        while (true) {
             val position = playerInteractor.getPosition()
             timeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(position))
-            handler.postDelayed(this, TRACK_TIME_DELAY)
+            delay(TRACK_TIME_DELAY)
         }
+    }
+
+    private fun startUpdatingTime() {
+        timeJob = viewModelScope.launch {
+            updateTime()
+        }
+    }
+
+    private fun stopUpdatingTime() {
+        timeJob?.cancel()
     }
 
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -38,7 +48,7 @@ class PlayerViewModel(
         playerInteractor.preparePlayer(track!!.previewUrl)
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
-            if (state == PlayerState.STATE_COMPLETE) handler.removeCallbacks(time)
+            if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
     }
 
@@ -48,20 +58,20 @@ class PlayerViewModel(
 
     fun play() {
         playerInteractor.startPlayer()
-        handler.post(time)
+        startUpdatingTime()
     }
 
     fun pause() {
         playerInteractor.pausePlayer()
-        handler.removeCallbacks(time)
+        stopUpdatingTime()
     }
 
     fun release() {
         playerInteractor.reset()
-        handler.removeCallbacks(time)
+        stopUpdatingTime()
     }
 
     companion object {
-        private const val TRACK_TIME_DELAY = 1000L
+        private const val TRACK_TIME_DELAY = 300L
     }
 }

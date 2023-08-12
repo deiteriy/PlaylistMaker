@@ -7,15 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <TextView
         style="@style/MenuDayNightColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:fontFamily="@font/ys_display_medium"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_14"
+        android:fontFamily="@font/ys_display_medium"
         android:text="@string/search"
         android:textSize="@dimen/text_size_22" />
 
@@ -51,16 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="@dimen/medium_padding"
+            android:layout_marginEnd="@dimen/margin_16"
             android:src="@drawable/clear_cross"
             android:visibility="gone" />
     </LinearLayout>
 
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/track_list"
@@ -90,58 +87,65 @@
                 style="@style/UpdateButtonStyle"
                 android:text="@string/clear_history"
                 android:visibility="gone" />
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="36dp"
-                android:layout_height="@dimen/progressbar_size"
-                android:layout_marginVertical="@dimen/margin_300"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:indeterminateTint="@color/blue"
-                android:visibility="gone" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+
     <LinearLayout
-        android:id="@+id/search_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="@dimen/margin_114"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/search_placeholder_image"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="36dp"
+            android:layout_height="@dimen/progressbar_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="@dimen/margin_300"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/search_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/nothing_found"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/search_placeholder_text"
-            style="@style/MenuDayNightColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_24"
-            android:layout_marginTop="@dimen/margin_16"
-            android:fontFamily="@font/ys_display_regular"
-            android:text="@string/nothing_found"
-            android:textAlignment="center"
-            android:textSize="@dimen/holder_text_size"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/search_placeholder_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/nothing_found"
+                android:textAlignment="center"
+                android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/search_button"
-            style="@style/UpdateButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/update" />
+            <TextView
+                android:id="@+id/search_placeholder_text"
+                style="@style/MenuDayNightColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_16"
+                android:fontFamily="@font/ys_display_regular"
+                android:text="@string/nothing_found"
+                android:textAlignment="center"
+                android:textSize="@dimen/holder_text_size"
+                android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/search_button"
+                style="@style/UpdateButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/update" />
+
+        </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

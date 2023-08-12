@@ -2,16 +2,23 @@ package com.example.playlistmaker.search.domain.impl
 
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.api.SearchRepository
-import com.example.playlistmaker.search.domain.NetworkError
 import com.example.playlistmaker.search.domain.api.SearchInteractor
+import com.example.playlistmaker.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchInteractorImpl(private val repository: SearchRepository): SearchInteractor {
-    override fun findTrack(
-        request: String,
-        onSuccess: (List<Track>) -> Unit,
-        onError: (NetworkError) -> Unit
-    ) {
-        repository.findTrack(request, onSuccess, onError)
+    override fun findTrack(request: String): Flow<Pair<ArrayList<Track>?, String?>> {
+        return repository.findTrack(request).map { result ->
+            when(result) {
+                is Resource.Success -> {
+                    Pair(result.data, null)
+                }
+                is Resource.Error -> {
+                    Pair(null, result.message)
+                }
+            }
+        }
     }
 
 

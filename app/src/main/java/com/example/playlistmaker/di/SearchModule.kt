@@ -47,7 +47,7 @@ val searchModule = module {
     }
 
     single<NetworkClient> {
-        RetrofitClient(api = get())
+        RetrofitClient(api = get(), context = get())
     }
 
     single<SearchRepository> {

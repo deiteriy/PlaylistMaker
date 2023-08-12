@@ -1,44 +1,44 @@
 package com.example.playlistmaker.search.data.network
 
-import com.example.playlistmaker.player.domain.models.Track
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.example.playlistmaker.search.data.api.NetworkClient
-import com.example.playlistmaker.search.domain.NetworkError
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class RetrofitClient(private val api: RetrofitApi) : NetworkClient {
-    override fun doRequest(
-        request: String,
-        onSuccess: (List<Track>) -> Unit,
-        onError: (NetworkError) -> Unit
-    ) {
-        api.search(request)
-            .enqueue(object : Callback<TrackResponse> {
-                override fun onResponse(
-                    call: Call<TrackResponse>,
-                    response: Response<TrackResponse>
-                ) {
-                    when (response.code()) {
-                        200 -> {
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                onSuccess.invoke(response.body()?.results!!)
+class RetrofitClient(private val api: RetrofitApi, private val context: Context) : NetworkClient {
+    override suspend fun doRequest(
+        request: String
+    ): Response {
 
-                            } else {
-                                onError.invoke(NetworkError.NOTHING_FOUND)
-                            }
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
 
-                        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.search(request)
+                response.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
+            }
+        }
+    }
 
-                        else -> onError.invoke(NetworkError.NO_INTERNET)
-                    }
-
-                }
-
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    onError.invoke(NetworkError.NO_INTERNET)
-                }
-
-            })
+    private fun isConnected(): Boolean {
+        val connectivityManager = context.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
+            }
+        }
+        return false
     }
 }

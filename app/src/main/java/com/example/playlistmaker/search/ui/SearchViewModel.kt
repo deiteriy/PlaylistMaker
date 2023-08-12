@@ -1,19 +1,22 @@
 package com.example.playlistmaker.search.ui
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.domain.NetworkError
 import com.example.playlistmaker.search.domain.api.SearchInteractor
 import com.example.playlistmaker.search.ui.model.SearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>()
     private val historyList = ArrayList<Track>()
-    private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
     private var isClickAllowed = true
     private var searchRequest = SEARCH_VALUE
 
@@ -26,16 +29,21 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     fun findTrack(request: String) {
         stateLiveData.postValue(SearchState.Loading)
         searchRequest = request
+        viewModelScope.launch {
+            interactor
+                .findTrack(request)
+                .collect { pair ->
+                    postResult(pair.first, pair.second)
+                }
+        }
+    }
 
-        interactor.findTrack(request,
-            onSuccess = { trackList ->
-                stateLiveData.postValue(SearchState.SearchedTracks(trackList))
-            },
-            onError = { error ->
-                stateLiveData.postValue(SearchState.SearchError(error))
-            }
-        )
-
+    private fun postResult(trackList: ArrayList<Track>?, error: String?) {
+        when {
+            error != null -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NO_INTERNET))
+            trackList?.isEmpty()!! -> stateLiveData.postValue(SearchState.SearchError(NetworkError.NOTHING_FOUND))
+            else -> stateLiveData.postValue(SearchState.SearchedTracks(trackList))
+        }
     }
 
     fun clearHistory()  {
@@ -56,18 +64,25 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
 
-    val searchRunnable = Runnable { findTrack(searchRequest) }
     fun searchDebounce(request: String) {
+        if (searchRequest == request) {
+            return
+        }
         searchRequest = request
-        handler.removeCallbacks(searchRunnable)
-
-        if(request.isNotEmpty()) {
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            if (searchRequest.isNotEmpty()) {
+                findTrack(searchRequest)
+            }
         }
     }
 
