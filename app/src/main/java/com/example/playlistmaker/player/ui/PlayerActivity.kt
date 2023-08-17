@@ -63,6 +63,14 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.observeIsFavorite().observe(this) {
+            if(it == true) {
+                binding.likeButton.setImageResource(R.drawable.like_button_active)
+            } else {
+                binding.likeButton.setImageResource(R.drawable.like_button_inactive)
+            }
+        }
+
         viewModel.observeTime().observe(this) { time ->
             binding.trackProgress.text = time
         }
@@ -82,6 +90,9 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.arrowBack.setOnClickListener {
             finish()
+        }
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 

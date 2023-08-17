@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
@@ -15,6 +16,7 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor,
 ) : ViewModel() {
     private var track: Track? = null
 
@@ -25,6 +27,21 @@ class PlayerViewModel(
             timeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(position))
             delay(TRACK_TIME_DELAY)
         }
+    }
+
+    fun onFavoriteClicked() {
+        if (track!!.isFavorite) {
+            viewModelScope.launch {
+                favoritesInteractor.deleteFromFavorite(track!!)
+            }
+            isFavoriteLiveData.postValue(false)
+        } else {
+            viewModelScope.launch {
+                favoritesInteractor.markAsFavorite(track!!)
+            }
+            isFavoriteLiveData.postValue(true)
+        }
+
     }
 
     private fun startUpdatingTime() {
@@ -41,6 +58,8 @@ class PlayerViewModel(
 
     private val timeLiveData = MutableLiveData<String>()
 
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
+
 
     fun initWithTrack(item: Track) {
 
@@ -50,11 +69,14 @@ class PlayerViewModel(
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
+        isFavoriteLiveData.postValue(track!!.isFavorite)
     }
 
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     fun observeTime(): LiveData<String> = timeLiveData
+
+    fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
 
     fun play() {
         playerInteractor.startPlayer()

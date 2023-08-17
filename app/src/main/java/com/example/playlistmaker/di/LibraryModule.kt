@@ -4,11 +4,11 @@ import androidx.room.Room
 import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker.library.ui.viewmodels.PlaylistsViewModel
 import com.example.playlistmaker.library.data.db.AppDatabase
-import com.example.playlistmaker.library.data.db.HistoryRepositoryImpl
+import com.example.playlistmaker.library.data.db.FavoritesRepositoryImpl
 import com.example.playlistmaker.library.data.db.converters.TrackDbConverter
-import com.example.playlistmaker.library.domain.db.HistoryInteractor
-import com.example.playlistmaker.library.domain.db.HistoryRepository
-import com.example.playlistmaker.library.domain.impl.HistoryInteractorImpl
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.domain.db.FavoritesRepository
+import com.example.playlistmaker.library.domain.impl.FavoritesInteractorImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -22,12 +22,12 @@ val libraryModule = module {
 
     factory { TrackDbConverter() }
 
-    single<HistoryRepository> {
-        HistoryRepositoryImpl(get(), get())
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
     }
 
-    single<HistoryInteractor> {
-        HistoryInteractorImpl(get())
+    single<FavoritesInteractor> {
+        FavoritesInteractorImpl(get())
     }
 
     viewModel {
@@ -35,6 +35,6 @@ val libraryModule = module {
     }
 
     viewModel {
-        FavoritesViewModel()
+        FavoritesViewModel(favoritesInteractor = get())
     }
 }
