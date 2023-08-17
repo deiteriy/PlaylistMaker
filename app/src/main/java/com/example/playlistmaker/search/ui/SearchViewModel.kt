@@ -89,6 +89,6 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

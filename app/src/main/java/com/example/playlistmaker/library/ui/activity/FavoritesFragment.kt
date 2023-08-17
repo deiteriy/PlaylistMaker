@@ -1,15 +1,16 @@
 package com.example.playlistmaker.library.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFavoritesBinding
-import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.library.ui.models.FavoriteState
 import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker.player.domain.models.Track
@@ -36,14 +37,22 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
         binding.favoriteTracks.adapter = favoritesAdapter
         binding.favoriteTracks.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+    }
 
-        viewModel.observeFavorites().observe(viewLifecycleOwner) { state ->
-            when(state) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.findFavoriteTrack()
+    }
+
+    private fun render(state: FavoriteState) {
+        when(state) {
                 is FavoriteState.FavoriteFullState -> {
                     favoritesAdapter.setTracks(state.tracks)
                     binding.favoriteTracks.visibility = View.VISIBLE
                     binding.libraryPlaceholder.visibility = View.GONE
-
                 }
                 is FavoriteState.FavoriteEmptyState -> {
                     binding.favoriteTracks.visibility = View.GONE
@@ -54,7 +63,6 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
 
             }
 
-        }
 
     }
 
@@ -63,17 +71,19 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     override fun onTrackClick(item: Track) {
-        Toast.makeText(requireContext(), R.string.preview_not_found, Toast.LENGTH_SHORT)
-            .show()
-
-        /*if (viewModel.clickDebounce()) {
+        if (viewModel.clickDebounce()) {
             try {
-                viewModel.saveTrack(item)
+                viewModel.addTrack(item)
                 navToTrack(item)
             } catch (e: NullPointerException) {
                 Toast.makeText(requireContext(), R.string.preview_not_found, Toast.LENGTH_SHORT)
                     .show()
             }
-        }*/
+        }
+    }
+
+    private fun navToTrack(item: Track) {
+        val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerActivity2(item)
+        findNavController().navigate(action)
     }
 }

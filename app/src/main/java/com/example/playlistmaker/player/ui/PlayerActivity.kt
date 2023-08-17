@@ -2,6 +2,7 @@ package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
@@ -93,6 +94,7 @@ class PlayerActivity : AppCompatActivity() {
         }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
+            Log.i("LIKEIT", "Нажал на кнопку лайка")
         }
     }
 

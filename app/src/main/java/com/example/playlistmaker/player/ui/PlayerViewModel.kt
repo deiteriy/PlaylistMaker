@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,14 +35,14 @@ class PlayerViewModel(
             viewModelScope.launch {
                 favoritesInteractor.deleteFromFavorite(track!!)
             }
-            isFavoriteLiveData.postValue(false)
+            track!!.isFavorite = false
         } else {
             viewModelScope.launch {
                 favoritesInteractor.markAsFavorite(track!!)
             }
-            isFavoriteLiveData.postValue(true)
+            track!!.isFavorite = true
         }
-
+        isFavoriteLiveData.postValue(track!!.isFavorite)
     }
 
     private fun startUpdatingTime() {
