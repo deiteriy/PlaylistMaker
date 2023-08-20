@@ -1,9 +1,14 @@
 package com.example.playlistmaker.search.data
 
+import android.util.Log
+import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.dto.TrackDto
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class TrackMapper {
+class TrackMapper(private val appDatabase: AppDatabase) {
 
     fun mapToDomain(trackDto: TrackDto): Track {
         return Track(
@@ -34,6 +39,4 @@ class TrackMapper {
             previewUrl = track.previewUrl,
         )
     }
-
-
 }

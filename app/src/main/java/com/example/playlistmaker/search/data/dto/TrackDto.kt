@@ -10,5 +10,5 @@ data class TrackDto (
     val releaseDate: String?, // Год выпуска
     val primaryGenreName: String, // Жанр
     val country: String,  // страна выпуска трека
-    val previewUrl: String, // ссылка на отрывок песни в 30 секунд
+    val previewUrl: String?, // ссылка на отрывок песни в 30 секунд
 )

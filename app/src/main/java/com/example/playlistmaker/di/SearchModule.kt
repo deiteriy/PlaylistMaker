@@ -26,7 +26,7 @@ val searchModule = module {
     factory { Gson() }
 
     single {
-        TrackMapper()
+        TrackMapper(appDatabase = get())
     }
 
     single<RetrofitApi> {

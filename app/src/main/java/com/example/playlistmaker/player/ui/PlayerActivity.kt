@@ -26,7 +26,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.initWithTrack(track)
 
 
-        url = track.previewUrl
+        url = track.previewUrl!!
 
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)

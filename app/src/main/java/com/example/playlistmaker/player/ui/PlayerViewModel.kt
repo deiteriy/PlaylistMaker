@@ -63,9 +63,8 @@ class PlayerViewModel(
 
 
     fun initWithTrack(item: Track) {
-
         track = item
-        playerInteractor.preparePlayer(track!!.previewUrl)
+        playerInteractor.preparePlayer(track!!.previewUrl!!)
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
