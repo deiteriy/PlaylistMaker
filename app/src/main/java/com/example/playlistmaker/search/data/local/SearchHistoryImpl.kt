@@ -8,9 +8,6 @@ import com.example.playlistmaker.search.data.api.SearchHistory
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 const val TRACK_HISTORY = "track_history"
 

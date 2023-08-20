@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data
 
-import android.util.Log
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.api.NetworkClient
@@ -61,7 +60,6 @@ class SearchRepositoryImpl(
         var trackList = searchHistory.read()
         trackList.forEach {
             var id = appDatabase.trackDao().getTracksId(it.trackId)
-            Log.i("FINDTHEWAY", "Работает функция showHistory в репозитории. id в базе = $id, trackId = ${it.trackId}")
             it.isFavorite = id == it.trackId
         }
         return trackList
@@ -73,7 +71,6 @@ class SearchRepositoryImpl(
 
     private suspend fun isFavoriteTrack(trackId: Long): Boolean {
         val track: Long? = appDatabase.trackDao().getTracksId(trackId)
-        Log.i("FINDTHEWAY", "Работает функция isFavoriteTrack. trackId = $trackId, track = $track")
         return trackId == track
     }
 }
