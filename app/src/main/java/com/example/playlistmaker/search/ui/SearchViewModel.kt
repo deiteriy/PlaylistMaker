@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
+class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>()
     private var searchJob: Job? = null
@@ -20,8 +20,8 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     private var searchRequest = SEARCH_VALUE
 
     init {
-            showHistory()
-                }
+        showHistory()
+    }
 
     fun observeState(): LiveData<SearchState> = stateLiveData
     fun findTrack(request: String) {
@@ -44,11 +44,9 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
         }
     }
 
-    fun clearHistory()  {
+    fun clearHistory() {
         interactor.clearHistory()
-        viewModelScope.launch {
-            stateLiveData.postValue(SearchState.SearchHistory(interactor.showHistory()))
-        }
+        stateLiveData.postValue(SearchState.SearchHistory(interactor.showHistory()))
     }
 
     fun saveTrack(track: Track) {
@@ -56,9 +54,7 @@ class SearchViewModel(private val interactor: SearchInteractor): ViewModel() {
     }
 
     fun showHistory() {
-        viewModelScope.launch {
-            stateLiveData.postValue(SearchState.SearchHistory(interactor.showHistory()))
-        }
+        stateLiveData.postValue(SearchState.SearchHistory(interactor.showHistory()))
     }
 
     fun clickDebounce(): Boolean {

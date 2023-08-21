@@ -7,7 +7,7 @@ interface SearchInteractor {
 
     fun findTrack(request: String): Flow<Pair<ArrayList<Track>?, String?>>
     fun saveTrack(track: Track)
-    suspend fun showHistory(): List<Track>
+    fun showHistory(): List<Track>
     fun clearHistory()
 
 }

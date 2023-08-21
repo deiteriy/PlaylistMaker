@@ -76,7 +76,7 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
             skipHistory()
         }
 
-        binding.inputSearch.setOnFocusChangeListener { view, hasFocus ->
+        binding.inputSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.inputSearch.text.isEmpty()) showHistory(
             )
         }

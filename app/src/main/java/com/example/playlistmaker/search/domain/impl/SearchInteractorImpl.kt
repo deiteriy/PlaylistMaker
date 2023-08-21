@@ -26,7 +26,7 @@ class SearchInteractorImpl(private val repository: SearchRepository): SearchInte
         repository.saveTrack(track)
     }
 
-    override suspend fun showHistory(): List<Track> {
+    override fun showHistory(): List<Track> {
         return repository.showHistory()
     }
 

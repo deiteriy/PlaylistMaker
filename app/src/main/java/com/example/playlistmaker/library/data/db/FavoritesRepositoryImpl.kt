@@ -25,6 +25,11 @@ class FavoritesRepositoryImpl(
         appDatabase.trackDao().deleteTrack(trackEntity)
     }
 
+    override suspend fun isFavorite(trackId: Long): Boolean {
+        val track: Long? = appDatabase.trackDao().getTracksId(trackId)
+        return trackId == track
+    }
+
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> trackDbConverter.map(track) }
     }

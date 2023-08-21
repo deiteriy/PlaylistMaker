@@ -63,12 +63,15 @@ class PlayerViewModel(
 
     fun initWithTrack(item: Track) {
         track = item
+        viewModelScope.launch {
+            track!!.isFavorite = isFavoriteTrack(track!!.trackId)
+            isFavoriteLiveData.postValue(track!!.isFavorite)
+        }
         playerInteractor.preparePlayer(track!!.previewUrl!!)
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
-        isFavoriteLiveData.postValue(track!!.isFavorite)
     }
 
     fun observeState(): LiveData<PlayerState> = stateLiveData
@@ -94,5 +97,9 @@ class PlayerViewModel(
 
     companion object {
         private const val TRACK_TIME_DELAY = 300L
+    }
+
+    private suspend fun isFavoriteTrack(trackId: Long): Boolean {
+        return favoritesInteractor.isFavorite(trackId)
     }
 }

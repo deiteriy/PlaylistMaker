@@ -29,7 +29,7 @@ class SettingsFragment : Fragment() {
             binding.themeSwitcher.isChecked = themeSettings.darkTheme!!
         }
 
-        binding.themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.changeAppTheme(checked)
         }
 

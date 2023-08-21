@@ -1,10 +1,9 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.dto.TrackDto
 
-class TrackMapper(private val appDatabase: AppDatabase) {
+class TrackMapper {
 
     fun mapToDomain(trackDto: TrackDto): Track {
         return Track(

@@ -17,4 +17,9 @@ class FavoritesInteractorImpl(private val favoritesRepository: FavoritesReposito
     override suspend fun deleteFromFavorite(track: Track) {
         favoritesRepository.deleteFromFavorite(track)
     }
+
+    override suspend fun isFavorite(trackId: Long): Boolean {
+        return favoritesRepository.isFavorite(trackId)
+    }
+
 }

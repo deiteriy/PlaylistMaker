@@ -36,7 +36,6 @@ class SearchRepositoryImpl(
                             primaryGenreName = it.primaryGenreName,
                             country = it.country,
                             previewUrl = it.previewUrl,
-                            isFavorite = isFavoriteTrack(it.trackId)
                         )
                     } as ArrayList<Track>
                     emit(Resource.Success(data))
@@ -56,21 +55,12 @@ class SearchRepositoryImpl(
     }
 
 
-    override suspend fun showHistory(): List<Track> {
-        var trackList = searchHistory.read()
-        trackList.forEach {
-            var id = appDatabase.trackDao().getTracksId(it.trackId)
-            it.isFavorite = id == it.trackId
-        }
-        return trackList
+    override fun showHistory(): List<Track> {
+        return searchHistory.read()
     }
 
     override fun clearHistory() {
         searchHistory.clear()
     }
 
-    private suspend fun isFavoriteTrack(trackId: Long): Boolean {
-        val track: Long? = appDatabase.trackDao().getTracksId(trackId)
-        return trackId == track
-    }
 }
