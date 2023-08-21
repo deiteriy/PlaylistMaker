@@ -9,4 +9,26 @@
     <string name="share_app">Share app</string>
     <string name="chat_with_help">Start chat with help</string>
     <string name="user_agreement">User agreement</string>
+    <string name="share_title">Share to</string>
+    <string name="input_hint"><font size = "16">Search</font></string>
+    <string name="track_name">Track name</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="something_went_wrong">Communication problems \n \n Download failed. Check your internet connection</string>
+    <string name="update">Update</string>
+    <string name="search_history">Search history</string>
+    <string name="clear_history">Clear history</string>
+    <string name="country">Country</string>
+    <string name="genre">Genre</string>
+    <string name="year">Year</string>
+    <string name="album">Album</string>
+    <string name="duration">Duration</string>
+    <string name="preview_not_found">Preview not found.\nSelect another track</string>
+    <string name="mail_client_not_found">Mail client not found</string>
+    <string name="timer_after_reset">00:00</string>
+    <string name="timer_reset">00:00</string>
+    <string name="library_is_empty">Your library is empty</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="there_is_no_playlists">There is no\nany playlist</string>
+    <string name="favorite_tracks">Favorite tracks</string>
+    <string name="playlists">Playlists</string>
 </resources>
