@@ -50,7 +50,6 @@ class SearchHistoryImpl(private val sharedPreferences: SharedPreferences, privat
     }
 
     override fun clear() {
-        Log.e("history_bug", "Запущен метод clearHistory")
         searchHistory.clear()
         val json = Gson().toJson(searchHistory)
         sharedPreferences.edit()

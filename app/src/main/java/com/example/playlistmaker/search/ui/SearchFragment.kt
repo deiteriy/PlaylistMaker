@@ -36,7 +36,6 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,10 +52,8 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 textInSearch = s.toString()
-                if (binding.inputSearch.hasFocus() && s?.isEmpty() == true && viewModel.showHistory()
-                        .isNotEmpty()
-                ) {
-                    showHistory(viewModel.showHistory())
+                if (binding.inputSearch.hasFocus() && s?.isEmpty() == true) {
+                    viewModel.showHistory()
                 } else if (s?.isEmpty() == false) {
                     skipHistory()
                 }
@@ -79,9 +76,8 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
             skipHistory()
         }
 
-        binding.inputSearch.setOnFocusChangeListener { view, hasFocus ->
+        binding.inputSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.inputSearch.text.isEmpty()) showHistory(
-                viewModel.showHistory()
             )
         }
 
@@ -103,6 +99,11 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     override fun onTrackClick(item: Track) {
+        if(item.previewUrl == null) {
+            Toast.makeText(requireContext(), R.string.preview_not_found, Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
         if (viewModel.clickDebounce()) {
             try {
                 viewModel.saveTrack(item)
@@ -124,8 +125,10 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         }
     }
 
-    private fun showHistory(history: List<Track>) {
+    private fun updateHistory(history: List<Track>) {
         historyAdapter.setTracks(history)
+    }
+    private fun showHistory() {
         if (historyAdapter.data.isNotEmpty()) {
             binding.searchPlaceholder.visibility = View.GONE
             binding.trackList.visibility = View.VISIBLE
@@ -163,7 +166,10 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
     private fun render(state: SearchState) {
         when (state) {
             is SearchState.SearchHistory -> {
-                showHistory(state.tracks)
+                updateHistory(state.tracks)
+                if(historyAdapter.data.isNotEmpty()) {
+                    showHistory()
+                }
             }
 
             is SearchState.Loading -> {
@@ -181,6 +187,7 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
             }
         }
     }
+
 
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE

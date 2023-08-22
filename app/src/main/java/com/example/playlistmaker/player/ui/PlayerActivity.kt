@@ -2,6 +2,7 @@ package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
@@ -25,7 +26,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.initWithTrack(track)
 
 
-        url = track.previewUrl
+        url = track.previewUrl!!
 
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -63,6 +64,14 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.observeIsFavorite().observe(this) {
+            if(it == true) {
+                binding.likeButton.setImageResource(R.drawable.like_button_active)
+            } else {
+                binding.likeButton.setImageResource(R.drawable.like_button_inactive)
+            }
+        }
+
         viewModel.observeTime().observe(this) { time ->
             binding.trackProgress.text = time
         }
@@ -82,6 +91,10 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.arrowBack.setOnClickListener {
             finish()
+        }
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+            Log.i("LIKEIT", "Нажал на кнопку лайка")
         }
     }
 

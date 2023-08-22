@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
@@ -15,6 +16,7 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor,
 ) : ViewModel() {
     private var track: Track? = null
 
@@ -25,6 +27,21 @@ class PlayerViewModel(
             timeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(position))
             delay(TRACK_TIME_DELAY)
         }
+    }
+
+    fun onFavoriteClicked() {
+        if (track!!.isFavorite) {
+            viewModelScope.launch {
+                favoritesInteractor.deleteFromFavorite(track!!)
+            }
+            track!!.isFavorite = false
+        } else {
+            viewModelScope.launch {
+                favoritesInteractor.markAsFavorite(track!!)
+            }
+            track!!.isFavorite = true
+        }
+        isFavoriteLiveData.postValue(track!!.isFavorite)
     }
 
     private fun startUpdatingTime() {
@@ -41,11 +58,16 @@ class PlayerViewModel(
 
     private val timeLiveData = MutableLiveData<String>()
 
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
+
 
     fun initWithTrack(item: Track) {
-
         track = item
-        playerInteractor.preparePlayer(track!!.previewUrl)
+        viewModelScope.launch {
+            track!!.isFavorite = isFavoriteTrack(track!!.trackId)
+            isFavoriteLiveData.postValue(track!!.isFavorite)
+        }
+        playerInteractor.preparePlayer(track!!.previewUrl!!)
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
@@ -55,6 +77,8 @@ class PlayerViewModel(
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     fun observeTime(): LiveData<String> = timeLiveData
+
+    fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
 
     fun play() {
         playerInteractor.startPlayer()
@@ -73,5 +97,9 @@ class PlayerViewModel(
 
     companion object {
         private const val TRACK_TIME_DELAY = 300L
+    }
+
+    private suspend fun isFavoriteTrack(trackId: Long): Boolean {
+        return favoritesInteractor.isFavorite(trackId)
     }
 }

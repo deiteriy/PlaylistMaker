@@ -23,6 +23,6 @@ val playerModule = module {
     }
 
     viewModel {
-        PlayerViewModel(playerInteractor = get())
+        PlayerViewModel(playerInteractor = get(), favoritesInteractor = get())
     }
 }

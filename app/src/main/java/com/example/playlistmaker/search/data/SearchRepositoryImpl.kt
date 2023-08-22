@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.data
 
+import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.api.NetworkClient
 import com.example.playlistmaker.search.data.api.SearchHistory
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
+    private val appDatabase: AppDatabase,
     private val searchHistory: SearchHistory
 ) : SearchRepository {
     override fun findTrack(request: String): Flow<Resource<ArrayList<Track>>> = flow {
@@ -33,7 +35,7 @@ class SearchRepositoryImpl(
                             releaseDate = it.releaseDate,
                             primaryGenreName = it.primaryGenreName,
                             country = it.country,
-                            previewUrl = it.previewUrl
+                            previewUrl = it.previewUrl,
                         )
                     } as ArrayList<Track>
                     emit(Resource.Success(data))
@@ -60,4 +62,5 @@ class SearchRepositoryImpl(
     override fun clearHistory() {
         searchHistory.clear()
     }
+
 }
