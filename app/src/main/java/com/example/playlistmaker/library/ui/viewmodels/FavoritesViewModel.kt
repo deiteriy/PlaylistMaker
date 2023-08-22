@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class FavoritesViewModel(private val favoritesInteractor: FavoritesInteractor): ViewModel() {
     private var isClickAllowed = true
 
-    val _favoritesLiveData = MutableLiveData<FavoriteState>()
+    private val _favoritesLiveData = MutableLiveData<FavoriteState>()
 
     fun findFavoriteTrack() {
         viewModelScope.launch {
