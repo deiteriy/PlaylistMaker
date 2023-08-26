@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_libraryFragment_to_playerActivity2"
             app:destination="@id/playerActivity" />
+        <action
+            android:id="@+id/action_libraryFragment_to_createPlaylistFragment2"
+            app:destination="@id/createPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -42,4 +45,9 @@
             android:name="item"
             app:argType="com.example.playlistmaker.player.domain.models.Track" />
     </activity>
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.example.playlistmaker.library.ui.activity.CreatePlaylistFragment"
+        android:label="fragment_create_playlist"
+        tools:layout="@layout/fragment_create_playlist" />
 </navigation>

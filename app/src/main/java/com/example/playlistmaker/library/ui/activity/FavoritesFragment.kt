@@ -39,6 +39,11 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+
+        binding.libraryButton.setOnClickListener {
+            navToPlaylist()
+        }
+
     }
 
     override fun onResume() {
@@ -57,7 +62,9 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
                     binding.favoriteTracks.visibility = View.GONE
                     binding.libraryPlaceholder.visibility = View.VISIBLE
                     binding.libraryPlaceholderText.text = resources.getString(R.string.library_is_empty)
-                    binding.libraryButton.visibility = View.INVISIBLE
+
+                    // кнопки на этом экране быть не должно, положение VISIBLE только для теста
+                    binding.libraryButton.visibility = View.VISIBLE
                 }
 
             }
@@ -83,6 +90,11 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
 
     private fun navToTrack(item: Track) {
         val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerActivity2(item)
+        findNavController().navigate(action)
+    }
+
+    private fun navToPlaylist() {
+        val action = LibraryFragmentDirections.actionLibraryFragmentToCreatePlaylistFragment2()
         findNavController().navigate(action)
     }
 }

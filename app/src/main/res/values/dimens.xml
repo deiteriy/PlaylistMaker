@@ -27,4 +27,15 @@
     <dimen name="size_300">300dp</dimen>
     <dimen name="margin_200">200dp</dimen>
     <dimen name="margin_300">300dp</dimen>
+    <dimen name="margin_42">42dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="padding_18">18dp</dimen>
+    <dimen name="padding_19">19dp</dimen>
+    <dimen name="size_56">56dp</dimen>
+    <dimen name="size_44">44dp</dimen>
+    <dimen name="margin_1">1dp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="size_100">100dp</dimen>
 </resources>

@@ -31,4 +31,8 @@
     <string name="there_is_no_playlists">There is no\nany playlist</string>
     <string name="favorite_tracks">Favorite tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="title">Title*</string>
+    <string name="description">Description</string>
+
+
 </resources>
