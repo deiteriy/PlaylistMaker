@@ -40,9 +40,7 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
             render(it)
         }
 
-        binding.libraryButton.setOnClickListener {
-            navToPlaylist()
-        }
+
 
     }
 
@@ -62,9 +60,7 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
                     binding.favoriteTracks.visibility = View.GONE
                     binding.libraryPlaceholder.visibility = View.VISIBLE
                     binding.libraryPlaceholderText.text = resources.getString(R.string.library_is_empty)
-
-                    // кнопки на этом экране быть не должно, положение VISIBLE только для теста
-                    binding.libraryButton.visibility = View.VISIBLE
+                    binding.libraryButton.visibility = View.INVISIBLE
                 }
 
             }
@@ -93,8 +89,5 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
         findNavController().navigate(action)
     }
 
-    private fun navToPlaylist() {
-        val action = LibraryFragmentDirections.actionLibraryFragmentToCreatePlaylistFragment2()
-        findNavController().navigate(action)
-    }
+
 }
