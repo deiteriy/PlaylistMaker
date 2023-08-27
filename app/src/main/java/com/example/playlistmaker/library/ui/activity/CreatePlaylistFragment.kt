@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.activity
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -77,7 +78,11 @@ class CreatePlaylistFragment : Fragment() {
 
 
         binding.arrowBack.setOnClickListener {
-            findNavController().navigateUp()
+            if(isFieldsEmpty()) {
+                findNavController().navigateUp()
+            } else {
+                showDialogue()
+            }
         }
 
         val pickMedia =
@@ -94,6 +99,26 @@ class CreatePlaylistFragment : Fragment() {
         binding.shapeRectangle.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+        binding.createButton.setOnClickListener {
+            Toast.makeText(requireContext(), "Плейлист ${binding.titleEditText.text} создан", Toast.LENGTH_SHORT)
+                .show()
+            findNavController().navigateUp()
+        }
     }
 
+    private fun isFieldsEmpty(): Boolean {
+        return binding.titleEditText.text.isBlank() && binding.descriptionEditText.text.isBlank()
+    }
+    private fun showDialogue() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.create_playlist_finish)
+            .setMessage(R.string.unsaved_changes)
+            .setNegativeButton(R.string.cancel) { dialog, which ->
+            }
+            .setPositiveButton(R.string.finish) { dialog, which ->
+                findNavController().navigateUp()
+            }
+            .show()
+    }
 }
