@@ -25,7 +25,7 @@
         android:layout_margin="@dimen/margin_16"
         android:background="@drawable/edt_background"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_8"
+        android:paddingStart="@dimen/margin_8"
         tools:context=".main.ui.MainActivity">
 
         <EditText
