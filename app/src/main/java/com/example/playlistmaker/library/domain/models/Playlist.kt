@@ -4,11 +4,10 @@ import android.net.Uri
 
 
 class Playlist(
-    val playlistId: Long,
+    val playlistId: Long = 0,
     val name: String,
     val description: String?,
-    val playlistCover: Uri,
+    val playlistCover: Uri?,
     var tracks: List<Long>,
     var tracksCount: Long,
-    var timeStamp: Long,
 )

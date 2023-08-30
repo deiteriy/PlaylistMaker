@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.flow
 
 class SearchRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val appDatabase: AppDatabase,
     private val searchHistory: SearchHistory
 ) : SearchRepository {
     override fun findTrack(request: String): Flow<Resource<ArrayList<Track>>> = flow {

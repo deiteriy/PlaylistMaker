@@ -1,6 +1,10 @@
 package com.example.playlistmaker.library.ui.activity
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,11 +15,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
+import com.example.playlistmaker.library.ui.viewmodels.PlaylistsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -23,8 +32,9 @@ class CreatePlaylistFragment : Fragment() {
         fun newInstance() = CreatePlaylistFragment()
     }
 
-    private lateinit var viewModel: CreatePlaylistViewModel
+    private val viewModel by viewModel<CreatePlaylistViewModel>()
     private lateinit var binding: FragmentCreatePlaylistBinding
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,8 +99,9 @@ class CreatePlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.shapeRectangle.setImageURI(uri)
+                    imageUri = saveImageAndReturnUri(uri)
 
-                    //        saveImageToPrivateStorage(uri)
+
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -101,10 +112,33 @@ class CreatePlaylistFragment : Fragment() {
         }
 
         binding.createButton.setOnClickListener {
+
+            viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.toString(), cover = imageUri)
             Toast.makeText(requireContext(), "Плейлист ${binding.titleEditText.text} создан", Toast.LENGTH_SHORT)
                 .show()
             findNavController().navigateUp()
         }
+    }
+
+    private fun saveImageAndReturnUri(uri: Uri): Uri {
+        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlistcoveralbum")
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
+        val currentTimeMillis = System.currentTimeMillis()
+        val fileName = "image_${currentTimeMillis}.jpg"
+
+        //создаём экземпляр класса File, который указывает на файл внутри каталога
+        val file = File(filePath, fileName)
+        // создаём входящий поток байтов из выбранной картинки
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+        // создаём исходящий поток байтов в созданный выше файл
+        val outputStream = FileOutputStream(file)
+        // записываем картинку с помощью BitmapFactory
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+        return file.toUri()
     }
 
     private fun isFieldsEmpty(): Boolean {
