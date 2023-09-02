@@ -5,31 +5,43 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.domain.models.PlayerState
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
+    private val playlistsAdapter = PlaylistsBottomSheetAdapter()
     private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        super.onCreate(savedInstanceState)
         val args: PlayerActivityArgs by navArgs()
         val track = args.item
-        viewModel.initWithTrack(track)
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = playlistsAdapter
+
+        viewModel.observePlaylistState().observe(this) {
+            playlistsAdapter.setPlaylists(it)
+        }
+
+        viewModel.initWithTrack(track)
 
         url = track.previewUrl!!
 
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
         binding.durationView.text =
@@ -39,6 +51,32 @@ class PlayerActivity : AppCompatActivity() {
         binding.countryView.text = track.country
         binding.trackProgress.text = getString(R.string.timer_reset)
 
+        val bottomSheetContainer = binding.playlistsBottomSheet
+        val overlay = binding.overlay
+        val bottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomSheetBehaviour.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        viewModel.showPlaylists()
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+
+
         fun playbackControl(playerState: PlayerState) {
             when (playerState) {
                 PlayerState.STATE_PREPARED, PlayerState.STATE_COMPLETE, PlayerState.STATE_PAUSED -> {
@@ -46,7 +84,7 @@ class PlayerActivity : AppCompatActivity() {
                     binding.playButton.setImageResource(R.drawable.pause_button)
                 }
 
-                PlayerState.STATE_PLAYING  -> {
+                PlayerState.STATE_PLAYING -> {
                     viewModel.pause()
                     binding.playButton.setImageResource(R.drawable.play_button)
                 }
@@ -64,7 +102,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         viewModel.observeIsFavorite().observe(this) {
-            if(it == true) {
+            if (it == true) {
                 binding.likeButton.setImageResource(R.drawable.like_button_active)
             } else {
                 binding.likeButton.setImageResource(R.drawable.like_button_inactive)
@@ -93,6 +131,13 @@ class PlayerActivity : AppCompatActivity() {
         }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
+        }
+        binding.saveButton.setOnClickListener {
+            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.newPlaylistButton.setOnClickListener {
+
         }
     }
 

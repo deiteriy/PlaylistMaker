@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.ui
+package com.example.playlistmaker.player.ui.viewmodel
 
 import android.icu.text.SimpleDateFormat
 import androidx.lifecycle.LiveData
@@ -6,17 +6,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.domain.db.PlaylistInteractor
+import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.library.ui.models.PlaylistState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
     private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
     private var track: Track? = null
 
@@ -60,6 +65,10 @@ class PlayerViewModel(
 
     private val isFavoriteLiveData = MutableLiveData<Boolean>()
 
+    private val _playlistLiveData = MutableLiveData<List<Playlist>>()
+
+    fun observePlaylistState(): LiveData<List<Playlist>> = _playlistLiveData
+
 
     fun initWithTrack(item: Track) {
         track = item
@@ -93,6 +102,14 @@ class PlayerViewModel(
     fun release() {
         playerInteractor.reset()
         stopUpdatingTime()
+    }
+
+    fun showPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.loadPlaylists().collect() {
+                _playlistLiveData.postValue(it)
+            }
+        }
     }
 
     companion object {
