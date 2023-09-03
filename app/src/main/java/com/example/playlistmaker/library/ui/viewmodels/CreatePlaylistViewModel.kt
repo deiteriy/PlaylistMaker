@@ -13,7 +13,7 @@ class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor
 
     fun createPlaylist(title: String, description: String?, cover:Uri?) {
         viewModelScope.launch {
-            val playlist = Playlist(name = title, description = description, playlistCover = cover, tracks = emptyList(), tracksCount = 0)
+            val playlist = Playlist(name = title, description = description, playlistCover = cover, tracks = arrayListOf(), tracksCount = 0)
             playlistInteractor.addPlaylist(playlist)
         }
     }

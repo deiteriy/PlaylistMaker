@@ -8,6 +8,6 @@ class Playlist(
     val name: String,
     val description: String?,
     val playlistCover: Uri?,
-    var tracks: List<Long>,
+    var tracks: ArrayList<Long>,
     var tracksCount: Long,
 )

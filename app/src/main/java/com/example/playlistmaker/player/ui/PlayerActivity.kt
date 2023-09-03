@@ -2,7 +2,9 @@ package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,22 +12,26 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.library.ui.PlaylistsAdapter
 import com.example.playlistmaker.player.domain.models.PlayerState
+import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlaylistClickListener {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var url: String
-    private val playlistsAdapter = PlaylistsBottomSheetAdapter()
+    lateinit var track: Track
+    private val playlistsAdapter = PlaylistsBottomSheetAdapter(this)
     private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args: PlayerActivityArgs by navArgs()
-        val track = args.item
+        track = args.item
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -152,4 +158,20 @@ class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
         viewModel.release()
     }
+
+    override fun onPlaylistClick(item: Playlist) {
+        Log.i("CLICKLOOK", "Попали в onPlaylistClick")
+        if (viewModel.clickDebounce()) {
+            if (!viewModel.isInPlaylist(playlist = item, trackId = track.trackId)) {
+                viewModel.addToPlaylist(playlist = item, track = track)
+                Toast.makeText(this, "Трек добавлен в ${item.name}", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(this, "Трек уже есть в ${item.name}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+
 }

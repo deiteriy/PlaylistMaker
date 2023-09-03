@@ -5,6 +5,7 @@ import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.library.data.db.FavoritesRepositoryImpl
 import com.example.playlistmaker.library.data.db.PlaylistRepositoryImpl
 import com.example.playlistmaker.library.data.db.converters.PlaylistDbConverter
+import com.example.playlistmaker.library.data.db.converters.SavedTrackDbConverter
 import com.example.playlistmaker.library.data.db.converters.TrackDbConverter
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.library.domain.db.FavoritesRepository
@@ -30,12 +31,14 @@ val libraryModule = module {
 
     factory { PlaylistDbConverter(get()) }
 
+    factory { SavedTrackDbConverter()}
+
     single<FavoritesRepository> {
         FavoritesRepositoryImpl(get(), get())
     }
 
     single<PlaylistRepository> {
-        PlaylistRepositoryImpl(get(), get())
+        PlaylistRepositoryImpl(appDatabase = get(), playlistDbConverter =  get(), savedTrackDbConverter = get())
     }
 
     single<FavoritesInteractor> {

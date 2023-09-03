@@ -5,9 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.library.ui.PlaylistsAdapter
 import com.example.playlistmaker.library.ui.PlaylistsViewHolder
+import com.example.playlistmaker.player.domain.models.Track
 
-class PlaylistsBottomSheetAdapter: RecyclerView.Adapter<PlaylistsBottomSheetViewHolder>() {
+class PlaylistsBottomSheetAdapter(private val onPlaylistClickListener: PlaylistsBottomSheetAdapter.OnPlaylistClickListener): RecyclerView.Adapter<PlaylistsBottomSheetViewHolder>() {
+
+    interface OnPlaylistClickListener {
+        fun onPlaylistClick(item: Playlist)
+    }
 
     var data: ArrayList<Playlist> = arrayListOf()
 
@@ -19,6 +25,9 @@ class PlaylistsBottomSheetAdapter: RecyclerView.Adapter<PlaylistsBottomSheetView
 
     override fun onBindViewHolder(holder: PlaylistsBottomSheetViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener {
+            onPlaylistClickListener.onPlaylistClick(item = data[position])
+        }
     }
 
     override fun getItemCount(): Int {

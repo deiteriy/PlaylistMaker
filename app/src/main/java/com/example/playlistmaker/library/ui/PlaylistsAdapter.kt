@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.search.ui.TrackListViewHolder
 
 class PlaylistsAdapter: RecyclerView.Adapter<PlaylistsViewHolder>() {
+
 
     var data: ArrayList<Playlist> = arrayListOf()
 

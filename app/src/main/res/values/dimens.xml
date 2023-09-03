@@ -45,4 +45,6 @@
     <dimen name="size_61">61dp</dimen>
     <dimen name="margin_30">30dp</dimen>
     <dimen name="size_8">8dp</dimen>
+    <dimen name="size_16">16dp</dimen>
+    <dimen name="playlist_cover_corner_radius">8dp</dimen>
 </resources>

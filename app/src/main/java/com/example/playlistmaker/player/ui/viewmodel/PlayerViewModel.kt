@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui.viewmodel
 
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.playlistmaker.library.ui.models.PlaylistState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.ui.SearchViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -26,6 +28,7 @@ class PlayerViewModel(
     private var track: Track? = null
 
     private var timeJob: Job? = null
+    private var isClickAllowed = true
     private suspend fun updateTime() {
         while (true) {
             val position = playerInteractor.getPosition()
@@ -106,7 +109,7 @@ class PlayerViewModel(
 
     fun showPlaylists() {
         viewModelScope.launch {
-            playlistInteractor.loadPlaylists().collect() {
+            playlistInteractor.loadPlaylists().collect {
                 _playlistLiveData.postValue(it)
             }
         }
@@ -118,5 +121,37 @@ class PlayerViewModel(
 
     private suspend fun isFavoriteTrack(trackId: Long): Boolean {
         return favoritesInteractor.isFavorite(trackId)
+    }
+
+    fun isInPlaylist(playlist: Playlist, trackId: Long): Boolean {
+        Log.i("CLICKLOOK", "Попали в isInPlaylist")
+
+        var result = false
+        for(track in playlist.tracks) {
+            if(track == trackId) result = true
+        }
+        return result
+    }
+
+    fun addToPlaylist(playlist: Playlist, track: Track) {
+        Log.i("CLICKLOOK", "Попали в addToPlaylist")
+
+        viewModelScope.launch {
+            playlistInteractor.saveTrack(playlist, track)
+        }
+    }
+
+    fun clickDebounce(): Boolean {
+        Log.i("CLICKLOOK", "Попали в clickDebounce")
+
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch {
+                delay(SearchViewModel.CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 }
