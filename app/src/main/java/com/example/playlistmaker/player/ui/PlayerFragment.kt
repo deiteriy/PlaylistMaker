@@ -21,6 +21,7 @@ import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.example.playlistmaker.search.ui.SearchFragmentDirections
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -46,8 +47,10 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
 
         track = args.item
         binding.recyclerView.adapter = playlistsAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.observePlaylistState().observe(requireActivity()) {
+
+        viewModel.observePlaylistState().observe(viewLifecycleOwner) {
             playlistsAdapter.setPlaylists(it)
         }
 
@@ -151,7 +154,7 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
         }
 
         binding.newPlaylistButton.setOnClickListener {
-
+            navToCreatePlaylist()
         }
     }
 
@@ -179,6 +182,11 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
                     .show()
             }
         }
+    }
+
+    private fun navToCreatePlaylist() {
+        val action = PlayerFragmentDirections.actionPlayerFragmentToCreatePlaylistFragment()
+        findNavController().navigate(action)
     }
 
 

@@ -109,7 +109,7 @@ class PlayerViewModel(
 
     fun showPlaylists() {
         viewModelScope.launch {
-            playlistInteractor.loadPlaylists().collect {
+            playlistInteractor.loadPlaylists().collect() {
                 _playlistLiveData.postValue(it)
             }
         }
@@ -142,8 +142,6 @@ class PlayerViewModel(
     }
 
     fun clickDebounce(): Boolean {
-        Log.i("CLICKLOOK", "Попали в clickDebounce")
-
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false

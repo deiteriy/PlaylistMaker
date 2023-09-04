@@ -1,5 +1,6 @@
 package com.example.playlistmaker.player.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class PlaylistsBottomSheetAdapter(private val onPlaylistClickListener: Playlists
     }
 
     fun setPlaylists(newPlaylists: List<Playlist>?) {
+
         data.clear()
         if (!newPlaylists.isNullOrEmpty()) {
             data.addAll(newPlaylists)
