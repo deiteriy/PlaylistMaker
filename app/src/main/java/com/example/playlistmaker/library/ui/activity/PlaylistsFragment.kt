@@ -31,6 +31,10 @@ class PlaylistsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("SHOWPLAYLIST", "Сработал метод onViewCreated в PlaylistFragment")
+        viewModel.showPlaylists()
+
+
 
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -45,10 +49,15 @@ class PlaylistsFragment: Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.showPlaylists()
+        Log.i("SHOWPLAYLIST", "Сработал метод onStart в PlaylistFragment")
+
+    }
     override fun onResume() {
         super.onResume()
         Log.i("SHOWPLAYLIST", "Сработал метод onResume в PlaylistFragment")
-        viewModel.showPlaylists()
     }
 
     companion object {
@@ -71,5 +80,6 @@ class PlaylistsFragment: Fragment() {
     private fun navToPlaylist() {
         val action = LibraryFragmentDirections.actionLibraryFragmentToCreatePlaylistFragment2()
         findNavController().navigate(action)
+
     }
 }

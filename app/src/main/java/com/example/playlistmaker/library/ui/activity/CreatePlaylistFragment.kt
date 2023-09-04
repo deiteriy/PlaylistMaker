@@ -116,7 +116,7 @@ class CreatePlaylistFragment : Fragment() {
             viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.toString(), cover = imageUri)
             Toast.makeText(requireContext(), "Плейлист ${binding.titleEditText.text} создан", Toast.LENGTH_SHORT)
                 .show()
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
     }
 
@@ -128,13 +128,10 @@ class CreatePlaylistFragment : Fragment() {
         val currentTimeMillis = System.currentTimeMillis()
         val fileName = "image_${currentTimeMillis}.jpg"
 
-        //создаём экземпляр класса File, который указывает на файл внутри каталога
         val file = File(filePath, fileName)
-        // создаём входящий поток байтов из выбранной картинки
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        // создаём исходящий поток байтов в созданный выше файл
         val outputStream = FileOutputStream(file)
-        // записываем картинку с помощью BitmapFactory
+
         BitmapFactory
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
@@ -151,7 +148,7 @@ class CreatePlaylistFragment : Fragment() {
             .setNegativeButton(R.string.cancel) { dialog, which ->
             }
             .setPositiveButton(R.string.finish) { dialog, which ->
-                findNavController().navigateUp()
+                findNavController().popBackStack()
             }
             .show()
     }
