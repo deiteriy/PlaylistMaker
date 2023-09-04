@@ -3,17 +3,21 @@ package com.example.playlistmaker.player.ui
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.library.domain.models.Playlist
-import com.example.playlistmaker.library.ui.PlaylistsAdapter
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
@@ -21,25 +25,29 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
-class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlaylistClickListener {
-    private lateinit var binding: ActivityPlayerBinding
+class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickListener {
+    private lateinit var binding: FragmentPlayerBinding
     private lateinit var url: String
     lateinit var track: Track
     private val playlistsAdapter = PlaylistsBottomSheetAdapter(this)
     private val viewModel by viewModel<PlayerViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val args: PlayerActivityArgs by navArgs()
-        track = args.item
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val args: PlayerFragmentArgs by navArgs()
+
+        track = args.item
         binding.recyclerView.adapter = playlistsAdapter
 
-        viewModel.observePlaylistState().observe(this) {
+        viewModel.observePlaylistState().observe(requireActivity()) {
             playlistsAdapter.setPlaylists(it)
         }
 
@@ -97,7 +105,7 @@ class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlayli
             }
         }
 
-        viewModel.observeState().observe(this) { state ->
+        viewModel.observeState().observe(requireActivity()) { state ->
             binding.playButton.setOnClickListener {
                 playbackControl(state)
             }
@@ -107,7 +115,7 @@ class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlayli
             }
         }
 
-        viewModel.observeIsFavorite().observe(this) {
+        viewModel.observeIsFavorite().observe(requireActivity()) {
             if (it == true) {
                 binding.likeButton.setImageResource(R.drawable.like_button_active)
             } else {
@@ -115,7 +123,7 @@ class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlayli
             }
         }
 
-        viewModel.observeTime().observe(this) { time ->
+        viewModel.observeTime().observe(requireActivity()) { time ->
             binding.trackProgress.text = time
         }
 
@@ -133,7 +141,7 @@ class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlayli
             .into(binding.trackCover)
 
         binding.arrowBack.setOnClickListener {
-            finish()
+            findNavController().popBackStack()
         }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
@@ -164,10 +172,10 @@ class PlayerActivity : AppCompatActivity(), PlaylistsBottomSheetAdapter.OnPlayli
         if (viewModel.clickDebounce()) {
             if (!viewModel.isInPlaylist(playlist = item, trackId = track.trackId)) {
                 viewModel.addToPlaylist(playlist = item, track = track)
-                Toast.makeText(this, "Трек добавлен в ${item.name}", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Трек добавлен в ${item.name}", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                Toast.makeText(this, "Трек уже есть в ${item.name}", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Трек уже есть в ${item.name}", Toast.LENGTH_SHORT)
                     .show()
             }
         }

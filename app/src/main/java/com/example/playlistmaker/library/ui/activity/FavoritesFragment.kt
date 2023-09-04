@@ -85,7 +85,7 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     private fun navToTrack(item: Track) {
-        val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerActivity2(item)
+        val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerFragment(item)
         findNavController().navigate(action)
     }
 

@@ -31,7 +31,7 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -223,7 +223,7 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     private fun navToTrack(item: Track) {
-        val action = SearchFragmentDirections.actionSearchFragmentToPlayerActivity(item)
+        val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(item)
         findNavController().navigate(action)
     }
 

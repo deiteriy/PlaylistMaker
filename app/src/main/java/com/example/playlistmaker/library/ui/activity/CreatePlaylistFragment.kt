@@ -100,10 +100,6 @@ class CreatePlaylistFragment : Fragment() {
                 if (uri != null) {
                     binding.shapeRectangle.setImageURI(uri)
                     imageUri = saveImageAndReturnUri(uri)
-
-
-                } else {
-                    Log.d("PhotoPicker", "No media selected")
                 }
             }
 
