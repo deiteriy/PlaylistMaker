@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.ui.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.library.ui.PlaylistsAdapter
 import com.example.playlistmaker.library.ui.models.PlaylistState
@@ -31,12 +33,6 @@ class PlaylistsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("SHOWPLAYLIST", "Сработал метод onViewCreated в PlaylistFragment")
-        viewModel.showPlaylists()
-
-
-
-
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = playlistsAdapter
 
@@ -49,17 +45,10 @@ class PlaylistsFragment: Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.showPlaylists()
-        Log.i("SHOWPLAYLIST", "Сработал метод onStart в PlaylistFragment")
-
-    }
     override fun onResume() {
         super.onResume()
-        Log.i("SHOWPLAYLIST", "Сработал метод onResume в PlaylistFragment")
+        viewModel.showPlaylists()
     }
-
     companion object {
         fun newInstance() = PlaylistsFragment().apply {}
     }

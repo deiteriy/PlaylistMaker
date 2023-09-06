@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,6 +97,11 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
             render(it)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.showHistory()
     }
 
     override fun onTrackClick(item: Track) {

@@ -18,7 +18,6 @@ class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor): Vi
     fun observeState(): LiveData<PlaylistState> = _playlistLiveData
 
     fun showPlaylists() {
-        Log.i("SHOWPLAYLIST", "Сработала функция showplaylist")
         viewModelScope.launch {
             playlistInteractor.loadPlaylists().collect {
                 if(it.isEmpty()) {
