@@ -1,14 +1,10 @@
 package com.example.playlistmaker.player.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.models.Playlist
-import com.example.playlistmaker.library.ui.PlaylistsAdapter
-import com.example.playlistmaker.library.ui.PlaylistsViewHolder
-import com.example.playlistmaker.player.domain.models.Track
 
 class PlaylistsBottomSheetAdapter(private val onPlaylistClickListener: PlaylistsBottomSheetAdapter.OnPlaylistClickListener): RecyclerView.Adapter<PlaylistsBottomSheetViewHolder>() {
 

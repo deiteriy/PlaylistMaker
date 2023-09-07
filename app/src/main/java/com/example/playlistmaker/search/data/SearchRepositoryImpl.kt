@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.api.NetworkClient
 import com.example.playlistmaker.search.data.api.SearchHistory

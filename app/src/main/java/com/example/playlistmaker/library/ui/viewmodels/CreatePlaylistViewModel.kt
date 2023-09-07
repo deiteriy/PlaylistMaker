@@ -1,13 +1,11 @@
 package com.example.playlistmaker.library.ui.viewmodels
 
 import android.net.Uri
-import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
-import java.io.File
 
 class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 

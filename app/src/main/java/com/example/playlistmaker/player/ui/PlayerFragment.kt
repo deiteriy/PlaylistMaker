@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
-import com.example.playlistmaker.search.ui.SearchFragmentDirections
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -171,16 +167,16 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
     }
 
     override fun onPlaylistClick(item: Playlist) {
-        Log.i("CLICKLOOK", "Попали в onPlaylistClick")
         if (viewModel.clickDebounce()) {
+            val message: String
             if (!viewModel.isInPlaylist(playlist = item, trackId = track.trackId)) {
                 viewModel.addToPlaylist(playlist = item, track = track)
-                Toast.makeText(requireContext(), "Трек добавлен в ${item.name}", Toast.LENGTH_SHORT)
-                    .show()
+                 message = getString(R.string.track_is_added, item.name)
             } else {
-                Toast.makeText(requireContext(), "Трек уже есть в ${item.name}", Toast.LENGTH_SHORT)
-                    .show()
+                 message = getString(R.string.track_already_in, item.name)
             }
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

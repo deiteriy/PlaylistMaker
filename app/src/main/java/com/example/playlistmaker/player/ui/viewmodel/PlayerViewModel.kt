@@ -9,14 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
-import com.example.playlistmaker.library.ui.models.PlaylistState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
