@@ -135,7 +135,7 @@ class CreatePlaylistFragment : Fragment() {
     }
 
     private fun isFieldsEmpty(): Boolean {
-        return binding.titleEditText.text.isBlank() && binding.descriptionEditText.text.isBlank()
+        return binding.titleEditText.text.isBlank() && binding.descriptionEditText.text.isBlank() && imageUri == null
     }
     private fun showDialogue() {
         MaterialAlertDialogBuilder(requireContext())
