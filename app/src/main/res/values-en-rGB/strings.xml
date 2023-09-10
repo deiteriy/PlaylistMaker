@@ -33,6 +33,14 @@
     <string name="playlists">Playlists</string>
     <string name="title">Title*</string>
     <string name="description">Description</string>
-
+    <string name="create">Create</string>
+    <string name="create_playlist_finish">Finish creating a playlist?</string>
+    <string name="unsaved_changes">All unsaved data will be lost</string>
+    <string name="cancel">Cancel</string>
+    <string name="finish">Finish</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="track_already_in">Track is already in the playlist %s</string>
+    <string name="track_is_added">Track added to playlist %s</string>
+    <string name="playlist_is_created">Playlist %s is created</string>
 
 </resources>

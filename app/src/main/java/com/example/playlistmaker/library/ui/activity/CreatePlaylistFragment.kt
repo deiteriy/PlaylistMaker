@@ -1,19 +1,16 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
@@ -21,14 +18,8 @@ import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class CreatePlaylistFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = CreatePlaylistFragment()
-    }
 
     private val viewModel by viewModel<CreatePlaylistViewModel>()
     private lateinit var binding: FragmentCreatePlaylistBinding
@@ -97,7 +88,8 @@ class CreatePlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.shapeRectangle.setImageURI(uri)
-                    imageUri = saveImageAndReturnUri(uri)
+                    viewModel.saveImage(uri)
+                    imageUri = uri
                 }
             }
 
@@ -107,30 +99,25 @@ class CreatePlaylistFragment : Fragment() {
 
         binding.createButton.setOnClickListener {
 
-            viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.toString(), cover = imageUri)
-            Toast.makeText(requireContext(), "Плейлист ${binding.titleEditText.text} создан", Toast.LENGTH_SHORT)
+            viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.text.toString())
+            val message = getString(R.string.playlist_is_created, binding.titleEditText.text)
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
                 .show()
             findNavController().popBackStack()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(isFieldsEmpty()) {
+                    findNavController().popBackStack()
+                } else {
+                    showDialogue()
+                }
+            }
+        })
     }
 
-    private fun saveImageAndReturnUri(uri: Uri): Uri {
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlistcoveralbum")
-        if (!filePath.exists()){
-            filePath.mkdirs()
-        }
-        val currentTimeMillis = System.currentTimeMillis()
-        val fileName = "image_${currentTimeMillis}.jpg"
 
-        val file = File(filePath, fileName)
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        return file.toUri()
-    }
 
     private fun isFieldsEmpty(): Boolean {
         return binding.titleEditText.text.isBlank() && binding.descriptionEditText.text.isBlank() && imageUri == null
@@ -145,5 +132,8 @@ class CreatePlaylistFragment : Fragment() {
                 findNavController().popBackStack()
             }
             .show()
+    }
+    companion object {
+        fun newInstance() = CreatePlaylistFragment()
     }
 }

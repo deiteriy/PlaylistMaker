@@ -9,11 +9,17 @@ import kotlinx.coroutines.launch
 
 class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
-    fun createPlaylist(title: String, description: String?, cover:Uri?) {
+    private var currentImage: Uri? = null
+
+    fun createPlaylist(title: String, description: String?) {
         viewModelScope.launch {
-            val playlist = Playlist(name = title, description = description, playlistCover = cover, tracks = arrayListOf(), tracksCount = 0)
+            val playlist = Playlist(name = title, description = description, playlistCover = currentImage, tracks = arrayListOf(), tracksCount = 0)
             playlistInteractor.addPlaylist(playlist)
         }
+    }
+
+    fun saveImage(uri: Uri) {
+        currentImage = playlistInteractor.saveImageAndReturnUri(uri)
     }
 
 

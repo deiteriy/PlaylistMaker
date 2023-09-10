@@ -152,7 +152,9 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
         binding.newPlaylistButton.setOnClickListener {
             navToCreatePlaylist()
         }
+
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -171,7 +173,8 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
             val message: String
             if (!viewModel.isInPlaylist(playlist = item, trackId = track.trackId)) {
                 viewModel.addToPlaylist(playlist = item, track = track)
-                 message = getString(R.string.track_is_added, item.name)
+                viewModel.showPlaylists()
+                message = getString(R.string.track_is_added, item.name)
             } else {
                  message = getString(R.string.track_already_in, item.name)
             }

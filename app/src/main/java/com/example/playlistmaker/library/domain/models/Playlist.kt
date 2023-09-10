@@ -9,5 +9,5 @@ class Playlist(
     val description: String?,
     val playlistCover: Uri?,
     var tracks: ArrayList<Long>,
-    var tracksCount: Long,
+    var tracksCount: Long = tracks.size.toLong(),
 )

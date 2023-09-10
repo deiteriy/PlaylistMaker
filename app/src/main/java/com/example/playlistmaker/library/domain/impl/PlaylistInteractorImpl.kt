@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.domain.impl
 
+import android.net.Uri
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.db.PlaylistRepository
 import com.example.playlistmaker.library.domain.models.Playlist
@@ -18,5 +19,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun saveTrack(playlist: Playlist, track: Track) {
         playlistRepository.saveTrack(playlist, track)
+    }
+
+    override fun saveImageAndReturnUri(uri: Uri): Uri {
+        return playlistRepository.saveImageAndReturnUri(uri)
     }
 }

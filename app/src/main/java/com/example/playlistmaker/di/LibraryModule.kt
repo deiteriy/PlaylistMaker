@@ -38,7 +38,7 @@ val libraryModule = module {
     }
 
     single<PlaylistRepository> {
-        PlaylistRepositoryImpl(appDatabase = get(), playlistDbConverter =  get(), savedTrackDbConverter = get())
+        PlaylistRepositoryImpl(appDatabase = get(), playlistDbConverter =  get(), savedTrackDbConverter = get(), context = get())
     }
 
     single<FavoritesInteractor> {

@@ -113,17 +113,11 @@ class PlayerViewModel(
         }
     }
 
-    companion object {
-        private const val TRACK_TIME_DELAY = 300L
-    }
-
     private suspend fun isFavoriteTrack(trackId: Long): Boolean {
         return favoritesInteractor.isFavorite(trackId)
     }
 
     fun isInPlaylist(playlist: Playlist, trackId: Long): Boolean {
-        Log.i("CLICKLOOK", "Попали в isInPlaylist")
-
         var result = false
         for(track in playlist.tracks) {
             if(track == trackId) result = true
@@ -132,8 +126,6 @@ class PlayerViewModel(
     }
 
     fun addToPlaylist(playlist: Playlist, track: Track) {
-        Log.i("CLICKLOOK", "Попали в addToPlaylist")
-
         viewModelScope.launch {
             playlistInteractor.saveTrack(playlist, track)
         }
@@ -149,5 +141,9 @@ class PlayerViewModel(
             }
         }
         return current
+    }
+
+    companion object {
+        private const val TRACK_TIME_DELAY = 300L
     }
 }

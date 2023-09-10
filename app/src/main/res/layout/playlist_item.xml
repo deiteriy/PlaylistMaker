@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintDimensionRatio="1:1"
             app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorOnPrimary"
             app:cardCornerRadius="@dimen/size_8">
 
         <ImageView
