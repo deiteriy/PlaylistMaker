@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ import java.util.Locale
 class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickListener {
     private lateinit var binding: FragmentPlayerBinding
     private lateinit var url: String
+    private lateinit var bottomSheetBehaviour: BottomSheetBehavior<LinearLayout>
     lateinit var track: Track
     private val playlistsAdapter = PlaylistsBottomSheetAdapter(this)
     private val viewModel by viewModel<PlayerViewModel>()
@@ -39,34 +41,19 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val args: PlayerFragmentArgs by navArgs()
 
         track = args.item
-        binding.recyclerView.adapter = playlistsAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
-        viewModel.observePlaylistState().observe(viewLifecycleOwner) {
-            playlistsAdapter.setPlaylists(it)
-        }
-
         viewModel.initWithTrack(track)
-
         url = track.previewUrl!!
 
-
-        binding.trackName.text = track.trackName
-        binding.artistName.text = track.artistName
-        binding.durationView.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        binding.yearView.text = track.releaseDate?.substringBefore('-')
-        binding.genreView.text = track.primaryGenreName
-        binding.countryView.text = track.country
-        binding.trackProgress.text = getString(R.string.timer_reset)
+        initializeBindings()
+        initializeListeners()
 
         val bottomSheetContainer = binding.playlistsBottomSheet
         val overlay = binding.overlay
-        val bottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetContainer).apply {
+        bottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
@@ -139,20 +126,11 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
             .placeholder(R.drawable.big_cover_placeholder)
             .into(binding.trackCover)
 
-        binding.arrowBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.likeButton.setOnClickListener {
-            viewModel.onFavoriteClicked()
-        }
-        binding.saveButton.setOnClickListener {
-            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
 
-        binding.newPlaylistButton.setOnClickListener {
-            navToCreatePlaylist()
-        }
 
+        viewModel.observePlaylistState().observe(viewLifecycleOwner) {
+            playlistsAdapter.setPlaylists(it)
+        }
     }
 
 
@@ -174,13 +152,46 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
             if (!viewModel.isInPlaylist(playlist = item, trackId = track.trackId)) {
                 viewModel.addToPlaylist(playlist = item, track = track)
                 viewModel.showPlaylists()
+                bottomSheetBehaviour.state = BottomSheetBehavior.STATE_HIDDEN
                 message = getString(R.string.track_is_added, item.name)
             } else {
-                 message = getString(R.string.track_already_in, item.name)
+                message = getString(R.string.track_already_in, item.name)
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
                 .show()
+
         }
+    }
+
+    private fun initializeListeners() {
+        binding.arrowBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.likeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
+
+        binding.newPlaylistButton.setOnClickListener {
+            navToCreatePlaylist()
+        }
+
+        binding.saveButton.setOnClickListener {
+            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
+
+    private fun initializeBindings() {
+        binding.recyclerView.adapter = playlistsAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.trackName.text = track.trackName
+        binding.artistName.text = track.artistName
+        binding.durationView.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        binding.yearView.text = track.releaseDate?.substringBefore('-')
+        binding.genreView.text = track.primaryGenreName
+        binding.countryView.text = track.country
+        binding.trackProgress.text = getString(R.string.timer_reset)
+
     }
 
     private fun navToCreatePlaylist() {

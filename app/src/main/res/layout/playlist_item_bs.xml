@@ -7,16 +7,27 @@
     android:clickable="true"
     android:focusable="true">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/playlist_cover_bs_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_13"
+        android:layout_marginVertical="@dimen/margin_8"
+        app:layout_constraintDimensionRatio="1:1"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="?attr/colorOnPrimary"
+        app:cardCornerRadius="@dimen/size_8">
+
     <ImageView
         android:id="@+id/playlist_cover_bs"
         android:layout_width="@dimen/cover_side_size"
         android:layout_height="@dimen/cover_side_size"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/margin_13"
-        android:layout_marginVertical="@dimen/margin_8"
+
         android:scaleType="centerCrop"
         android:src="@drawable/albumcover_placeholder" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         style="@style/MenuDayNightColor"
@@ -28,8 +39,8 @@
         android:fontFamily="@font/ys_display_regular"
         android:textSize="@dimen/text_size_16"
         android:maxLines="1"
-        app:layout_constraintStart_toEndOf="@id/playlist_cover_bs"
-        app:layout_constraintTop_toTopOf="@id/playlist_cover_bs"
+        app:layout_constraintStart_toEndOf="@id/playlist_cover_bs_container"
+        app:layout_constraintTop_toTopOf="@id/playlist_cover_bs_container"
         app:layout_constraintBottom_toTopOf="@id/playlist_tracks_count_bs"
         tools:text="Название плейлиста"
         />
@@ -43,8 +54,8 @@
         android:textSize="@dimen/text_size_11"
         android:maxLines="1"
         android:textColor="@color/gray"
-        app:layout_constraintStart_toEndOf="@id/playlist_cover_bs"
+        app:layout_constraintStart_toEndOf="@id/playlist_cover_bs_container"
         app:layout_constraintTop_toBottomOf="@id/playlist_title_bs"
-        app:layout_constraintBottom_toBottomOf="@id/playlist_cover_bs"
+        app:layout_constraintBottom_toBottomOf="@id/playlist_cover_bs_container"
         tools:text="98 треков"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
