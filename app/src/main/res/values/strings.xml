@@ -14,7 +14,7 @@
     <string name="share_app_link" translatable="false">https://practicum.yandex.ru/android-developer/</string>
     <string name="share_title">Поделиться в</string>
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="input_hint"><font size = "16">Поиск</font></string>
+    <string name="input_hint"><font size="16">Поиск</font></string>
     <string name="track_name">Название трека</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="something_went_wrong">Проблемы со связью \n \n Загрузка не удалась. Проверьте подключение к интернету</string>
@@ -46,4 +46,6 @@
     <string name="track_already_in">Трек уже добавлен в плейлист %s</string>
     <string name="track_is_added">Добавлено в плейлист %s</string>
     <string name="playlist_is_created">Плейлист %s создан</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
