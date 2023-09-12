@@ -13,4 +13,5 @@ interface FavoritesRepository {
 
     suspend fun isFavorite(trackId: Long): Boolean
 
+
 }

@@ -12,4 +12,5 @@ interface FavoritesInteractor {
     suspend fun deleteFromFavorite(track: Track)
 
     suspend fun isFavorite(trackId: Long): Boolean
+
 }

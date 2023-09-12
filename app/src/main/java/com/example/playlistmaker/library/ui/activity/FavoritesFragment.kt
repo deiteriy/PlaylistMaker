@@ -39,6 +39,9 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+
+
+
     }
 
     override fun onResume() {
@@ -82,7 +85,9 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     private fun navToTrack(item: Track) {
-        val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerActivity2(item)
+        val action = LibraryFragmentDirections.actionLibraryFragmentToPlayerFragment(item)
         findNavController().navigate(action)
     }
+
+
 }

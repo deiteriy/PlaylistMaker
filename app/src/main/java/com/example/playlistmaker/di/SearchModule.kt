@@ -51,7 +51,7 @@ val searchModule = module {
     }
 
     single<SearchRepository> {
-        SearchRepositoryImpl(networkClient = get(), appDatabase = get() ,searchHistory =  get())
+        SearchRepositoryImpl(networkClient = get(), searchHistory =  get())
     }
 
     single<SearchInteractor> {
