@@ -1,6 +1,7 @@
 package com.example.playlistmaker.library.domain.models
 
 import android.net.Uri
+import java.io.Serializable
 
 
 class Playlist(
@@ -10,4 +11,4 @@ class Playlist(
     val playlistCover: Uri?,
     var tracks: ArrayList<Long>,
     var tracksCount: Long = tracks.size.toLong(),
-)
+): Serializable
