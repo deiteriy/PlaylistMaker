@@ -63,6 +63,6 @@
         tools:layout="@layout/fragment_show_playlist">
         <argument
             android:name="item"
-            app:argType="com.example.playlistmaker.library.domain.models.Playlist" />
+            app:argType="long" />
     </fragment>
 </navigation>

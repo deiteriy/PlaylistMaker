@@ -26,7 +26,7 @@ class PlaylistRepositoryImpl(
 ) : PlaylistRepository {
     override fun loadPlaylists(): Flow<List<Playlist>> = flow {
         val playlists = appDatabase.playlistDao().getPlaylists()
-        emit(convertFromPlaylistEntity(playlists))
+        emit(convertFromListPlaylistEntity(playlists))
     }
 
     override suspend fun addPlaylist(playlist: Playlist) {
@@ -37,6 +37,19 @@ class PlaylistRepositoryImpl(
         playlist.tracks.add(track.trackId)
         addPlaylist(playlist)
         appDatabase.savedTrackDao().insertTrack(convertFromTrack(track))
+    }
+
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+        return convertFromPlaylistEntity(appDatabase.playlistDao().getPlaylist(playlistId = playlistId))
+    }
+
+    override suspend fun getTracks(trackIdList: List<Long>): List<Track> {
+        val savedTrackEntityList = appDatabase.savedTrackDao().getTracks()
+        val trackList = arrayListOf<Track>()
+        savedTrackEntityList.forEach {
+            trackList.add(convertFromTrackEntity(it))
+        }
+        return trackList
     }
 
     override fun saveImageAndReturnUri(uri: Uri): Uri {
@@ -57,14 +70,22 @@ class PlaylistRepositoryImpl(
         return file.toUri()
     }
 
-    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
+    private fun convertFromListPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlist -> playlistDbConverter.map(playlist) }
     }
     private fun convertFromPlaylist(playlist: Playlist): PlaylistEntity {
         return playlistDbConverter.map(playlist)
     }
 
+    private fun convertFromPlaylistEntity(playlistEntity: PlaylistEntity): Playlist {
+        return playlistDbConverter.map(playlistEntity)
+    }
+
     private fun convertFromTrack(track: Track): SavedTrackEntity {
         return savedTrackDbConverter.map(track)
+    }
+
+    private fun convertFromTrackEntity(trackEntity: SavedTrackEntity): Track {
+        return savedTrackDbConverter.map(trackEntity)
     }
 }

@@ -7,6 +7,7 @@ import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
+
 class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository): PlaylistInteractor {
 
     override fun loadPlaylists(): Flow<List<Playlist>> {
@@ -19,6 +20,14 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun saveTrack(playlist: Playlist, track: Track) {
         playlistRepository.saveTrack(playlist, track)
+    }
+
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+        return playlistRepository.getPlaylist(playlistId)
+    }
+
+    override suspend fun getTracks(trackIdList: List<Long>): List<Track> {
+        return playlistRepository.getTracks(trackIdList)
     }
 
     override fun saveImageAndReturnUri(uri: Uri): Uri {

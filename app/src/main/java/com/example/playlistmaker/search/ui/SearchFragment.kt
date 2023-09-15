@@ -98,10 +98,6 @@ class SearchFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.showHistory()
-    }
 
     override fun onTrackClick(item: Track) {
         if(item.previewUrl == null) {

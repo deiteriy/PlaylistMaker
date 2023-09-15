@@ -12,5 +12,9 @@ interface PlaylistRepository {
     suspend fun addPlaylist(playlist: Playlist)
 
     suspend fun saveTrack(playlist: Playlist, track: Track)
+
+    suspend fun getPlaylist(playlistId: Long): Playlist
+    suspend fun getTracks(trackIdList: List<Long>): List<Track>
+
     fun saveImageAndReturnUri(uri: Uri): Uri
 }

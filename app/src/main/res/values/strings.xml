@@ -46,6 +46,19 @@
     <string name="track_already_in">Трек уже добавлен в плейлист %s</string>
     <string name="track_is_added">Добавлено в плейлист %s</string>
     <string name="playlist_is_created">Плейлист %s создан</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <plurals name="tracks">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+
 </resources>

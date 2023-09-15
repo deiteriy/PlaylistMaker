@@ -70,12 +70,12 @@ class PlaylistsFragment: Fragment(), PlaylistsAdapter.OnPlaylistClickListener {
 
     }
 
-    private fun navToPlaylist(item: Playlist) {
+    private fun navToPlaylist(item: Long) {
         val action = LibraryFragmentDirections.actionLibraryFragmentToShowPlaylistFragment(item)
         findNavController().navigate(action)
     }
 
     override fun onPlaylistClick(item: Playlist) {
-        navToPlaylist(item)
+        navToPlaylist(item.playlistId)
     }
 }
