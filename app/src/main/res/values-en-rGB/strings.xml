@@ -43,4 +43,18 @@
     <string name="track_is_added">Track added to playlist %s</string>
     <string name="playlist_is_created">Playlist %s is created</string>
 
+    <plurals name="tracks">
+        <item quantity="one">%d track</item>
+        <item quantity="few">%d tracks</item>
+        <item quantity="many">%d tracks</item>
+        <item quantity="other">%d tracks</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="few">%d minutes</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
 </resources>
