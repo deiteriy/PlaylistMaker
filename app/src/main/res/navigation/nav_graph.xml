@@ -64,5 +64,8 @@
         <argument
             android:name="item"
             app:argType="long" />
+        <action
+            android:id="@+id/action_showPlaylistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
 </navigation>

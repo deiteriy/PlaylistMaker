@@ -79,8 +79,7 @@ class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
     }
 
     override fun onTrackClick(item: Track) {
-        Toast.makeText(requireContext(), "Прочитан клик ${item.trackName}", Toast.LENGTH_SHORT)
-            .show()
+        navToTrack(item)
     }
 
 
@@ -100,5 +99,9 @@ class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
     }
 
+private fun navToTrack(track: Track) {
+    val action = ShowPlaylistFragmentDirections.actionShowPlaylistFragmentToPlayerFragment(track)
+    findNavController().navigate(action)
+}
 
 }
