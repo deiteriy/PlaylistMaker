@@ -63,6 +63,10 @@ class PlaylistRepositoryImpl(
 
     }
 
+    override suspend fun deletePlaylist(playlistId: Long) {
+        appDatabase.playlistDao().deletePlaylist(playlistId)
+    }
+
     override fun saveImageAndReturnUri(uri: Uri): Uri {
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlistcoveralbum")
         if (!filePath.exists()){

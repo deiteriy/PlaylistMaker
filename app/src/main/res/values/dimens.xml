@@ -53,4 +53,5 @@
     <dimen name="margin_20">20dp</dimen>
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_12">12dp</dimen>
+    <dimen name="size_505">505dp</dimen>
 </resources>

@@ -49,6 +49,11 @@
     <string name="delete_track">Хотите удалить трек?</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
+    <string name="share">Поделиться</string>
+    <string name="add_tracks">Добавить треки</string>
+    <string name="edit_playlist">Редактировать плейлист</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
 
     <plurals name="tracks">
         <item quantity="one">%d трек</item>
