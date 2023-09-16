@@ -7,9 +7,9 @@ import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+open class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
-    private var currentImage: Uri? = null
+    var currentImage: Uri? = null
 
     fun createPlaylist(title: String, description: String?) {
         viewModelScope.launch {

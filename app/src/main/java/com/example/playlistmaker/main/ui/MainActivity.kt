@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             val shouldHideBottomNav = when(destination.id) {
                  R.id.createPlaylistFragment,
                      R.id.showPlaylistFragment,
+                     R.id.editPlaylistFragment,
                      R.id.playerFragment -> true
                 else -> false
             }

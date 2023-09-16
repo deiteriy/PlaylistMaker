@@ -121,6 +121,10 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             sharePlaylist()
         }
 
+        binding.editPlaylist.setOnClickListener {
+            navToEditPlaylist(playlist.playlistId)
+        }
+
     }
 
     override fun onTrackClick(item: Track) {
@@ -164,6 +168,11 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
     private fun navToTrack(track: Track) {
         val action =
             ShowPlaylistFragmentDirections.actionShowPlaylistFragmentToPlayerFragment(track)
+        findNavController().navigate(action)
+    }
+
+    private fun navToEditPlaylist(item: Long) {
+        val action = ShowPlaylistFragmentDirections.actionShowPlaylistFragmentToEditPlaylistFragment(item)
         findNavController().navigate(action)
     }
 

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +20,11 @@ import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private val viewModel by viewModel<CreatePlaylistViewModel>()
-    private lateinit var binding: FragmentCreatePlaylistBinding
-    private var imageUri: Uri? = null
+    open val viewModel by viewModel<CreatePlaylistViewModel>()
+    lateinit var binding: FragmentCreatePlaylistBinding
+    var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +87,9 @@ class CreatePlaylistFragment : Fragment() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                Log.d("CHANGEPICTURE", "Взял картинку в pickMedia")
                 if (uri != null) {
+                    Log.d("CHANGEPICTURE", "Убедился что картинка не null")
                     binding.shapeRectangle.setImageURI(uri)
                     viewModel.saveImage(uri)
                     imageUri = uri
@@ -94,11 +97,11 @@ class CreatePlaylistFragment : Fragment() {
             }
 
         binding.shapeRectangle.setOnClickListener {
+            Log.d("CHANGEPICTURE", "Прочел клик по прямоугольнику")
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         binding.createButton.setOnClickListener {
-
             viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.text.toString())
             val message = getString(R.string.playlist_is_created, binding.titleEditText.text)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
