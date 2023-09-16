@@ -1,28 +1,24 @@
 package com.example.playlistmaker.library.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.DumpableContainer
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentShowPlaylistBinding
 import com.example.playlistmaker.library.domain.models.Playlist
-import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker.library.ui.viewmodels.ShowPlaylistViewModel
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.player.ui.PlayerFragmentArgs
 import com.example.playlistmaker.player.ui.TrackListInPlaylistAdapter
-import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -114,8 +110,15 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
         }
 
         binding.deletePlaylist.setOnClickListener {
-            viewModel.deletePlaylist(playlistId)
-            findNavController().popBackStack()
+            showDeletePlaylistDialogue()
+        }
+
+        binding.shareIcon.setOnClickListener {
+            sharePlaylist()
+        }
+
+        binding.shareMenu.setOnClickListener {
+            sharePlaylist()
         }
 
     }
@@ -125,7 +128,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
     }
 
     override fun onTrackLongClick(item: Track) {
-        showDialogue(item.trackId, playlist)
+        showDeleteTrackDialogue(item.trackId, playlist)
     }
 
 
@@ -164,7 +167,24 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
         findNavController().navigate(action)
     }
 
-    private fun showDialogue(trackId: Long, playlist: Playlist) {
+    private fun sharePlaylist() {
+        if (playlist.tracks.isEmpty()) {
+            Toast.makeText(requireContext(), R.string.no_tracks, Toast.LENGTH_SHORT)
+                .show()
+        } else {
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, playlist.toString())
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            }
+            ContextCompat.startActivity(requireContext(), shareIntent, null)
+
+        }
+
+    }
+
+    private fun showDeleteTrackDialogue(trackId: Long, playlist: Playlist) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.delete_track)
             .setNegativeButton(R.string.no) { dialog, which ->
@@ -172,6 +192,18 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             .setPositiveButton(R.string.yes) { dialog, which ->
                 viewModel.deleteTrack(trackId, playlist)
                 viewModel.getPlaylist(playlist.playlistId)
+            }
+            .show()
+    }
+
+    private fun showDeletePlaylistDialogue() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_playlist_dialogue, playlist.name))
+            .setNegativeButton(R.string.no) { dialog, which ->
+            }
+            .setPositiveButton(R.string.yes) { dialog, which ->
+                viewModel.deletePlaylist(playlistId = playlist.playlistId)
+                findNavController().popBackStack()
             }
             .show()
     }
