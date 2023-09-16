@@ -133,7 +133,5 @@ class CreatePlaylistFragment : Fragment() {
             }
             .show()
     }
-    companion object {
-        fun newInstance() = CreatePlaylistFragment()
-    }
+
 }

@@ -1,15 +1,19 @@
-package com.example.playlistmaker.search.ui
+package com.example.playlistmaker.player.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.ui.TrackListViewHolder
 
-class TrackListAdapter(private val onTrackClickListener: OnTrackClickListener): RecyclerView.Adapter<TrackListViewHolder>() {
+class TrackListInPlaylistAdapter(private val onTrackClickListener: OnTrackClickListener): RecyclerView.Adapter<TrackListViewHolder>() {
 
     interface OnTrackClickListener {
         fun onTrackClick(item: Track)
+
+        fun onTrackLongClick(item: Track)
     }
 
     var data: ArrayList<Track> = arrayListOf()
@@ -29,7 +33,12 @@ class TrackListAdapter(private val onTrackClickListener: OnTrackClickListener): 
         holder.itemView.setOnClickListener {
             onTrackClickListener.onTrackClick(item = data[position])
         }
+        holder.itemView.setOnLongClickListener {
+            onTrackClickListener.onTrackLongClick(item = data[position])
+            true
+        }
     }
+
     fun setTracks(newTracks: List<Track>?) {
         data.clear()
         if (!newTracks.isNullOrEmpty()) {
@@ -37,5 +46,4 @@ class TrackListAdapter(private val onTrackClickListener: OnTrackClickListener): 
         }
         notifyDataSetChanged()
     }
-
 }

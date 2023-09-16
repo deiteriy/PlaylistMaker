@@ -19,16 +19,18 @@ import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker.library.ui.viewmodels.ShowPlaylistViewModel
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.PlayerFragmentArgs
+import com.example.playlistmaker.player.ui.TrackListInPlaylistAdapter
 import com.example.playlistmaker.search.ui.TrackListAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
+class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClickListener {
 
     private lateinit var binding: FragmentShowPlaylistBinding
-    private val trackListAdapter = TrackListAdapter(this)
+    private val trackListAdapter = TrackListInPlaylistAdapter(this)
     private val viewModel by viewModel<ShowPlaylistViewModel>()
     private lateinit var playlist: Playlist
     private lateinit var trackList: List<Track>
@@ -66,9 +68,10 @@ class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         }
 
         viewModel.observeDurationState().observe(viewLifecycleOwner) {
-            if(it != null) {
+            if (it != null) {
                 val duration = SimpleDateFormat("mm", Locale.getDefault()).format(it).toInt()
-                val formattedDuration = resources.getQuantityString(R.plurals.minutes, duration, duration)
+                val formattedDuration =
+                    resources.getQuantityString(R.plurals.minutes, duration, duration)
                 binding.duration.text = formattedDuration
             }
         }
@@ -76,17 +79,26 @@ class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
+
     }
 
     override fun onTrackClick(item: Track) {
         navToTrack(item)
     }
 
+    override fun onTrackLongClick(item: Track) {
+        showDialogue(item.trackId, playlist)
+    }
+
 
     private fun initializeBindings(playlist: Playlist) {
         binding.playlistTitle.text = playlist.name
         binding.playlistDescription.text = playlist.description
-        binding.count.text = resources.getQuantityString(R.plurals.tracks, playlist.tracksCount.toInt(), playlist.tracksCount.toInt())
+        binding.count.text = resources.getQuantityString(
+            R.plurals.tracks,
+            playlist.tracksCount.toInt(),
+            playlist.tracksCount.toInt()
+        )
 
         Glide.with(binding.playlistCover)
             .load(playlist.playlistCover)
@@ -99,9 +111,23 @@ class ShowPlaylistFragment : Fragment(), TrackListAdapter.OnTrackClickListener {
 
     }
 
-private fun navToTrack(track: Track) {
-    val action = ShowPlaylistFragmentDirections.actionShowPlaylistFragmentToPlayerFragment(track)
-    findNavController().navigate(action)
-}
+    private fun navToTrack(track: Track) {
+        val action =
+            ShowPlaylistFragmentDirections.actionShowPlaylistFragmentToPlayerFragment(track)
+        findNavController().navigate(action)
+    }
+
+    private fun showDialogue(trackId: Long, playlist: Playlist) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.delete_track)
+            .setNegativeButton(R.string.no) { dialog, which ->
+            }
+            .setPositiveButton(R.string.yes) { dialog, which ->
+                viewModel.deleteTrack(trackId, playlist)
+                viewModel.getPlaylist(playlist.playlistId)
+            }
+            .show()
+    }
+
 
 }

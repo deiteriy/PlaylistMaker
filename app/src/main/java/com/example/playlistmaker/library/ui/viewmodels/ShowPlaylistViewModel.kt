@@ -31,7 +31,6 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
     }
 
     fun getTracks(trackIdList: List<Long>) {
-        Log.d("TRACKLISTDEBAG", "Работает метод getTracks() во вьюмодел")
         viewModelScope.launch {
             tracks = playlistInteractor.getTracks(trackIdList)
             _trackListLiveData.postValue(tracks)
@@ -44,6 +43,12 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
             duration += it.trackTimeMillis
         }
         _durationLiveData.postValue(duration)
+    }
+
+    fun deleteTrack(trackId: Long, playlist: Playlist) {
+        viewModelScope.launch{
+            playlistInteractor.deleteTrack(trackId, playlist)
+        }
     }
 
 }

@@ -33,4 +33,8 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
     override fun saveImageAndReturnUri(uri: Uri): Uri {
         return playlistRepository.saveImageAndReturnUri(uri)
     }
+
+    override suspend fun deleteTrack(trackId: Long, playlist: Playlist) {
+        playlistRepository.deleteTrack(trackId, playlist)
+    }
 }

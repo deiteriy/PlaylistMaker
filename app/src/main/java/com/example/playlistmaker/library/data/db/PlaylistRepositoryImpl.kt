@@ -46,10 +46,21 @@ class PlaylistRepositoryImpl(
     override suspend fun getTracks(trackIdList: List<Long>): List<Track> {
         val savedTrackEntityList = appDatabase.savedTrackDao().getTracks()
         val trackList = arrayListOf<Track>()
-        savedTrackEntityList.forEach {
-            trackList.add(convertFromTrackEntity(it))
+        trackIdList.forEach {
+            val trackId = it
+            val trackEntity = savedTrackEntityList.find { it.trackId == trackId }
+            trackEntity?.let {
+                trackList.add(convertFromTrackEntity(trackEntity))
+            }
         }
+
         return trackList
+    }
+
+    override suspend fun deleteTrack(trackId: Long, playlist: Playlist) {
+        playlist.tracks.remove(trackId)
+        addPlaylist(playlist)
+
     }
 
     override fun saveImageAndReturnUri(uri: Uri): Uri {

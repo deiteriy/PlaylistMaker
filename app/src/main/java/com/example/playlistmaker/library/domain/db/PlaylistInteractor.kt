@@ -18,4 +18,7 @@ interface PlaylistInteractor {
     suspend fun getTracks(trackIdList: List<Long>): List<Track>
     fun saveImageAndReturnUri(uri: Uri): Uri
 
+    suspend fun deleteTrack(trackId: Long, playlist: Playlist)
+
+
 }

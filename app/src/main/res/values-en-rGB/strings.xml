@@ -42,6 +42,9 @@
     <string name="track_already_in">Track is already in the playlist %s</string>
     <string name="track_is_added">Track added to playlist %s</string>
     <string name="playlist_is_created">Playlist %s is created</string>
+    <string name="delete_track">Do you want to remove track from playlist?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
     <plurals name="tracks">
         <item quantity="one">%d track</item>

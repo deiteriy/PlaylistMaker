@@ -22,5 +22,4 @@ class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor
         currentImage = playlistInteractor.saveImageAndReturnUri(uri)
     }
 
-
 }

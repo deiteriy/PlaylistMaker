@@ -13,7 +13,6 @@ import com.example.playlistmaker.player.domain.models.Track
 import java.util.Locale
 
 class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val rootLayout: LinearLayout = itemView.findViewById(R.id.trackRootLayout)
     private val trackCover: ImageView = itemView.findViewById(R.id.trackCover)
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
