@@ -51,9 +51,9 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
         }
     }
 
-    fun deletePlaylist(playlistId: Long) {
+    fun deletePlaylist(playlist: Playlist) {
         viewModelScope.launch {
-            playlistInteractor.deletePlaylist(playlistId)
+            playlistInteractor.deletePlaylist(playlist)
         }
     }
 

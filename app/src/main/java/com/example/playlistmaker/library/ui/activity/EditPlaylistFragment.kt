@@ -49,9 +49,11 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
     }
 
     private fun initPlaylistBindings() {
-        binding.shapeRectangle.setImageURI(playlist.playlistCover)
         binding.titleEditText.setText(playlist.name)
         binding.descriptionEditText.setText(playlist.description)
+        if (playlist.playlistCover != null) {
+            binding.shapeRectangle.setImageURI(playlist.playlistCover)
+        }
     }
 
     private fun saveEditPlaylist(playlist: Playlist) {

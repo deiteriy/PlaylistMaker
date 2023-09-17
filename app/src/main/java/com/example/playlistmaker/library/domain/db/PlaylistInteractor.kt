@@ -20,7 +20,7 @@ interface PlaylistInteractor {
 
     suspend fun deleteTrack(trackId: Long, playlist: Playlist)
 
-    suspend fun deletePlaylist(playlistId: Long)
+    suspend fun deletePlaylist(playlist: Playlist)
 
 
 }

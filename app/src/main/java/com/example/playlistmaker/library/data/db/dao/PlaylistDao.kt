@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.playlistmaker.library.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.library.data.db.entity.PlaylistTrackCrossRef
 
 @Dao
 interface PlaylistDao {

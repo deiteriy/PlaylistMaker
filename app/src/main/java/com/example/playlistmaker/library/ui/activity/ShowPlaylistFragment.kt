@@ -211,7 +211,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             .setNegativeButton(R.string.no) { dialog, which ->
             }
             .setPositiveButton(R.string.yes) { dialog, which ->
-                viewModel.deletePlaylist(playlistId = playlist.playlistId)
+                viewModel.deletePlaylist(playlist = playlist)
                 findNavController().popBackStack()
             }
             .show()

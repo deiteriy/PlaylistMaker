@@ -5,16 +5,20 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import androidx.core.net.toUri
 import com.example.playlistmaker.library.data.db.converters.PlaylistDbConverter
 import com.example.playlistmaker.library.data.db.converters.SavedTrackDbConverter
 import com.example.playlistmaker.library.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.library.data.db.entity.PlaylistTrackCrossRef
 import com.example.playlistmaker.library.data.db.entity.SavedTrackEntity
 import com.example.playlistmaker.library.domain.db.PlaylistRepository
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
 
@@ -37,6 +41,8 @@ class PlaylistRepositoryImpl(
         playlist.tracks.add(track.trackId)
         addPlaylist(playlist)
         appDatabase.savedTrackDao().insertTrack(convertFromTrack(track))
+        val crossRef = PlaylistTrackCrossRef(playlistId = playlist.playlistId, trackId = track.trackId)
+        appDatabase.playlistTrackCrossRefDao().insertCrossRef(crossRef)
     }
 
     override suspend fun getPlaylist(playlistId: Long): Playlist {
@@ -60,11 +66,27 @@ class PlaylistRepositoryImpl(
     override suspend fun deleteTrack(trackId: Long, playlist: Playlist) {
         playlist.tracks.remove(trackId)
         addPlaylist(playlist)
-
+        checkAndDeleteTrackFromDataBase(playlistId = playlist.playlistId, trackId = trackId )
+    }
+    private suspend fun checkAndDeleteTrackFromDataBase(playlistId: Long, trackId: Long) {
+        val crossRef = PlaylistTrackCrossRef(playlistId = playlistId, trackId = trackId)
+        appDatabase.playlistTrackCrossRefDao().deleteCrossRef(crossRef)
+        if(appDatabase.playlistTrackCrossRefDao().getPlaylistsContainingTrack(trackId).isEmpty()){
+            appDatabase.savedTrackDao().deleteTrack(trackId)
+        }
     }
 
-    override suspend fun deletePlaylist(playlistId: Long) {
-        appDatabase.playlistDao().deletePlaylist(playlistId)
+     private suspend fun deleteAllFromPlaylist(playlist: Playlist) {
+        runBlocking(Dispatchers.IO) {
+            for (trackId in playlist.tracks) {
+                checkAndDeleteTrackFromDataBase(playlistId = playlist.playlistId, trackId = trackId)
+            }
+        }
+    }
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        deleteAllFromPlaylist(playlist)
+        appDatabase.playlistDao().deletePlaylist(playlist.playlistId)
     }
 
     override fun saveImageAndReturnUri(uri: Uri): Uri {
