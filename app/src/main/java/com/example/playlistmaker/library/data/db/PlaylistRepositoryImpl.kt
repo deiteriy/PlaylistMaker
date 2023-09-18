@@ -14,10 +14,8 @@ import com.example.playlistmaker.library.data.db.entity.SavedTrackEntity
 import com.example.playlistmaker.library.domain.db.PlaylistRepository
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.Track
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
 
@@ -67,7 +65,7 @@ class PlaylistRepositoryImpl(
         addPlaylist(playlist)
         checkAndDeleteTrackFromDataBase(playlistId = playlist.playlistId, trackId = trackId )
     }
-    private suspend fun checkAndDeleteTrackFromDataBase(playlistId: Long, trackId: Long) {
+    override suspend fun checkAndDeleteTrackFromDataBase(playlistId: Long, trackId: Long) {
         val crossRef = PlaylistTrackCrossRef(playlistId = playlistId, trackId = trackId)
         appDatabase.playlistTrackCrossRefDao().deleteCrossRef(crossRef)
         if(appDatabase.playlistTrackCrossRefDao().getPlaylistsContainingTrack(trackId).isEmpty()){
@@ -75,16 +73,8 @@ class PlaylistRepositoryImpl(
         }
     }
 
-     private suspend fun deleteAllFromPlaylist(playlist: Playlist) {
-        runBlocking(Dispatchers.IO) {
-            for (trackId in playlist.tracks) {
-                checkAndDeleteTrackFromDataBase(playlistId = playlist.playlistId, trackId = trackId)
-            }
-        }
-    }
 
     override suspend fun deletePlaylist(playlist: Playlist) {
-        deleteAllFromPlaylist(playlist)
         appDatabase.playlistDao().deletePlaylist(playlist.playlistId)
     }
 

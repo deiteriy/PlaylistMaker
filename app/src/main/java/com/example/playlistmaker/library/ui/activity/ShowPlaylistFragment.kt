@@ -103,6 +103,11 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
                 binding.duration.text = formattedDuration
             }
         }
+        viewModel.deletePlaylistState.observe(viewLifecycleOwner) {
+            if (true) {
+                findNavController().popBackStack()
+            }
+        }
 
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
@@ -233,7 +238,6 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             }
             .setPositiveButton(R.string.delete) { dialog, which ->
                 viewModel.deletePlaylist(playlist = playlist)
-                findNavController().popBackStack()
             }
             .show()
     }

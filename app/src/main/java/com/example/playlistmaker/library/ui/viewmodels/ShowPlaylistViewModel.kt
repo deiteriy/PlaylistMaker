@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.domain.models.Track
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
@@ -20,6 +22,9 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
 
     private val _durationLiveData = MutableLiveData<Long>()
     fun observeDurationState(): LiveData<Long> = _durationLiveData
+
+    private val _deletePlaylistState = MutableLiveData<Boolean>()
+    val deletePlaylistState: LiveData<Boolean> = _deletePlaylistState
 
 
     fun getPlaylist(playlistId: Long) {
@@ -50,8 +55,15 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
     }
 
     fun deletePlaylist(playlist: Playlist) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+        val jobs = playlist.tracks.map { trackId ->
+            async {
+                playlistInteractor.checkAndDeleteTrackFromDataBase(playlist.playlistId, trackId)
+            }
+        }
+            jobs.forEach { it.await() }
             playlistInteractor.deletePlaylist(playlist)
+            _deletePlaylistState.postValue(true)
         }
     }
 
