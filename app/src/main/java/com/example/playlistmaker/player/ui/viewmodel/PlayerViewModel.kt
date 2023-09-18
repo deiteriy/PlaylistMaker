@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.ui.viewmodel
 
 import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

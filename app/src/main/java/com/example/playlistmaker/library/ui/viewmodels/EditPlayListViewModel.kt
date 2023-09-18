@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
-import java.io.FileDescriptor
 
 class EditPlayListViewModel(private val playlistInteractor: PlaylistInteractor) : CreatePlaylistViewModel(playlistInteractor) {
 

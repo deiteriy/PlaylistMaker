@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.models.Track

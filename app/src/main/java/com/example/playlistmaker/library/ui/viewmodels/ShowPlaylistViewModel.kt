@@ -1,13 +1,11 @@
 package com.example.playlistmaker.library.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
-import com.example.playlistmaker.library.ui.models.FavoriteState
 import com.example.playlistmaker.player.domain.models.Track
 import kotlinx.coroutines.launch
 
@@ -32,7 +30,7 @@ class ShowPlaylistViewModel(private val playlistInteractor: PlaylistInteractor):
 
     fun getTracks(trackIdList: List<Long>) {
         viewModelScope.launch {
-            tracks = playlistInteractor.getTracks(trackIdList)
+            tracks = playlistInteractor.getTracks(trackIdList).reversed()
             _trackListLiveData.postValue(tracks)
         }
     }

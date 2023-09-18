@@ -2,13 +2,13 @@ package com.example.playlistmaker.library.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +35,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
     private lateinit var menuBottomSheetBehaviour: BottomSheetBehavior<LinearLayout>
     private lateinit var playlist: Playlist
     private lateinit var trackList: List<Track>
+
 
 
     override fun onCreateView(
@@ -112,6 +113,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
         }
 
         binding.deletePlaylist.setOnClickListener {
+            closeMenuBottomSheet()
             showDeletePlaylistDialogue()
         }
 
@@ -227,9 +229,9 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_playlist))
             .setMessage(getString(R.string.delete_playlist_are_you_sure))
-            .setNegativeButton(R.string.no) { dialog, which ->
+            .setNegativeButton(R.string.cancel) { dialog, which ->
             }
-            .setPositiveButton(R.string.yes) { dialog, which ->
+            .setPositiveButton(R.string.delete) { dialog, which ->
                 viewModel.deletePlaylist(playlist = playlist)
                 findNavController().popBackStack()
             }
@@ -239,6 +241,12 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
     private fun openMenuBottomSheet() {
         menuBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
+
+    private fun closeMenuBottomSheet() {
+        menuBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 

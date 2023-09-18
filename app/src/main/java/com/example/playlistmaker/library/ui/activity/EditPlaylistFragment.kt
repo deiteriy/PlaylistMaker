@@ -51,7 +51,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
     private fun initPlaylistBindings() {
         binding.titleEditText.setText(playlist.name)
         binding.descriptionEditText.setText(playlist.description)
-        if (playlist.playlistCover != null) {
+        if (playlist.playlistCover.toString() != "null" && playlist.playlistCover != null) {
             binding.shapeRectangle.setImageURI(playlist.playlistCover)
         }
     }
