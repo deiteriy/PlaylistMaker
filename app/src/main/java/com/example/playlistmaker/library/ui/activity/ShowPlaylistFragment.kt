@@ -122,7 +122,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             sharePlaylist()
         }
 
-        binding.editPlaylist.setOnClickListener {
+        binding.editInformation.setOnClickListener {
             navToEditPlaylist(playlist.playlistId)
         }
 
@@ -182,7 +182,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             Toast.makeText(requireContext(), R.string.no_tracks, Toast.LENGTH_SHORT)
                 .show()
         } else {
-            var message = "${playlist.name}\n${binding.playlistTracksCountBs.text}\n"
+            var message = "${playlist.name}\n${playlist.description}\n${binding.playlistTracksCountBs.text}\n"
             var count = 1
             for(track in trackList) {
                 val trackMessage = "${count}. ${track.artistName} - ${track.trackName} (${SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)})\n"

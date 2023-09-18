@@ -9,6 +9,7 @@ class SavedTrackEntity(
     val artistName: String,
     val trackTimeMillis: Long,
     val artworkUrl100: String?,
+    val artworkUrl60: String?,
     @PrimaryKey
     val trackId: Long,
     val collectionName: String?,

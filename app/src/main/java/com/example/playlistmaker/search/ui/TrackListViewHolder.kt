@@ -24,7 +24,7 @@ class TrackListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         artistName.text = item.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
         Glide.with(trackCover)
-            .load(item.artworkUrl100)
+            .load(item.artworkUrl60)
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.cover_corner_radius)))
             .placeholder(R.drawable.albumcover_placeholder)
             .into(trackCover)
