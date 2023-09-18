@@ -82,6 +82,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
                 playlist = it
                 initializeBindings(playlist)
                 viewModel.getTracks(playlist.tracks)
+                showNoTracksMessage(playlist.tracks.isEmpty())
             }
         }
 
@@ -212,6 +213,14 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
                 viewModel.getPlaylist(playlist.playlistId)
             }
             .show()
+    }
+
+    private fun showNoTracksMessage(isTrackListEmpty: Boolean) {
+        if(isTrackListEmpty) {
+            binding.noTracksMessage.visibility = View.VISIBLE
+        } else {
+            binding.noTracksMessage.visibility = View.GONE
+        }
     }
 
     private fun showDeletePlaylistDialogue() {

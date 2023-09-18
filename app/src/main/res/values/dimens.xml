@@ -54,4 +54,8 @@
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_12">12dp</dimen>
     <dimen name="size_505">505dp</dimen>
+    <dimen name="size_266">266dp</dimen>
+    <dimen name="size_50">50dp</dimen>
+    <dimen name="size_4">4dp</dimen>
+    <dimen name="size_240">240dp</dimen>
 </resources>
