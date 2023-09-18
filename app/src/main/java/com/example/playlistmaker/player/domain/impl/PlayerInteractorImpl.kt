@@ -28,4 +28,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
     override fun reset() {
         repository.reset()
     }
+
+    override fun setPosition(position: Int) {
+        repository.setPosition(position)
+    }
 }

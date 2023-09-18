@@ -26,6 +26,7 @@ class PlayerViewModel(
     private var track: Track? = null
     private var timeJob: Job? = null
     private var isClickAllowed = true
+    private var currentPlaybackPosition: Int = 0
     var isPrepared = false
     private suspend fun updateTime() {
         while (true) {
@@ -88,6 +89,10 @@ class PlayerViewModel(
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
+
+        if (currentPlaybackPosition > 0) {
+            playerInteractor.setPosition(currentPlaybackPosition)
+        }
     }
 
 
@@ -104,6 +109,7 @@ class PlayerViewModel(
 
     fun pause() {
         playerInteractor.pausePlayer()
+        currentPlaybackPosition = playerInteractor.getPosition().toInt()
         stopUpdatingTime()
     }
 
@@ -111,7 +117,7 @@ class PlayerViewModel(
         playerInteractor.reset()
         stopUpdatingTime()
         isPrepared = false
-        timeLiveData.postValue("00:00")
+       // timeLiveData.postValue("00:00")
     }
 
     fun showPlaylists() {

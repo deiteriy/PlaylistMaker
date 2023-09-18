@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
+import android.util.Log
 import com.example.playlistmaker.player.data.api.PlayerRepository
 import com.example.playlistmaker.player.domain.models.PlayerState
 
@@ -16,6 +17,14 @@ class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerReposito
         mediaPlayer.setOnCompletionListener {
             stateCallback?.invoke(PlayerState.STATE_COMPLETE)
         }
+
+    }
+
+    override fun setPosition(position: Int) {
+        mediaPlayer.setOnPreparedListener { mp ->
+            mediaPlayer.seekTo(position)
+        }
+
 
     }
 
