@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui.viewmodel
 
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,9 +24,9 @@ class PlayerViewModel(
     private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
     private var track: Track? = null
-
     private var timeJob: Job? = null
     private var isClickAllowed = true
+    var isPrepared = false
     private suspend fun updateTime() {
         while (true) {
             val position = playerInteractor.getPosition()
@@ -71,17 +72,24 @@ class PlayerViewModel(
 
 
     fun initWithTrack(item: Track) {
+
         track = item
         viewModelScope.launch {
             track!!.isFavorite = isFavoriteTrack(track!!.trackId)
             isFavoriteLiveData.postValue(track!!.isFavorite)
         }
-        playerInteractor.preparePlayer(track!!.previewUrl!!)
+
+        if(!isPrepared) {
+            playerInteractor.preparePlayer(track!!.previewUrl!!)
+            isPrepared = true
+        }
+
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
     }
+
 
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
@@ -102,6 +110,8 @@ class PlayerViewModel(
     fun release() {
         playerInteractor.reset()
         stopUpdatingTime()
+        isPrepared = false
+        timeLiveData.postValue("00:00")
     }
 
     fun showPlaylists() {

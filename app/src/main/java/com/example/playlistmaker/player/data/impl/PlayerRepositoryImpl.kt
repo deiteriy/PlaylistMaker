@@ -16,6 +16,7 @@ class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer): PlayerReposito
         mediaPlayer.setOnCompletionListener {
             stateCallback?.invoke(PlayerState.STATE_COMPLETE)
         }
+
     }
 
     override fun startPlayer() {

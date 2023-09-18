@@ -204,9 +204,10 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
     private fun showDeleteTrackDialogue(trackId: Long, playlist: Playlist) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.delete_track)
-            .setNegativeButton(R.string.no) { dialog, which ->
+            .setMessage(R.string.delete_track_are_you_sure)
+            .setNegativeButton(R.string.cancel) { dialog, which ->
             }
-            .setPositiveButton(R.string.yes) { dialog, which ->
+            .setPositiveButton(R.string.delete) { dialog, which ->
                 viewModel.deleteTrack(trackId, playlist)
                 viewModel.getPlaylist(playlist.playlistId)
             }
@@ -215,7 +216,8 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
 
     private fun showDeletePlaylistDialogue() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.delete_playlist_dialogue, playlist.name))
+            .setTitle(getString(R.string.delete_playlist))
+            .setMessage(getString(R.string.delete_playlist_are_you_sure))
             .setNegativeButton(R.string.no) { dialog, which ->
             }
             .setPositiveButton(R.string.yes) { dialog, which ->
