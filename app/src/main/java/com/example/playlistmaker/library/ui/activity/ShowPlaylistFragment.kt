@@ -88,6 +88,7 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
         viewModel.observeTrackListState().observe(viewLifecycleOwner) {
             if (it != null) {
                 trackListAdapter.setTracks(it)
+                trackList = it
                 viewModel.getDuration()
             }
         }
@@ -181,10 +182,17 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             Toast.makeText(requireContext(), R.string.no_tracks, Toast.LENGTH_SHORT)
                 .show()
         } else {
+            var message = "${playlist.name}\n${binding.playlistTracksCountBs.text}\n"
+            var count = 1
+            for(track in trackList) {
+                val trackMessage = "${count}. ${track.artistName} - ${track.trackName} (${SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)})\n"
+                message += trackMessage
+                count += 1
+            }
 
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, playlist.toString())
+                putExtra(Intent.EXTRA_TEXT, message)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
             }
             ContextCompat.startActivity(requireContext(), shareIntent, null)
