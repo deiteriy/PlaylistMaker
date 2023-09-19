@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,21 +86,20 @@ open class CreatePlaylistFragment : Fragment() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                Log.d("CHANGEPICTURE", "Взял картинку в pickMedia")
                 if (uri != null) {
-                    Log.d("CHANGEPICTURE", "Убедился что картинка не null")
                     binding.shapeRectangle.setImageURI(uri)
-                    viewModel.saveImage(uri)
                     imageUri = uri
                 }
             }
 
         binding.shapeRectangle.setOnClickListener {
-            Log.d("CHANGEPICTURE", "Прочел клик по прямоугольнику")
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         binding.createButton.setOnClickListener {
+            if(imageUri != null) {
+                viewModel.saveImage(imageUri!!)
+            }
             viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.text.toString())
             val message = getString(R.string.playlist_is_created, binding.titleEditText.text)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
