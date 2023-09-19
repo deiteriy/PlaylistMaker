@@ -98,6 +98,11 @@ class PlaylistRepositoryImpl(
         return file.toUri()
     }
 
+    override fun deleteImage(uri: Uri?) {
+        val file = uri?.path?.let { File(it) }
+        file?.delete()
+    }
+
     private fun convertFromListPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlist -> playlistDbConverter.map(playlist) }
     }

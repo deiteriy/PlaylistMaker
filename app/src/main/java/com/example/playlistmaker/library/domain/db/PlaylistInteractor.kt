@@ -24,5 +24,6 @@ interface PlaylistInteractor {
 
     suspend fun checkAndDeleteTrackFromDataBase(playlistId: Long, trackId: Long)
 
+    fun deleteImage(uri: Uri?)
 
 }
