@@ -59,6 +59,9 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
     private fun saveEditPlaylist(playlist: Playlist) {
         playlist.name = binding.titleEditText.text.toString()
         playlist.description = binding.descriptionEditText.text.toString()
+        if(imageUri != null) {
+            viewModel.saveImage(imageUri!!)
+        }
         viewModel.saveEditPlaylist(playlist)
         findNavController().popBackStack()
     }
