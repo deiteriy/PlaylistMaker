@@ -75,6 +75,8 @@ class PlaylistRepositoryImpl(
 
 
     override suspend fun deletePlaylist(playlist: Playlist) {
+        val file = playlist.playlistCover?.path?.let { File(it) }
+        file?.delete()
         appDatabase.playlistDao().deletePlaylist(playlist.playlistId)
     }
 
