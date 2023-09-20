@@ -61,6 +61,7 @@
     <string name="delete_track_are_you_sure">Вы уверены, что хотите удалить трек из плейлиста?</string>
     <string name="delete">Удалить</string>
     <string name="delete_playlist_are_you_sure">Вы уверены, что хотите удалить этот плейлист?</string>
+    <string name="there_is_no_tracks">В этом плейлисте пока нет треков</string>
 
     <plurals name="tracks">
         <item quantity="one">%d трек</item>

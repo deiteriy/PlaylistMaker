@@ -172,6 +172,18 @@ class ShowPlaylistFragment : Fragment(), TrackListInPlaylistAdapter.OnTrackClick
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
 
+        val openMenu = binding.openMenu
+        val screenHeight = resources.displayMetrics.heightPixels
+
+        openMenu.post {
+            val openMenuLocation = IntArray(2)
+            openMenu.getLocationOnScreen(openMenuLocation)
+
+            val openMenuHeightFromBottom = screenHeight - openMenuLocation[1] - resources.getDimensionPixelSize(R.dimen.margin_8)
+
+            val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet)
+            bottomSheetBehavior.peekHeight = openMenuHeightFromBottom
+        }
     }
 
     private fun navToTrack(track: Track) {
