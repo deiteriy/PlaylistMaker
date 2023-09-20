@@ -3,7 +3,7 @@ package com.example.playlistmaker.library.domain.models
 import android.net.Uri
 
 
-class Playlist(
+data class Playlist(
     val playlistId: Long = 0,
     var name: String,
     var description: String?,
