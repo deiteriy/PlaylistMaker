@@ -19,11 +19,11 @@ import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private val viewModel by viewModel<CreatePlaylistViewModel>()
-    private lateinit var binding: FragmentCreatePlaylistBinding
-    private var imageUri: Uri? = null
+    open val viewModel by viewModel<CreatePlaylistViewModel>()
+    lateinit var binding: FragmentCreatePlaylistBinding
+    var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,7 +88,6 @@ class CreatePlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.shapeRectangle.setImageURI(uri)
-                    viewModel.saveImage(uri)
                     imageUri = uri
                 }
             }
@@ -98,7 +97,9 @@ class CreatePlaylistFragment : Fragment() {
         }
 
         binding.createButton.setOnClickListener {
-
+            if(imageUri != null) {
+                viewModel.saveImage(imageUri!!)
+            }
             viewModel.createPlaylist(title = binding.titleEditText.text.toString(), description = binding.descriptionEditText.text.toString())
             val message = getString(R.string.playlist_is_created, binding.titleEditText.text)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
@@ -133,7 +134,5 @@ class CreatePlaylistFragment : Fragment() {
             }
             .show()
     }
-    companion object {
-        fun newInstance() = CreatePlaylistFragment()
-    }
+
 }

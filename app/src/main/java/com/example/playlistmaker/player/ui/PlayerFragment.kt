@@ -31,6 +31,7 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
     private val playlistsAdapter = PlaylistsBottomSheetAdapter(this)
     private val viewModel by viewModel<PlayerViewModel>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -139,6 +140,11 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
         viewModel.pause()
         binding.playButton.setImageResource(R.drawable.play_button)
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.release()
     }
 
     override fun onDestroy() {

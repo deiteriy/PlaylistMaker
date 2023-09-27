@@ -14,7 +14,7 @@
     <string name="share_app_link" translatable="false">https://practicum.yandex.ru/android-developer/</string>
     <string name="share_title">Поделиться в</string>
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="input_hint"><font size = "16">Поиск</font></string>
+    <string name="input_hint"><font size="16">Поиск</font></string>
     <string name="track_name">Название трека</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="something_went_wrong">Проблемы со связью \n \n Загрузка не удалась. Проверьте подключение к интернету</string>
@@ -46,4 +46,35 @@
     <string name="track_already_in">Трек уже добавлен в плейлист %s</string>
     <string name="track_is_added">Добавлено в плейлист %s</string>
     <string name="playlist_is_created">Плейлист %s создан</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="share">Поделиться</string>
+    <string name="add_tracks">Добавить треки</string>
+    <string name="edit_playlist">Редактировать плейлист</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_playlist_dialogue">Хотите удалить плейлист %s?</string>
+    <string name="no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="delete_track_are_you_sure">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_playlist_are_you_sure">Вы уверены, что хотите удалить этот плейлист?</string>
+    <string name="there_is_no_tracks">В этом плейлисте пока нет треков</string>
+
+    <plurals name="tracks">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+
 </resources>

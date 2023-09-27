@@ -23,9 +23,10 @@ class PlayerViewModel(
     private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
     private var track: Track? = null
-
     private var timeJob: Job? = null
     private var isClickAllowed = true
+    private var currentPlaybackPosition: Int = 0
+    var isPrepared = false
     private suspend fun updateTime() {
         while (true) {
             val position = playerInteractor.getPosition()
@@ -71,17 +72,28 @@ class PlayerViewModel(
 
 
     fun initWithTrack(item: Track) {
+
         track = item
         viewModelScope.launch {
             track!!.isFavorite = isFavoriteTrack(track!!.trackId)
             isFavoriteLiveData.postValue(track!!.isFavorite)
         }
-        playerInteractor.preparePlayer(track!!.previewUrl!!)
+
+        if(!isPrepared) {
+            playerInteractor.preparePlayer(track!!.previewUrl!!)
+            isPrepared = true
+        }
+
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
             if (state == PlayerState.STATE_COMPLETE) stopUpdatingTime()
         }
+
+        if (currentPlaybackPosition > 0) {
+            playerInteractor.setPosition(currentPlaybackPosition)
+        }
     }
+
 
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
@@ -96,12 +108,15 @@ class PlayerViewModel(
 
     fun pause() {
         playerInteractor.pausePlayer()
+        currentPlaybackPosition = playerInteractor.getPosition().toInt()
         stopUpdatingTime()
     }
 
     fun release() {
         playerInteractor.reset()
         stopUpdatingTime()
+        isPrepared = false
+       // timeLiveData.postValue("00:00")
     }
 
     fun showPlaylists() {

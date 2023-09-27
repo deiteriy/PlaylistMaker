@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import com.example.playlistmaker.library.data.db.converters.PlaylistDbConverter
 import com.example.playlistmaker.library.data.db.converters.SavedTrackDbConverter
 import com.example.playlistmaker.library.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.library.data.db.entity.PlaylistTrackCrossRef
 import com.example.playlistmaker.library.data.db.entity.SavedTrackEntity
 import com.example.playlistmaker.library.domain.db.PlaylistRepository
 import com.example.playlistmaker.library.domain.models.Playlist
@@ -26,7 +27,7 @@ class PlaylistRepositoryImpl(
 ) : PlaylistRepository {
     override fun loadPlaylists(): Flow<List<Playlist>> = flow {
         val playlists = appDatabase.playlistDao().getPlaylists()
-        emit(convertFromPlaylistEntity(playlists))
+        emit(convertFromListPlaylistEntity(playlists))
     }
 
     override suspend fun addPlaylist(playlist: Playlist) {
@@ -37,6 +38,46 @@ class PlaylistRepositoryImpl(
         playlist.tracks.add(track.trackId)
         addPlaylist(playlist)
         appDatabase.savedTrackDao().insertTrack(convertFromTrack(track))
+        val crossRef = PlaylistTrackCrossRef(playlistId = playlist.playlistId, trackId = track.trackId)
+        appDatabase.playlistTrackCrossRefDao().insertCrossRef(crossRef)
+    }
+
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+        return convertFromPlaylistEntity(appDatabase.playlistDao().getPlaylist(playlistId = playlistId))
+    }
+
+    override suspend fun getTracks(trackIdList: List<Long>): List<Track> {
+        val savedTrackEntityList = appDatabase.savedTrackDao().getTracks()
+        val trackList = arrayListOf<Track>()
+        trackIdList.forEach {
+            val trackId = it
+            val trackEntity = savedTrackEntityList.find { it.trackId == trackId }
+            trackEntity?.let {
+                trackList.add(convertFromTrackEntity(trackEntity))
+            }
+        }
+
+        return trackList
+    }
+
+    override suspend fun deleteTrack(trackId: Long, playlist: Playlist) {
+        playlist.tracks.remove(trackId)
+        addPlaylist(playlist)
+        checkAndDeleteTrackFromDataBase(playlistId = playlist.playlistId, trackId = trackId )
+    }
+    override suspend fun checkAndDeleteTrackFromDataBase(playlistId: Long, trackId: Long) {
+        val crossRef = PlaylistTrackCrossRef(playlistId = playlistId, trackId = trackId)
+        appDatabase.playlistTrackCrossRefDao().deleteCrossRef(crossRef)
+        if(appDatabase.playlistTrackCrossRefDao().getPlaylistsContainingTrack(trackId).isEmpty()){
+            appDatabase.savedTrackDao().deleteTrack(trackId)
+        }
+    }
+
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        val file = playlist.playlistCover?.path?.let { File(it) }
+        file?.delete()
+        appDatabase.playlistDao().deletePlaylist(playlist.playlistId)
     }
 
     override fun saveImageAndReturnUri(uri: Uri): Uri {
@@ -57,14 +98,27 @@ class PlaylistRepositoryImpl(
         return file.toUri()
     }
 
-    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
+    override fun deleteImage(uri: Uri?) {
+        val file = uri?.path?.let { File(it) }
+        file?.delete()
+    }
+
+    private fun convertFromListPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlist -> playlistDbConverter.map(playlist) }
     }
     private fun convertFromPlaylist(playlist: Playlist): PlaylistEntity {
         return playlistDbConverter.map(playlist)
     }
 
+    private fun convertFromPlaylistEntity(playlistEntity: PlaylistEntity): Playlist {
+        return playlistDbConverter.map(playlistEntity)
+    }
+
     private fun convertFromTrack(track: Track): SavedTrackEntity {
         return savedTrackDbConverter.map(track)
+    }
+
+    private fun convertFromTrackEntity(trackEntity: SavedTrackEntity): Track {
+        return savedTrackDbConverter.map(trackEntity)
     }
 }

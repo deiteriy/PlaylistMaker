@@ -5,10 +5,10 @@ import com.example.playlistmaker.player.domain.models.Track
 
 class SavedTrackDbConverter {
     fun map(track: Track): SavedTrackEntity {
-        return SavedTrackEntity(track.trackName, track.artistName, track.trackTimeMillis, track.artworkUrl100, track.trackId, track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl, System.currentTimeMillis())
+        return SavedTrackEntity(track.trackName, track.artistName, track.trackTimeMillis, track.artworkUrl100, track.artworkUrl60, track.trackId, track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl, System.currentTimeMillis())
     }
 
     fun map(track: SavedTrackEntity): Track {
-        return Track(track.trackName, track.artistName, track.trackTimeMillis, track.artworkUrl100, track.trackId, track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl)
+        return Track(track.trackName, track.artistName, track.trackTimeMillis, track.artworkUrl100, track.artworkUrl60, track.trackId, track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl)
     }
 }

@@ -14,8 +14,10 @@ import com.example.playlistmaker.library.domain.db.PlaylistRepository
 import com.example.playlistmaker.library.domain.impl.FavoritesInteractorImpl
 import com.example.playlistmaker.library.domain.impl.PlaylistInteractorImpl
 import com.example.playlistmaker.library.ui.viewmodels.CreatePlaylistViewModel
+import com.example.playlistmaker.library.ui.viewmodels.EditPlayListViewModel
 import com.example.playlistmaker.library.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker.library.ui.viewmodels.PlaylistsViewModel
+import com.example.playlistmaker.library.ui.viewmodels.ShowPlaylistViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -59,5 +61,13 @@ val libraryModule = module {
 
     viewModel {
         FavoritesViewModel(favoritesInteractor = get())
+    }
+
+    viewModel {
+        ShowPlaylistViewModel(playlistInteractor = get())
+    }
+
+    viewModel {
+        EditPlayListViewModel(playlistInteractor = get())
     }
 }

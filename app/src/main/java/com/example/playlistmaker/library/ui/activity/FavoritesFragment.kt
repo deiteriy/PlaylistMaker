@@ -40,8 +40,6 @@ class FavoritesFragment(): Fragment(), TrackListAdapter.OnTrackClickListener {
             render(it)
         }
 
-
-
     }
 
     override fun onResume() {

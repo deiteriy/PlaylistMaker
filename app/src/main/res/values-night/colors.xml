@@ -4,4 +4,6 @@
     <color name="action_bar_color">#FF1A1B22</color>
     <color name="bottom_nav_color">#FFFFFFFF</color>
     <color name="background_color">#FF1A1B22</color>
+    <color name="playlist_color_background">#E6E8EB</color>
+
 </resources>

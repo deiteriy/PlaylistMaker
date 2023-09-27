@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val shouldHideBottomNav = when(destination.id) {
                  R.id.createPlaylistFragment,
+                     R.id.showPlaylistFragment,
+                     R.id.editPlaylistFragment,
                      R.id.playerFragment -> true
                 else -> false
             }
@@ -37,8 +39,10 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomNavigationViewVisibility(isVisible: Boolean) {
         if (isVisible) {
             binding.bottomNavigationView.visibility = View.VISIBLE
+            binding.lineBar.visibility = View.VISIBLE
         } else {
             binding.bottomNavigationView.visibility = View.GONE
+            binding.lineBar.visibility = View.GONE
         }
     }
 

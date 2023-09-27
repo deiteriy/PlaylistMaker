@@ -3,11 +3,11 @@ package com.example.playlistmaker.library.domain.models
 import android.net.Uri
 
 
-class Playlist(
+data class Playlist(
     val playlistId: Long = 0,
-    val name: String,
-    val description: String?,
-    val playlistCover: Uri?,
+    var name: String,
+    var description: String?,
+    var playlistCover: Uri? = null,
     var tracks: ArrayList<Long>,
     var tracksCount: Long = tracks.size.toLong(),
 )
