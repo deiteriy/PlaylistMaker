@@ -101,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@id/artistName"
                 app:strokeWidth="0dp" />
 
-            <ImageView
+            <com.example.playlistmaker.player.ui.PlaybackButtonView
                 android:id="@+id/playButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
