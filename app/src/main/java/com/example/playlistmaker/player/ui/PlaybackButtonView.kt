@@ -21,6 +21,9 @@ class PlaybackButtonView @JvmOverloads constructor(
     private val imageBitmap: Bitmap?
     private var imageRect = RectF(0f, 0f, 0f, 0f)
 
+    fun playButtonImageChange() {
+
+    }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         imageRect = RectF(0f, 0f, measuredWidth.toFloat(), measuredHeight.toFloat())
@@ -32,6 +35,17 @@ class PlaybackButtonView @JvmOverloads constructor(
         }
     }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when(event.action) {
+            MotionEvent.ACTION_DOWN -> return true
+            MotionEvent.ACTION_UP -> {
+                TODO("Изменить изображение на кнопке")
+                return true
+            }
+        }
+        return super.onTouchEvent(event)
+    }
+
     init {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -40,7 +54,7 @@ class PlaybackButtonView @JvmOverloads constructor(
             defStyleRes
         ).apply {
             try {
-                imageBitmap = getDrawable(R.styleable.PlaybackButtonView_playbackImageResId)?.toBitmap()
+                imageBitmap = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
             } finally {
                 recycle()
             }
