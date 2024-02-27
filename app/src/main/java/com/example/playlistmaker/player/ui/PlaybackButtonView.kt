@@ -19,6 +19,7 @@ class PlaybackButtonView @JvmOverloads constructor(
     @StyleRes defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
+    var onTouchListener: (() -> Unit)? = null
     private var imageBitmap: Bitmap?
     private val playButton: Bitmap?
     private val pauseButton: Bitmap?
@@ -50,6 +51,7 @@ class PlaybackButtonView @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> return true
             MotionEvent.ACTION_UP -> {
                 playButtonImageChange()
+                onTouchListener?.invoke()
                 return true
             }
         }
