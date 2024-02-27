@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
@@ -18,11 +19,20 @@ class PlaybackButtonView @JvmOverloads constructor(
     @StyleRes defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
-    private val imageBitmap: Bitmap?
+    private var imageBitmap: Bitmap?
+    private val playButton: Bitmap?
+    private val pauseButton: Bitmap?
     private var imageRect = RectF(0f, 0f, 0f, 0f)
+    private var isPlaying = false
 
-    fun playButtonImageChange() {
-
+     fun playButtonImageChange() {
+        if(isPlaying) {
+            imageBitmap = playButton
+        } else {
+            imageBitmap = pauseButton
+        }
+         invalidate()
+         isPlaying = !isPlaying
     }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -31,7 +41,7 @@ class PlaybackButtonView @JvmOverloads constructor(
     }
     override fun onDraw(canvas: Canvas?) {
         if (imageBitmap != null) {
-            canvas?.drawBitmap(imageBitmap, null, imageRect, null)
+            canvas?.drawBitmap(imageBitmap!!, null, imageRect, null)
         }
     }
 
@@ -39,7 +49,7 @@ class PlaybackButtonView @JvmOverloads constructor(
         when(event.action) {
             MotionEvent.ACTION_DOWN -> return true
             MotionEvent.ACTION_UP -> {
-                TODO("Изменить изображение на кнопке")
+                playButtonImageChange()
                 return true
             }
         }
@@ -54,7 +64,9 @@ class PlaybackButtonView @JvmOverloads constructor(
             defStyleRes
         ).apply {
             try {
-                imageBitmap = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
+                playButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
+                pauseButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePauseResId)?.toBitmap()
+                imageBitmap = playButton
             } finally {
                 recycle()
             }

@@ -106,6 +106,7 @@
                 android:layout_width="@dimen/playbackButtonSize"
                 android:layout_height="@dimen/playbackButtonSize"
                 app:playbackImagePlayResId="@drawable/play_button"
+                app:playbackImagePauseResId="@drawable/pause_button"
                 app:layout_constraintBottom_toBottomOf="@id/saveButton"
                 app:layout_constraintEnd_toStartOf="@id/likeButton"
                 app:layout_constraintStart_toEndOf="@id/saveButton"
