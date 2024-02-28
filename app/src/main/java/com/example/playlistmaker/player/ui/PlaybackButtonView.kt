@@ -11,6 +11,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.graphics.drawable.toBitmap
 import com.example.playlistmaker.R
+import kotlin.math.min
 
 class PlaybackButtonView @JvmOverloads constructor(
     context: Context,
@@ -58,6 +59,12 @@ class PlaybackButtonView @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val size = min(measuredWidth, measuredHeight)
+        setMeasuredDimension(size, size)
+    }
+
     init {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -69,6 +76,7 @@ class PlaybackButtonView @JvmOverloads constructor(
                 playButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
                 pauseButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePauseResId)?.toBitmap()
                 imageBitmap = playButton
+
             } finally {
                 recycle()
             }
