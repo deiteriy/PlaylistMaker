@@ -101,16 +101,17 @@
                 app:layout_constraintTop_toBottomOf="@id/artistName"
                 app:strokeWidth="0dp" />
 
-            <ImageView
+            <com.example.playlistmaker.player.ui.PlaybackButtonView
                 android:id="@+id/playButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/play_button"
+                android:layout_width="@dimen/playbackButtonSize"
+                android:layout_height="@dimen/playbackButtonSize"
+                app:playbackImagePlayResId="@drawable/play_button"
+                app:playbackImagePauseResId="@drawable/pause_button"
                 app:layout_constraintBottom_toBottomOf="@id/saveButton"
                 app:layout_constraintEnd_toStartOf="@id/likeButton"
                 app:layout_constraintStart_toEndOf="@id/saveButton"
                 app:layout_constraintTop_toTopOf="@id/saveButton"
-                app:tint="?android:attr/textColorPrimary" />
+                 />
 
             <ImageView
                 android:id="@+id/likeButton"
@@ -129,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:fontFamily="@font/ys_display_regular"
-                android:text="00:30"
+                tools:text="00:30"
                 android:textColor="?android:attr/textColorPrimary"
                 app:layout_constraintEnd_toEndOf="@id/rightBorder"
                 app:layout_constraintStart_toStartOf="@id/leftBorder"
