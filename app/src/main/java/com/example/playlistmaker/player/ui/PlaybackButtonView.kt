@@ -27,6 +27,24 @@ class PlaybackButtonView @JvmOverloads constructor(
     private var imageRect = RectF(0f, 0f, 0f, 0f)
     private var isPlaying = false
 
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.PlaybackButtonView,
+            defStyleAttr,
+            defStyleRes
+        ).apply {
+            try {
+                playButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
+                pauseButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePauseResId)?.toBitmap()
+                imageBitmap = playButton
+
+            } finally {
+                recycle()
+            }
+        }
+    }
+
      fun playButtonImageChange() {
         if(isPlaying) {
             imageBitmap = playButton
@@ -63,23 +81,5 @@ class PlaybackButtonView @JvmOverloads constructor(
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val size = min(measuredWidth, measuredHeight)
         setMeasuredDimension(size, size)
-    }
-
-    init {
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.PlaybackButtonView,
-            defStyleAttr,
-            defStyleRes
-        ).apply {
-            try {
-                playButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePlayResId)?.toBitmap()
-                pauseButton = getDrawable(R.styleable.PlaybackButtonView_playbackImagePauseResId)?.toBitmap()
-                imageBitmap = playButton
-
-            } finally {
-                recycle()
-            }
-        }
     }
 }
