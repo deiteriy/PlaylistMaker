@@ -82,23 +82,21 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
             when (playerState) {
                 PlayerState.STATE_PREPARED, PlayerState.STATE_COMPLETE, PlayerState.STATE_PAUSED -> {
                     viewModel.play()
-                    binding.playButton.setImageResource(R.drawable.pause_button)
                 }
 
                 PlayerState.STATE_PLAYING -> {
                     viewModel.pause()
-                    binding.playButton.setImageResource(R.drawable.play_button)
                 }
             }
         }
 
         viewModel.observeState().observe(requireActivity()) { state ->
-            binding.playButton.setOnClickListener {
+            binding.playButton.onTouchListener = {
                 playbackControl(state)
             }
             if (state == PlayerState.STATE_COMPLETE) {
                 binding.trackProgress.text = getString(R.string.timer_reset)
-                binding.playButton.setImageResource(R.drawable.play_button)
+                binding.playButton.playButtonImageChange()
             }
         }
 
@@ -138,7 +136,7 @@ class PlayerFragment : Fragment(), PlaylistsBottomSheetAdapter.OnPlaylistClickLi
     override fun onPause() {
         super.onPause()
         viewModel.pause()
-        binding.playButton.setImageResource(R.drawable.play_button)
+        binding.playButton.playButtonImageChange()
 
     }
 
